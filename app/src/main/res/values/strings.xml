@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">LaureApp</string>
+    <string name="me">stringa di prova per github</string>
+    <string name="non_sei_registrato">Non sei registrato?</string>
+    <string name="oppure">o</string>
+    <string name="continua_come_ospite">Continua come ospite</string>
+    <string name="registrati">Registrati</string>
+    <string name="conferma_password">Conferma password</string>
+    <string name="avanti">Avanti</string>
+    <string name="seleziona_corso_di_studi">Seleziona\ncorso di studi</string>
+    <string name="messaggio_primo_accesso_studente">Puoi modificare le tue informazioni in ogni istante andando nelle impostazioni del tuo profilo</string>
+    <string name="conferma">Conferma</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="compilativa">compilativa</string>
+    <string name="Non_consegnato">Non consegnato</string>
+    <string name="relatore">Relatore</string>
+    <string name="descrizione">Descrizione</string>
+    <string name="consegna_tesi">Consegna tesi</string>
+    <string name="dipartimento">Dipartimento</string>
+    <string name="corso">Corso</string>
+    <string name="insegnamento">Insegnamento</string>
+
+    <string name="faq">FAQ</string>
+    <string name="dettagli">Dettagli</string>
+    <string name="task">Task</string>
+    <string name="la_tua_tesi">La tua tesi</string>
+    <string name="tesi_preferite">Tesi preferite</string>
+    <string name="corelatore">Co-relatore</string>
+    <string name="immagine_di_stato_tesi">immagine di stato tesi</string>
+    <string name="richiedi_ricevimento">Richiedi ricevimento inviando un\'email</string>
+    <string name="da_completare">Da completare</string>
+    <string name="in_lavorazione">In lavorazione</string>
+    <string name="completato">Completato</string>
+
+
+    <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->
+        <item>elemento 1</item>
+        <item>elemento 2</item>
+        <item>HJSYBH</item>
+        <item>elemento 4</item>
+        <item>elemento 5</item>>
+        <item>elemento 1</item>
+        <item>elemento 2</item>
+        <item>elemento 3</item>
+        <item>elemento 4</item>
+        <item>elemento 5</item>>
+        <item>elemento 1</item>
+        <item>elemento 2</item>
+    </string-array>
+
+
+</resources>

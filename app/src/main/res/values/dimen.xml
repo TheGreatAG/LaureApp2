@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="dimensioni_Testo_Primario">50sp</dimen>
+    <dimen name="margine_bordi_laterali">10dp</dimen>
+    <dimen name="larghezza_layout_main">330dp</dimen>
+
+    <dimen name="dimen_testo_stato_task">10sp</dimen>
+
+
+</resources>

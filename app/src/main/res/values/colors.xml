@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background">#EDF0F8</color>
+    <color name="coloreTestoPrimario">#31457A</color>
+
+    <color name="richiamo_azione">#31457A</color>
+    <color name="navigation_bottom_bar">#DFE7F4</color>
+
+    <color name="rosso">#CD484B</color>
+
+    <color name="trasparente">#00FFFFFF</color>
+
+    <color name="icone_navbar">#34446C</color>
+    <color name="indicatore_elemento_selezionato_navBar">#9FABC9</color>
+
+    <color name="testo_task_da_completare">#CF7C7C</color>
+    <color name="testo_task_in_lavorazione">#B1954E</color>
+    <color name="testo_task_completato">#508F41</color>
+
+
+</resources>

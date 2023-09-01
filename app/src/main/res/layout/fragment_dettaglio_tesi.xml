@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragmentDettaglioTesi">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:layout_marginTop="@dimen/margine_bordi_laterali"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- ha una dimensione fissa nella larghezza cosi se il testo dovesse
+            essere troppo lungo non andreabbe a nascondere lo stato di consegna
+            che è accanto (provare per credere)-->
+            <TextView
+                android:id="@+id/txt_titolo_tesi"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="Titolo tesi"
+                android:textSize="30sp"
+                android:textColor="#232F4E"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/img_stato_tesi"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/immagine_di_stato_tesi"
+                android:background="@drawable/ic_negativo"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/txt_stato_tesi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Non_consegnato"
+                android:textColor="@color/rosso"
+                android:textSize="12sp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/lyt_txt_relatore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/t1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/relatore"/>
+
+            <TextView
+                android:id="@+id/txt_nome_relatore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome Cognome"
+                android:layout_below="@id/t1"
+                android:textSize="20sp"/>
+
+            <!--                android:contentDescription="Richiedi ricevimento"
+            serve per gli screen reader usati dai non vedenti, descrive l'azione di un elemento-->
+
+            <Button
+                android:id="@+id/btn_invio_email_ricevimento1"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/richiedi_ricevimento"
+                android:background="@drawable/ic_invio_email"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lyt_txt_corelatore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/t2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/corelatore"/>
+
+            <TextView
+                android:id="@+id/txt_nome_corelatore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome Cognome"
+                android:layout_below="@id/t2"
+                android:textSize="20sp"/>
+
+            <Button
+                android:id="@+id/btn_invio_email_ricevimento2"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/richiedi_ricevimento"
+                android:background="@drawable/ic_invio_email"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/descrizione"/>
+
+        <TextView
+            android:id="@+id/txt_descrizione_tesi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
+            android:text="Questa è una descrizione di prova"/>
+
+
+
+        <!--aggiungere una view che mostra il documento pdf caricato proprio qui-->
+
+        <Button
+            android:id="@+id/btn_invio_tesi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/consegna_tesi"
+            android:textSize="18sp"
+            android:backgroundTint="@color/richiamo_azione"
+            />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btn_nvg_preferiti"
+        android:icon="@drawable/nav_bar_preferiti"
+        android:title="Preferiti"
+        />
+    <item
+        android:id="@+id/btn_nvg_home6"
+        android:icon="@drawable/nav_bar_home"
+        android:title="home" />
+    <item
+        android:id="@+id/btn_nvg_cerca"
+        android:icon="@drawable/ic_cerca"
+        android:title="cerca"
+        />
+</menu>

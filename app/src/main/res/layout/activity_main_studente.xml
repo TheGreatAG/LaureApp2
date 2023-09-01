@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity2">
+
+    <!--Main activity studente-->
+
+    <!-- <com.google.android.material.bottomnavigation.BottomNavigationView
+         android:id="@+id/navigation_bar"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:background="@color/navigation_bottom_bar"
+         app:itemIconTint="@drawable/selezione_tasti_navigationbar"
+         app:itemTextColor="@color/colore_testo_nav_bar"
+         app:menu="@menu/bottoni_navigation_view"/> -->
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation_bar_studente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/elementi_bottom_nav_bar"
+        app:itemBackground="@color/navigation_bottom_bar"
+        app:itemTextColor="@color/icone_navbar"
+        app:itemIconTint="@color/icone_navbar"
+        app:labelVisibilityMode="unlabeled"
+        app:itemActiveIndicatorStyle="@style/navBar.colore.indicatore"
+        />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_home_s"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/navigation_bar_studente"
+        tools:layout="@layout/fragment_home_studente"
+        />
+
+</RelativeLayout>

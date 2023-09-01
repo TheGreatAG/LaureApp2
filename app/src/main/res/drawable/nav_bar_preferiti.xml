@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--quando l'elemento è selezionato-->
+    <item android:drawable="@drawable/ic_preferito_selezionato"
+        android:state_checked="true"/>
+
+    <!--quando l'elemento non è selezionato-->
+    <item android:drawable="@drawable/ic_preferito"
+        android:state_checked="false"/>
+
+</selector>

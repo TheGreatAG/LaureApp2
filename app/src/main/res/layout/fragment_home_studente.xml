@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragmentHomeStudente">
+
+    <!--DA FINIRE. CI DEVE ESSERE una TOOLBAR(?) FORSE é MEGLIO METTERLA IN activity_main2-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_home"
+            android:layout_width="match_parent"
+            app:menu="@menu/bottoni_toolbar"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/la_tua_tesi"
+                android:textColor="@color/coloreTestoPrimario"
+                android:textSize="30sp"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <!--il tab layout deve essere sopra elevato per poter toccare sui tab e cambiare sezione senza scorrere-->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            app:tabIndicatorColor="@color/richiamo_azione"
+            tools:ignore="MissingConstraints">
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="MissingConstraints"
+            android:background="@color/background"
+            tools:layout_editor_absoluteY="25dp" />
+
+
+        <!--Devo corregere questo fragment. qua va solo la toolbar il tab layout e il view pager -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margine_bordi_laterali"
+                android:layout_marginStart="@dimen/margine_bordi_laterali"
+                android:layout_marginEnd="@dimen/margine_bordi_laterali"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_titolo_tesi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Titolo tesi"
+                    android:textSize="40sp"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_tipo_tesi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/compilativa"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
+
+                    <ImageView
+                        android:id="@+id/img_stato_consegna"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_negativo"/>
+
+                    <TextView
+                        android:id="@+id/txt_stato_consegna"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Non_consegnato"
+                        android:layout_gravity="center"
+                        android:textColor="@color/rosso"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyt_contenitore_info_relatore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_relatore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:layout_gravity="center"
+                        android:text="Relatore: Nome Cognome"/>
+
+                    <Button
+                        android:id="@+id/btn_invia_email_relatore"
+                        android:layout_width="35dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_invio_email"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyt_contenitore_info_corelatore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/txt_corelatore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:layout_gravity="center"
+                        android:text="Co-relatore: Nome Cognome"/>
+
+                    <Button
+                        android:id="@+id/btn_invia_email_corelatore"
+                        android:layout_width="35dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_invio_email"/>
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/descrizione"/>
+
+                <TextView
+                    android:id="@+id/txt_descrizionr_tesi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="la descrizione della tesi deve andare qua. lo studente può leggere quello che ha scritto il relatore"/>
+
+
+                <Button
+                    android:id="@+id/btn_consegna_tesi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:text="@string/consegna_tesi"
+                    android:textSize="17sp"
+                    android:backgroundTint="@color/richiamo_azione"/>
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+</FrameLayout>
