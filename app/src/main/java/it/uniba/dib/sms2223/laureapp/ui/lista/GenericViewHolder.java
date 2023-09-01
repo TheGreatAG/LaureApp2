@@ -2,6 +2,7 @@ package it.uniba.dib.sms2223.laureapp.ui.lista;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -14,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import it.uniba.dib.sms2223.laureapp.R;
+import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListaTask;
+import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
 import it.uniba.dib.sms2223.laureapp.model.Task;
 
 
@@ -24,8 +28,8 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
     //TOLTI I PULSANTI MODIFICA ED ELIMINA DAGLI ANNUNCI PERSONALE, METTERE TALI FUNZIONI AL CLICK SULL'ANNUNCIO E ACCORCIARE LA DATA
     //DI CREAZIONE CHE APPARE SULL'ANNUNCIO DEL PROFILO PERSONALE
 
-    LinearLayout btnEliminaAnnuncio,btnModificaAnnuncio;
-    private ImageView iconaApp;
+    Button btnDaCompletare,btnInLavorazione,btnCompletato;
+    private TextView txtTitoloTask,txtDescrizioneTask,txtUltimaModifica;
     private final int tipoDilista;
     private RelativeLayout annuncio;
     //private ViewGroup layoutAnnuncio;
@@ -35,7 +39,11 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
 
     public GenericViewHolder(@NonNull View view, int tipoDiLista) {
         super(view);
-        this.tipoDilista = tipoDiLista;
+        this.tipoDilista = tipoDiLista; //se la lista dei task del prof o dello studente
+        txtTitoloTask = view.findViewById(R.id.txt_titolo_task);
+        txtDescrizioneTask = view.findViewById(R.id.txt_descrizione_task);
+        txtUltimaModifica = view.findViewById(R.id.txt_data_ultima_modifica);
+
         //corso = view.findViewById(R.id.corso_annuncio_txt_lista);
         //dipartimento = view.findViewById(R.id.dipartimento_annuncio_txt_lista);
 
@@ -63,7 +71,11 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
      */
 
     public void setView(Task task, Context context, ArrayList<Task> listaAnnunci,
-                        CustomAdapter adapter, int posizione, FragmentAdapter fragmentAdapter){//gruppoStudio è l'annuncio
+                        CustomAdapterListaTask adapter, int posizione, FragmentAdapter fragmentAdapter){
+
+        txtTitoloTask.setText(task.titolo);
+        txtDescrizioneTask.setText(task.descrizione);
+        txtUltimaModifica.setText(task.ultimaModifica);
 
     }
 

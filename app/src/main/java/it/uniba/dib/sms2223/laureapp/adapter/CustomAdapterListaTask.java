@@ -18,14 +18,14 @@ public class CustomAdapterListaTask extends RecyclerView.Adapter<GenericViewHold
     public ArrayList<Task> listaAnnunci;
     private Context context;
     private int layoutLista;
-    //private final int tipoDiLista;  //flag per capire se la lista è lato prof o studente
+    private int tipoDiLista;  //flag per capire se la lista è lato prof o studente
     private FragmentAdapter fragmentAdapter;///
 
-    public CustomAdapter(final ArrayList<Task> listaAnnunci, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
+    public CustomAdapterListaTask(final ArrayList<Task> listaAnnunci, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
         this.context = context;
         this.layoutLista = layoutLista;
         this.listaAnnunci = listaAnnunci;
-      //  this.tipoDiLista = tipoDiLista;  //decommenta
+        this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
     }
 

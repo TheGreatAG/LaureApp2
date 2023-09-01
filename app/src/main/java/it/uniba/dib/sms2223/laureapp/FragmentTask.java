@@ -16,7 +16,10 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListaTask;
+import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
 import it.uniba.dib.sms2223.laureapp.model.Task;
+import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +32,10 @@ public class FragmentTask extends Fragment {
 
     public ArrayList<Task> listaTask;
 
-    CustomAdapter adapter;
+    CustomAdapterListaTask adapter;
+
+    FragmentAdapter fragmentAdapter;
+
 
 
 
@@ -52,6 +58,12 @@ public class FragmentTask extends Fragment {
 
     public FragmentTask() {
         // Required empty public constructor
+    }
+
+    public FragmentTask(ArrayList <Task> listaTask, FragmentAdapter fragmentAdapter) {
+        this.fragmentAdapter = fragmentAdapter;
+        this.listaTask = listaTask;
+
     }
 
     /**
@@ -101,7 +113,7 @@ public class FragmentTask extends Fragment {
         ///// ---------------------- modificare la stringa dell'email in modo che la recuperi in automatico è solo per  PROVA ------
         //Verificare perchè l'email ha la prima lettera maiuscola NON DEVE ESISTERE DA NESSUNA PARTE !!!!!!!!!!!!!!!!!
         volleyPost.getAnnunciUtente(Account.ottieniEmail(context).toLowerCase(),null,lista); -*-*-*-*-*-*-*-*TOGLI QUESTO COMMENTO SE NON FUNZIONA*/
-        adapter = new CustomAdapter(listaAnnunci, context, R.layout.layout_lista_task, GenericViewHolder.LISTA_2,fragmentAdapter);
+        adapter = new CustomAdapterListaTask(listaTask, context, R.layout.layout_lista_task, GenericViewHolder.LISTA_2,fragmentAdapter);
         lista.setAdapter(adapter);
 
         return v;

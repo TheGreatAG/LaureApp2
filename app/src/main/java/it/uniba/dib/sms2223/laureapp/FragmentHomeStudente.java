@@ -26,6 +26,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.model.Task;
 
 
 /**
@@ -127,7 +128,16 @@ public class FragmentHomeStudente extends Fragment {
 
         fragmentAdapter.aggiungiFragment(new TestFragment());
         fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi());
-        fragmentAdapter.aggiungiFragment(new TestFragment());
+
+
+        ArrayList <Task> lis = new ArrayList();
+        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
+        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
+        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
+        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
+        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
+
+        fragmentAdapter.aggiungiFragment(new FragmentTask(lis,fragmentAdapter));
 
         //fragmentAdapter.aggiungiFragment(new FragmentAnnunci(annunciNonVisibili,fragmentAdapter));//DECOMMENTARE *********************
 
