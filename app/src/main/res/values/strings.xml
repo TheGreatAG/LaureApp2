@@ -32,6 +32,7 @@
     <string name="da_completare">Da completare</string>
     <string name="in_lavorazione">In lavorazione</string>
     <string name="completato">Completato</string>
+    <string name="richiedi">Richiedi</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

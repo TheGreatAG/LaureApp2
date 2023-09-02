@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentTesiPreferite">
+    tools:context=".FragmentTesiPreferite"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -21,4 +22,14 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-</FrameLayout>
+
+    <!--DA FINIRE, MANCANO LE CLASSI CHE GESTISCONO LA RECICLER VIEW PROBABILE NE RICICLO QUALCUNA-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista_tesi_preferite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/layout_lista_tesi_preferite"
+        />
+
+</LinearLayout>

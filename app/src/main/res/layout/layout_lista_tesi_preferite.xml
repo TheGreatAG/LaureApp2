@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/stile_elementi_lista_tesi_preferite"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margine_bordi_laterali"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali">
+
+        <TextView
+            android:id="@+id/txt_titolo_tesi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="kjhlgvjsssdwd"
+            android:textColor="#232F4E"
+            android:textSize="20sp"
+            android:layout_weight="2"
+            />
+
+        <Button
+            android:id="@+id/btn_preferito"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/ic_preferito_selezionato"/>
+
+
+
+        <Button
+            android:id="@+id/btn_condividi_info_tesi"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_condividi"
+         />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_nome_relatore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nome cognoem"
+        android:textSize="20sp"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/txt_email_relatore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:text="ijiubdebjirrtbr"/>
+
+    <TextView
+        android:id="@+id/txt_corelatore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:text="nome cognoem"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/id_email_corelatore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:text="ijiubdebjirrtbr"/>
+
+    <TextView
+        android:id="@+id/txt_descrizione"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:layout_marginTop="20dp"
+        android:text="1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm"
+        android:textColor="@color/black"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"/>
+
+
+    <Button
+        android:id="@+id/btn_richiedi_tesi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/richiedi"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/richiamo_azione"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>
