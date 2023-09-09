@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/margine_bordi_laterali"
     android:layout_marginEnd="@dimen/margine_bordi_laterali"
+    android:background="@drawable/background_elementi_lista"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 

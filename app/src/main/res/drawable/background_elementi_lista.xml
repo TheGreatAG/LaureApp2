@@ -2,16 +2,14 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <!--VEDERE SE ELIMINARE QUESTA RISORSA NON SERVE ED é sostituita da background_elementi_lista-->
-
     <size
         android:width="60dp"
         android:height="40dp"/>
 
-  <solid
-      android:color="@color/white"/>
+    <solid
+        android:color="@color/white"/>
 
     <corners
-        android:radius="30dp"/>
+        android:radius="20dp"/>
 
 </shape>
