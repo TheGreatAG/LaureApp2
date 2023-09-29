@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FragmentDettaglioTesi">
 
 
@@ -30,6 +31,7 @@
                 android:textSize="30sp"
                 android:textColor="#232F4E"/>
 
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -54,6 +56,13 @@
                 android:layout_marginStart="5dp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_tipo_tesi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TIPO TESI"
+            />
 
         <RelativeLayout
             android:id="@+id/lyt_txt_relatore"
@@ -139,6 +148,40 @@
 
 
         <!--aggiungere una view che mostra il documento pdf caricato proprio qui-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/txt_nome_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="nessun file selezionato.\nCarica la tua tesi in .pdf"/>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_carica_tesi"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:padding="10dp"
+                app:cornerRadius="60dp"
+                app:strokeWidth="1dp"
+                android:layout_marginStart="20dp"
+                android:text="Carica"
+                android:textColor="@color/richiamo_azione"
+                app:iconTint="@color/richiamo_azione"
+                app:icon="@drawable/ic_upload"
+                app:backgroundTint="@color/background"
+                app:strokeColor="@color/richiamo_azione"/>
+
+
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btn_invio_tesi"
