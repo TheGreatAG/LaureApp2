@@ -10,7 +10,6 @@
         <item name="android:colorBackground">@color/background</item> <!--sostituito il tag sopra perchè non impostava in modo automatico il colore di sfondo delle activity-->
         <item name="android:colorAccent">@color/richiamo_azione</item> <!-- colore dei bottoni di default ma non funziona vedrò come fare, intanto lo modifico dal layout-->
 
-
     </style>
 
     <style name="navBar.colore.indicatore" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">

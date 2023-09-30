@@ -126,7 +126,8 @@ public class FragmentHomeStudente extends Fragment {
         //fragmentAdapter.aggiungiFragment(fragmentAnnunci); //decommentare queste righe se si vuole inserire pure la sezione tutti gli annunci
 
 
-        fragmentAdapter.aggiungiFragment(new TestFragment());
+        //fragmentAdapter.aggiungiFragment(new TestFragment());
+        fragmentAdapter.aggiungiFragment(new FragmentQA());
         fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi());
 
 
