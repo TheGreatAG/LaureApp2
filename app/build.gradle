@@ -44,7 +44,7 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     // importazione librerie per firebase Auth (servizio di autenticazione)
     implementation("com.google.firebase:firebase-auth")
-
+    implementation("com.google.firebase:firebase-firestore")
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
