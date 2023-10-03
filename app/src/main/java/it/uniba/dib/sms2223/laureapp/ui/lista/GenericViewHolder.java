@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import it.uniba.dib.sms2223.laureapp.R;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListaTask;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.model.Domanda;
 import it.uniba.dib.sms2223.laureapp.model.Task;
 
 
@@ -36,6 +37,8 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
 
     public static final int LISTA_1 = 50;//lista dei risultati
     public static final int LISTA_2 = 51;//lista profilo personale
+
+    public static final int LISTA_DOMANDE_RISPOSTE_LATO_STUD = 52;//lista profilo personale
 
     public GenericViewHolder(@NonNull View view, int tipoDiLista) {
         super(view);
@@ -76,6 +79,15 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
         txtTitoloTask.setText(task.titolo);
         txtDescrizioneTask.setText(task.descrizione);
         txtUltimaModifica.setText(task.ultimaModifica);
+
+    }
+
+    public void setView(Domanda domanda, Context context, ArrayList listaDomande,
+                        CustomAdapterListaTask adapter, int posizione, FragmentAdapter fragmentAdapter){
+//inserire qui i valori da inizializzare nell'elenco della lista
+       // txtTitoloTask.setText(task.titolo);
+        //txtDescrizioneTask.setText(task.descrizione);
+        //txtUltimaModifica.setText(task.ultimaModifica);
 
     }
 

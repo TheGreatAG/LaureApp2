@@ -26,6 +26,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.model.Domanda;
 import it.uniba.dib.sms2223.laureapp.model.Task;
 
 
@@ -127,7 +128,13 @@ public class FragmentHomeStudente extends Fragment {
 
 
         //fragmentAdapter.aggiungiFragment(new TestFragment());
-        fragmentAdapter.aggiungiFragment(new FragmentQA());
+        ArrayList<Domanda> listaDomande = new ArrayList<>();
+        listaDomande.add(new Domanda("","","","",""));
+        listaDomande.add(new Domanda("","","","",""));
+        listaDomande.add(new Domanda("","","","",""));
+        listaDomande.add(new Domanda("","","","",""));
+
+        fragmentAdapter.aggiungiFragment(new FragmentQA(listaDomande,fragmentAdapter));
         fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi());
 
 

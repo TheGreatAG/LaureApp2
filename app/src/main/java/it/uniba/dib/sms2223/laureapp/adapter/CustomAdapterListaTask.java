@@ -10,18 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import it.uniba.dib.sms2223.laureapp.model.Domanda;
 import it.uniba.dib.sms2223.laureapp.model.Task;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
 public class CustomAdapterListaTask extends RecyclerView.Adapter<GenericViewHolder> {
 
-    public ArrayList<Task> listaAnnunci;
+    //public ArrayList<Task> listaAnnunci;
+    public ArrayList listaAnnunci;
+
     private Context context;
     private int layoutLista;
     private int tipoDiLista;  //flag per capire se la lista è lato prof o studente
     private FragmentAdapter fragmentAdapter;///
 
-    public CustomAdapterListaTask(final ArrayList<Task> listaAnnunci, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
+    public CustomAdapterListaTask(final ArrayList listaAnnunci, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
         this.context = context;
         this.layoutLista = layoutLista;
         this.listaAnnunci = listaAnnunci;
@@ -40,7 +43,12 @@ public class CustomAdapterListaTask extends RecyclerView.Adapter<GenericViewHold
 
     @Override
     public void onBindViewHolder(@NonNull GenericViewHolder holder, int position) {
-        holder.setView(listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
+        if (tipoDiLista == GenericViewHolder.LISTA_2)
+            holder.setView((Task) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
+        else if (tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD) {
+            holder.setView((Domanda) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
+
+        }
     }
 
     @Override

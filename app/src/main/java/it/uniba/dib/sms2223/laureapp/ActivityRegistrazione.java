@@ -88,7 +88,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {// ancora non ho capito bene in base a cosa restituisce il valore
-                                                registraNelDb(email, nome, cognome);
+                                                registraNelDb(email, nome, cognome,pw);
                                                 //Toast.makeText(getApplicationContext(), "utente registrato correttamente", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
                                             } else
                                                 Toast.makeText(getApplicationContext(), "Email non confermata", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
@@ -115,11 +115,12 @@ public class ActivityRegistrazione extends AppCompatActivity {
         });
     }
 
-    private void registraNelDb(String email, String nome, String cognome) {
+    private void registraNelDb(String email, String nome, String cognome,String pw) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> user = new HashMap<>();
         user.put("nome", nome);
         user.put("cognome", cognome);
+        user.put("password",pw);//aggiunto di recente
         if (email.endsWith("@studenti.uniba.it")) {
             db.collection("studenti").document(email).set(user).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -134,7 +135,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                         }
                     });
 
-        } else if (email.endsWith("@uniba.it")){
+        } else if (email.endsWith("@gmail.com")){
 
             db.collection("professori").document(email).set(user).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
