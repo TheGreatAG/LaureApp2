@@ -1,6 +1,7 @@
 package it.uniba.dib.sms2223.laureapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 
@@ -14,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
-import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListaTask;
+import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
 import it.uniba.dib.sms2223.laureapp.model.Domanda;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
@@ -32,7 +35,7 @@ public class FragmentQA extends Fragment {
 
     public ArrayList<Domanda> listaDomande;
 
-    CustomAdapterListaTask adapter;
+    CustomAdapterList adapter;
 
     FragmentAdapter fragmentAdapter;
 
@@ -97,6 +100,11 @@ public class FragmentQA extends Fragment {
         View v = inflater.inflate(R.layout.fragment_q_a, container, false);
 
         RecyclerView lista = v.findViewById(R.id.lista);
+        FloatingActionButton fab = v.findViewById(R.id.fab);
+
+        fab.setOnClickListener(view -> {
+            startActivity(new Intent(getContext(),DomandaStudente.class));
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getParentFragment().getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -110,7 +118,7 @@ public class FragmentQA extends Fragment {
         ///// ---------------------- modificare la stringa dell'email in modo che la recuperi in automatico è solo per  PROVA ------
         //Verificare perchè l'email ha la prima lettera maiuscola NON DEVE ESISTERE DA NESSUNA PARTE !!!!!!!!!!!!!!!!!
         volleyPost.getAnnunciUtente(Account.ottieniEmail(context).toLowerCase(),null,lista); -*-*-*-*-*-*-*-*TOGLI QUESTO COMMENTO SE NON FUNZIONA*/
-        adapter = new CustomAdapterListaTask(listaDomande, context, R.layout.layout_lista_domande, GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD,fragmentAdapter);
+        adapter = new CustomAdapterList(listaDomande, context, R.layout.layout_lista_domande, GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD,fragmentAdapter);
         lista.setAdapter(adapter);
 
         return v;

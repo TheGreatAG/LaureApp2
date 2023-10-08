@@ -26,7 +26,7 @@ public class Tesi {
     public Tesi(String titolo, String descrizione, String dataPubblicazione,
                 int votoConsigliato, int tempoDiLavoroStimatoInOre,
                 ArrayList<String> propedeuticita, Relatore relatore,
-                Corelatore corelatore, Studente studente) {
+                Corelatore corelatore, Studente studente,ETipoTesi tipoTesi) {
 
         this.titolo = titolo;
         this.descrizione = descrizione;
@@ -37,6 +37,8 @@ public class Tesi {
         this.relatore = relatore;
         this.corelatore = corelatore;
         this.studente = studente;
+        this.tipoTesi = tipoTesi;
+
     }
 
     @NonNull

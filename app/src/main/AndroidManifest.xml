@@ -16,6 +16,13 @@
         android:theme="@style/Theme.LaureApp"
         tools:targetApi="31">
         <activity
+            android:name=".DomandaStudente"
+            android:parentActivityName=".MainActivityStudente"
+            android:exported="false" />
+        <activity
+            android:name=".ProfiloStudente"
+            android:exported="false" />
+        <activity
             android:name=".ActivityRegistrazione"
             android:exported="false" />
         <activity

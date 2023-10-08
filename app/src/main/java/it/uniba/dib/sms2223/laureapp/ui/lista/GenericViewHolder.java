@@ -3,23 +3,20 @@ package it.uniba.dib.sms2223.laureapp.ui.lista;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.R;
-import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListaTask;
+import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
 import it.uniba.dib.sms2223.laureapp.model.Domanda;
 import it.uniba.dib.sms2223.laureapp.model.Task;
+import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
 
 //C'è QUALCOSA DA COMPLETARE----------------------------------------------------------
@@ -39,6 +36,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
     public static final int LISTA_2 = 51;//lista profilo personale
 
     public static final int LISTA_DOMANDE_RISPOSTE_LATO_STUD = 52;//lista profilo personale
+
 
     public GenericViewHolder(@NonNull View view, int tipoDiLista) {
         super(view);
@@ -74,7 +72,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
      */
 
     public void setView(Task task, Context context, ArrayList<Task> listaAnnunci,
-                        CustomAdapterListaTask adapter, int posizione, FragmentAdapter fragmentAdapter){
+                        CustomAdapterList adapter, int posizione, FragmentAdapter fragmentAdapter){
 
         txtTitoloTask.setText(task.titolo);
         txtDescrizioneTask.setText(task.descrizione);
@@ -83,12 +81,22 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setView(Domanda domanda, Context context, ArrayList listaDomande,
-                        CustomAdapterListaTask adapter, int posizione, FragmentAdapter fragmentAdapter){
+                        CustomAdapterList adapter, int posizione, FragmentAdapter fragmentAdapter){
 //inserire qui i valori da inizializzare nell'elenco della lista
        // txtTitoloTask.setText(task.titolo);
         //txtDescrizioneTask.setText(task.descrizione);
         //txtUltimaModifica.setText(task.ultimaModifica);
 
     }
+
+    public void setView(Tesi tesi, Context context, ArrayList listaTesiPreferite,
+                        CustomAdapterList adapter, int posizione, FragmentAdapter fragmentAdapter){
+//inserire qui i valori da inizializzare nell'elenco della lista
+        // txtTitoloTask.setText(task.titolo);
+        //txtDescrizioneTask.setText(task.descrizione);
+        //txtUltimaModifica.setText(task.ultimaModifica);
+
+    }
+
 
 }

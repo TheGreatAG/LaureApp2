@@ -94,15 +94,17 @@ public class MainActivity extends AppCompatActivity {
             String email = String.valueOf(edtEmail.getEditText().getText());
             String pw = String.valueOf(edtPassword.getEditText().getText());
 
+            Intent intent = new Intent(this, MainActivityStudente.class); //test
+            startActivity(intent);///test
 
             if (new Utente().utenteLoggato()) {//controllo che l'utente abbia ricevuto esito positivo in fase di login
-                Intent intent;
+                //Intent intent;
                 if (new Credenziali().recuperaEmailUtente(email).endsWith("@studenti.")) {//dalla email recuperata in fase di login controllo che sia uno studente
                     intent = new Intent(this, MainActivityStudente.class);
                     startActivity(intent);
                 } else { //dalla email recuperata in fase di login controllo che sia un professore
                     intent = new Intent(this, MainActivityDocente.class);
-                    startActivity(intent);
+                    //startActivity(intent);
                 }
             } else {
                 Toast.makeText(this, "Ho riscontrato un problema in fase di accesso" + pw, Toast.LENGTH_SHORT).show();// mostra il messagio di Toast

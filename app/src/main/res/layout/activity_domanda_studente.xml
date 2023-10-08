@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".DomandaStudente">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Domanda"
+        app:titleTextColor="@color/richiamo_azione"/>
+
+    <LinearLayout
+        android:id="@+id/lyt_contenitore1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali">
+
+        <TextView
+            android:id="@+id/txt_destinatario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Invia a: Robe Trt"
+            android:textSize="16sp"
+            />
+
+        <Spinner
+            android:id="@+id/spn_selezionaTask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edt_email"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:hint="@string/scrivi_domanda"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_invia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/richiamo_azione"
+            android:text="@string/invia"
+            android:textSize="20sp"
+            android:paddingHorizontal="60dp"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:layout_marginTop="20dp"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>
