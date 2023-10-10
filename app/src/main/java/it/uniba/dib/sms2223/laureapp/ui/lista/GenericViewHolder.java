@@ -40,6 +40,9 @@ public class GenericViewHolder extends RecyclerView.ViewHolder {
 
     public GenericViewHolder(@NonNull View view, int tipoDiLista) {
         super(view);
+
+        //QUA METTERE GLI IF PER CONTROLLARE IL TIPO DI LISTA E IN BASE A QUESTO INIZIALIZZARE LE VIEW CORRISPONDENTI CON FINDVIEWBYID()
+
         this.tipoDilista = tipoDiLista; //se la lista dei task del prof o dello studente
         txtTitoloTask = view.findViewById(R.id.txt_titolo_task);
         txtDescrizioneTask = view.findViewById(R.id.txt_descrizione_task);

@@ -3,13 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FragmentCercaTesi">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="CERCA TESI"
-        android:textSize="80sp"/>
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_cerca_tesi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/cerca_tesi"
+            app:titleTextColor="@color/coloreTestoPrimario"
+            app:menu="@menu/toolbar_cerca_tesi"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_tesi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/layout_lista_tesi_preferite"/>
+
+    </LinearLayout>
 
 </FrameLayout>

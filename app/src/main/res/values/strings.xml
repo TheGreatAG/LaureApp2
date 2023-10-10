@@ -37,6 +37,11 @@
     <string name="cognome">Cognome</string>
     <string name="invia">Invia</string>
     <string name="scrivi_domanda">Testo della domanda</string>
+    <string name="cerca_tesi">Cerca tesi</string>
+    <string name="scan_qr">Scansiona QR</string>
+    <string name="filtra_tesi">Filtra tesi</string>
+    <string name="titolo_tesi">Titolo tesi...</string>
+
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

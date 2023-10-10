@@ -4,7 +4,9 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import it.uniba.dib.sms2223.laureapp.business.Credenziali;
 import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.ui.AspettoActivity;
+
 import android.content.ContentValues;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         TextInputLayout edtEmail = findViewById(R.id.edt_email);//associo il TextInputLayout alla omologa variabile Java
         TextInputLayout edtPassword = findViewById(R.id.edt_password);
 
@@ -112,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         txtOspite.setOnClickListener(view -> {
+
+
             /*------------Righe di test per passare direttamente alla schermata che mi serve-----------------*/
             Intent intent = new Intent(this, ActivityPrimoAccessoLogin.class);
             startActivity(intent);
