@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            if (currentUser.getEmail().endsWith("@studenti.uniba.it")) {
+            if (currentUser.getEmail().endsWith(this.getString(R.string.mail_studente))) {
                 startActivity(new Intent(this, MainActivityStudente.class));
                 finish();
-            } else if (currentUser.getEmail().endsWith("@uniba.it")) {
+            } else if (currentUser.getEmail().endsWith(this.getString(R.string.mail_docente))) {
                 Log.i(TAG, "Accesso professore!");
                 startActivity(new Intent(this, MainActivityDocente.class));
                 finish();
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         AspettoActivity aspettoActivity = new AspettoActivity(this);
         aspettoActivity.impostaColoreStatusBar(R.color.background, true);//imposto il colore della status bar
 
-       /* btnAccedi.setOnClickListener(view -> {
+        btnAccedi.setOnClickListener(view -> {
             String email = String.valueOf(edtEmail.getEditText().getText());
             String password = String.valueOf(edtPassword.getEditText().getText());
 
@@ -76,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                if (user.getEmail().endsWith("@studenti.uniba.it")) {
+                                if (user.getEmail().endsWith(getString(R.string.mail_studente))) {
                                     startActivity(new Intent(MainActivity.this, MainActivityStudente.class));
                                     finish();
-                                } else if (user.getEmail().endsWith("@uniba.it")) {
+                                } else if (user.getEmail().endsWith(getString(R.string.mail_docente))) {
                                     startActivity(new Intent(MainActivity.this, MainActivityDocente.class));
                                     finish();
                                 }
@@ -92,9 +92,10 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
-        });*/
+        });
 
-        btnAccedi.setOnClickListener(view -> { //invece di setOnClickListener si possono usare le espressioni lambda introdotte in Java 8 che sono più veloci da scrivere
+
+        /*btnAccedi.setOnClickListener(view -> { //invece di setOnClickListener si possono usare le espressioni lambda introdotte in Java 8 che sono più veloci da scrivere
             String email = String.valueOf(edtEmail.getEditText().getText());
             String pw = String.valueOf(edtPassword.getEditText().getText());
 
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Ho riscontrato un problema in fase di accesso" + pw, Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
             }
         });
-
+*/
         txtOspite.setOnClickListener(view -> {
 
 

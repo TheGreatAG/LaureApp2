@@ -5,6 +5,8 @@
     <string name="oppure">o</string>
     <string name="continua_come_ospite">Continua come ospite</string>
     <string name="registrati">Registrati</string>
+    <string name="mail_docente">\@uniba.it</string>
+    <string name="mail_studente">\@studenti.uniba.it</string>
     <string name="conferma_password">Conferma password</string>
     <string name="avanti">Avanti</string>
     <string name="seleziona_corso_di_studi">Seleziona\ncorso di studi</string>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ins_informatica">
+        <item>Architettura degli elaboratori e sistemi operativi</item>
+        <item>Matematica discreta</item>
+        <item>Programmazione</item>
+        <item>Analisi matematica</item>
+        <item>Linguaggi di programmazione</item>
+        <item>Laboratorio di informatica</item>
+        <item>Inglese</item>
+        <item>Algoritmi e strutture dati</item>
+        <item>Basi di dati</item>
+        <item>Calcolo delle probabilità e statistica</item>
+        <item>Fondamenti di fisica</item>
+        <item>Ingegneria del software</item>
+        <item>Metodi avanzati di programmazione</item>
+        <item>Calcolo numerico</item>
+        <item>Calcolabilità e complessità</item>
+        <item>Reti di calcolatori</item>
+        <item>Interazione uomo-macchina</item>
+        <item>Metodi per il ritrovamento dell’informazione</item>
+        <item>Ingegneria della conoscenza</item>
+        <item>Sviluppo di videogiochi</item>
+        <item>Sistemi e tecniche di gestione documentale</item>
+        <item>Modelli e metodi per la sicurezza delle applicazioni</item>
+        <item>Sistemi ad agenti</item>
+        <item>Sistemi multimediali</item>
+    </string-array>
+
+    <string-array name="ins_itps">
+        <item>Architettura degli elaboratori e sistemi operativi</item>
+        <item>Matematica discreta</item>
+        <item>Programmazione</item>
+        <item>Analisi matematica</item>
+        <item>Linguaggi di programmazione</item>
+        <item>Laboratorio di informatica</item>
+        <item>Inglese</item>
+        <item>Programmazione II</item>
+        <item>Progettazione di basi di dati</item>
+        <item>Statistica per l’ingegneria del software</item>
+        <item>Reti di calcolatori</item>
+        <item>Ingegneria del software</item>
+        <item>Fisica applicata all’informatica</item>
+        <item>Calcolo numerico</item>
+        <item>Economia e gestione d’impresa</item>
+        <item>Modelli e metodi per la qualità del software</item>
+        <item>Integrazione e test di sistemi software</item>
+        <item>Progettazione dell’interazione con l’utente+lab.</item>
+        <item>Sviluppo di mobile software</item>
+        <item>Evoluzione del software</item>
+        <item>Data mining</item>
+        <item>Sistemi cooperativi</item>
+        <item>Sistemi informativi su web</item>
+        <item>Progettazione e produzione di informatica per la didattica</item>
+        <item>Progettazione e produzione multimediale</item>
+        <item>Cyber security</item>
+
+    </string-array>
+</resources>

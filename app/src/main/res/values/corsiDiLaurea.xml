@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cdl_fisica">
+        <item>Fisica</item>
+        <item>Scienze dei materiali</item>
+    </string-array>
+
+    <string-array name="cdl_chimica">
+        <item>Chimica</item>
+        <item>Biochimica</item>
+    </string-array>
+<string-array name="cdl_informatica">
+    <item>Informatica</item>
+    <item>Informatica e tecnologia per la produzione del software</item>
+</string-array>
+</resources>

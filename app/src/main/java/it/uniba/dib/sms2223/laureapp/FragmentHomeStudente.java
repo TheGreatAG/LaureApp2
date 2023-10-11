@@ -1,5 +1,7 @@
 package it.uniba.dib.sms2223.laureapp;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +25,12 @@ import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -106,7 +114,7 @@ public class FragmentHomeStudente extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.btn_toolbar_profilo_personale) {
                     Toast.makeText(context, "bybhnj", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(context,ProfiloStudente.class));
+                    startActivity(new Intent(context, ProfiloStudente.class));
                 }
                 return false;
             }
@@ -118,7 +126,7 @@ public class FragmentHomeStudente extends Fragment {
 
         //trovare il modo di avere sempre un riferimento aggiornato alla lista annunci il resto fara tutto
 
-        FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(),getLifecycle());//DECOMMENTARE *********************
+        FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), getLifecycle());//DECOMMENTARE *********************
        /* ArrayList<FragmentHomeStudente> arrayListTest = new ArrayList<>();
         arrayListTest.add(new FragmentHomeStudente());
         arrayListTest.add(new FragmentHomeStudente());  //TEST SEMI-INUTILE
@@ -132,31 +140,37 @@ public class FragmentHomeStudente extends Fragment {
 
         //fragmentAdapter.aggiungiFragment(new TestFragment());
         ArrayList<Domanda> listaDomande = new ArrayList<>();
-        listaDomande.add(new Domanda("","","","",""));
-        listaDomande.add(new Domanda("","","","",""));
-        listaDomande.add(new Domanda("","","","",""));
-        listaDomande.add(new Domanda("","","","",""));
+        listaDomande.add(new Domanda("", "", "", "", ""));
+        listaDomande.add(new Domanda("", "", "", "", ""));
+        listaDomande.add(new Domanda("", "", "", "", ""));
+        listaDomande.add(new Domanda("", "", "", "", ""));
 
-        fragmentAdapter.aggiungiFragment(new FragmentQA(listaDomande,fragmentAdapter));
+        fragmentAdapter.aggiungiFragment(new FragmentQA(listaDomande, fragmentAdapter));
         fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi());
 
 
-        ArrayList <Task> lis = new ArrayList();
-        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
-        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
-        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
-        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
-        lis.add(new Task("Un titolo per il task","la descrizione del task","02/02/2022","incompleto"));
+        ArrayList<it.uniba.dib.sms2223.laureapp.model.Task> lis = new ArrayList();
+        visualizzaTask(lis);
 
-        fragmentAdapter.aggiungiFragment(new FragmentTask(lis,fragmentAdapter));
+       /*
+        // Rimuovere il commento per riempiere manualmente l'arrayList dei task
+
+        lis.add(new it.uniba.dib.sms2223.laureapp.model.Task("Un titolo per il task1","la descrizione del task","02/02/2022","incompleto"));
+        lis.add(new it.uniba.dib.sms2223.laureapp.model.Task("Un titolo per il task2","la descrizione del task","02/02/2022","incompleto"));
+        lis.add(new it.uniba.dib.sms2223.laureapp.model.Task("Un titolo per il task3","la descrizione del task","02/02/2022","incompleto"));
+        lis.add(new it.uniba.dib.sms2223.laureapp.model.Task("Un titolo per il task4","la descrizione del task","02/02/2022","incompleto"));
+        lis.add(new it.uniba.dib.sms2223.laureapp.model.Task("Un titolo per il task5","la descrizione del task","02/02/2022","incompleto"));
+
+       */
+        fragmentAdapter.aggiungiFragment(new FragmentTask(lis, fragmentAdapter));
 
         //fragmentAdapter.aggiungiFragment(new FragmentAnnunci(annunciNonVisibili,fragmentAdapter));//DECOMMENTARE *********************
 
         viewPager2.setAdapter(fragmentAdapter); //DECOMMENTARE *********************
 
-        new TabLayoutMediator(tabLayout,viewPager2, (tab1, position1) -> {//DA SISTEMARE deve aggiotnare il numero di annunci quando se ne elimina uno
+        new TabLayoutMediator(tabLayout, viewPager2, (tab1, position1) -> {//DA SISTEMARE deve aggiotnare il numero di annunci quando se ne elimina uno
             //in set setx bisongna passare un array di stringhe per tutti,visibili e non visibili
-            String str []= {getString(R.string.faq),getString(R.string.dettagli),getString(R.string.task)};
+            String str[] = {getString(R.string.faq), getString(R.string.dettagli), getString(R.string.task)};
             tab1.setText(str[position1]);//tab è il titolo che si da ai tab sopra, deve essere sostituito rispettivamente da tutti, visibili e non visibili
 
         }).attach();
@@ -165,5 +179,44 @@ public class FragmentHomeStudente extends Fragment {
         return layout;
     }
 
-
+    private void visualizzaTask(ArrayList<it.uniba.dib.sms2223.laureapp.model.Task> lis) {
+        String user = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference tesiCollection = db.collection("tesi");
+        tesiCollection.whereEqualTo("studente", user).get().addOnCompleteListener(task -> { //ricerca tesi dello studente loggato
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                    DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                    String tesiId = document.getId(); //ottiene idTesi dello studente loggato
+                    CollectionReference taskCollection = tesiCollection.document(tesiId).
+                            collection("tasks"); // ricerca task associati alla tesi
+                    taskCollection.get().addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            QuerySnapshot taskSnapshot = task1.getResult(); // ottiene task
+                            if (taskSnapshot != null && !taskSnapshot.isEmpty()) {
+                                for (QueryDocumentSnapshot taskDocument : taskSnapshot) {
+                                    // aggiunta dei task all'arrayList di task
+                                    lis.add(new it.uniba.dib.sms2223.laureapp.model.Task(taskDocument.getString("titolo"),
+                                            taskDocument.getString("descrizione"), taskDocument.getString("data"),
+                                            taskDocument.getString("status")));
+                                    Log.i(TAG, "Task recuperato: " + taskDocument.getId() +
+                                            ", Nome: " + taskDocument.getString("nome") +
+                                            ", Descrizione: " + taskDocument.getString("descrizione"));
+                                }
+                            } else {
+                                Log.w(TAG, "Nessun task trovato per questa tesi.");
+                            }
+                        } else {
+                            Log.w(TAG, "Errore durante il recupero dei task: " + task1.getException());
+                        }
+                    });
+                } else {
+                    Log.w(TAG, "Nessuna tesi trovata per lo studente con questa email.");
+                }
+            } else {
+                Log.w(TAG, "Errore durante il recupero delle tesi: " + task.getException());
+            }
+        });
+    }
 }

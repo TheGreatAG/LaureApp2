@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -88,7 +89,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {// ancora non ho capito bene in base a cosa restituisce il valore
-                                                registraNelDb(email, nome, cognome,pw);
+                                                registraNelDb(email, nome, cognome);
                                                 //Toast.makeText(getApplicationContext(), "utente registrato correttamente", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
                                             } else
                                                 Toast.makeText(getApplicationContext(), "Email non confermata", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
@@ -99,6 +100,14 @@ public class ActivityRegistrazione extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user.getEmail().endsWith(getString(R.string.mail_studente))) {
+                                        startActivity(new Intent(ActivityRegistrazione.this, MainActivityStudente.class));
+                                        finish();
+                                    } else if (user.getEmail().endsWith(getString(R.string.mail_docente))) {
+                                        Log.i(TAG, "Accesso professore!");
+                                        startActivity(new Intent(ActivityRegistrazione.this, MainActivityDocente.class));
+                                        finish();
+                                    }
                                     Toast.makeText(getApplicationContext(), "utente registrato " + user, Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
 
                                 } else {
@@ -115,13 +124,12 @@ public class ActivityRegistrazione extends AppCompatActivity {
         });
     }
 
-    private void registraNelDb(String email, String nome, String cognome,String pw) {
+    private void registraNelDb(String email, String nome, String cognome) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> user = new HashMap<>();
         user.put("nome", nome);
         user.put("cognome", cognome);
-        user.put("password",pw);//aggiunto di recente
-        if (email.endsWith("@studenti.uniba.it")) {
+        if (email.endsWith(getString(R.string.mail_studente))) {
             db.collection("studenti").document(email).set(user).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -135,7 +143,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                         }
                     });
 
-        } else if (email.endsWith("@gmail.com")){
+        } else if (email.endsWith(getString(R.string.mail_docente))){
 
             db.collection("professori").document(email).set(user).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
