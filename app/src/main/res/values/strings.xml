@@ -43,7 +43,7 @@
     <string name="scan_qr">Scansiona QR</string>
     <string name="filtra_tesi">Filtra tesi</string>
     <string name="titolo_tesi">Titolo tesi...</string>
-
+    <string name="accedi">Accedi</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

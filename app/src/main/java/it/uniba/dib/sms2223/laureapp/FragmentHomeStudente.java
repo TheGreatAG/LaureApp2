@@ -7,20 +7,17 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -46,7 +43,7 @@ import it.uniba.dib.sms2223.laureapp.model.Task;
  */
 public class FragmentHomeStudente extends Fragment {
 
-    Context context;
+    private Context context;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -124,7 +121,7 @@ public class FragmentHomeStudente extends Fragment {
         viewPager2 = layout.findViewById(R.id.pager);
 
 
-        //trovare il modo di avere sempre un riferimento aggiornato alla lista annunci il resto fara tutto
+        //trovare il modo di avere sempre un riferimento aggiornato alla lista annunci il resto farà tutto
 
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), getLifecycle());//DECOMMENTARE *********************
        /* ArrayList<FragmentHomeStudente> arrayListTest = new ArrayList<>();
@@ -149,7 +146,7 @@ public class FragmentHomeStudente extends Fragment {
         fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi());
 
 
-        ArrayList<it.uniba.dib.sms2223.laureapp.model.Task> lis = new ArrayList();
+        ArrayList<Task> lis = new ArrayList();
         visualizzaTask(lis);
 
        /*
@@ -179,8 +176,9 @@ public class FragmentHomeStudente extends Fragment {
         return layout;
     }
 
-    private void visualizzaTask(ArrayList<it.uniba.dib.sms2223.laureapp.model.Task> lis) {
-        String user = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+    private void visualizzaTask(ArrayList<Task> lis) {
+        String user = "m.marini@studenti.uniba.it";
+       // String user = FirebaseAuth.getInstance().getCurrentUser().getEmail();//recupera l'email dell'utente??
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference tesiCollection = db.collection("tesi");
         tesiCollection.whereEqualTo("studente", user).get().addOnCompleteListener(task -> { //ricerca tesi dello studente loggato
@@ -197,7 +195,7 @@ public class FragmentHomeStudente extends Fragment {
                             if (taskSnapshot != null && !taskSnapshot.isEmpty()) {
                                 for (QueryDocumentSnapshot taskDocument : taskSnapshot) {
                                     // aggiunta dei task all'arrayList di task
-                                    lis.add(new it.uniba.dib.sms2223.laureapp.model.Task(taskDocument.getString("titolo"),
+                                    lis.add(new Task(taskDocument.getString("titolo"),
                                             taskDocument.getString("descrizione"), taskDocument.getString("data"),
                                             taskDocument.getString("status")));
                                     Log.i(TAG, "Task recuperato: " + taskDocument.getId() +

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,16 +34,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            if (currentUser.getEmail().endsWith(this.getString(R.string.mail_studente))) {
-                startActivity(new Intent(this, MainActivityStudente.class));
-                finish();
-            } else if (currentUser.getEmail().endsWith(this.getString(R.string.mail_docente))) {
-                Log.i(TAG, "Accesso professore!");
-                startActivity(new Intent(this, MainActivityDocente.class));
-                finish();
-            }
+
+        if (Utente.utenteLoggato()){
+            if (Credenziali.validitaEmailProf(Utente.mAuth.getCurrentUser().getEmail()))
+                startActivity(new Intent(MainActivity.this,MainActivityDocente.class));
+            //else if (Credenziali.validitaEmailStudente(Utente.mAuth.getCurrentUser().getEmail())) //momentaneo
+              //  startActivity(new Intent(MainActivity.this,MainActivityStudente.class)); //commento momentaneo
+            else
+                startActivity(new Intent(MainActivity.this,MainActivityStudente.class));//riga di test
+                //Toast.makeText(this,"Errore in fase di riconoscimento email",Toast.LENGTH_SHORT).show(); //momentaneo
+            finish();
         }
     }
 
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         TextInputLayout edtEmail = findViewById(R.id.edt_email);//associo il TextInputLayout alla omologa variabile Java
         TextInputLayout edtPassword = findViewById(R.id.edt_password);
 
@@ -64,58 +64,17 @@ public class MainActivity extends AppCompatActivity {
         AspettoActivity aspettoActivity = new AspettoActivity(this);
         aspettoActivity.impostaColoreStatusBar(R.color.background, true);//imposto il colore della status bar
 
-        btnAccedi.setOnClickListener(view -> {
-            String email = String.valueOf(edtEmail.getEditText().getText());
-            String password = String.valueOf(edtPassword.getEditText().getText());
 
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                if (user.getEmail().endsWith(getString(R.string.mail_studente))) {
-                                    startActivity(new Intent(MainActivity.this, MainActivityStudente.class));
-                                    finish();
-                                } else if (user.getEmail().endsWith(getString(R.string.mail_docente))) {
-                                    startActivity(new Intent(MainActivity.this, MainActivityDocente.class));
-                                    finish();
-                                }
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(MainActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                // updateUI(null);
-                            }
-                        }
-                    });
-        });
-
-
-        /*btnAccedi.setOnClickListener(view -> { //invece di setOnClickListener si possono usare le espressioni lambda introdotte in Java 8 che sono più veloci da scrivere
+        btnAccedi.setOnClickListener(view -> { //invece di setOnClickListener si possono usare le espressioni lambda introdotte in Java 8 che sono più veloci da scrivere
             String email = String.valueOf(edtEmail.getEditText().getText());
             String pw = String.valueOf(edtPassword.getEditText().getText());
 
-            Intent intent = new Intent(this, MainActivityStudente.class); //test
-            startActivity(intent);///test
-
-            if (new Utente().utenteLoggato()) {//controllo che l'utente abbia ricevuto esito positivo in fase di login
-                //Intent intent;
-                if (new Credenziali().recuperaEmailUtente(email).endsWith("@studenti.")) {//dalla email recuperata in fase di login controllo che sia uno studente
-                    intent = new Intent(this, MainActivityStudente.class);
-                    startActivity(intent);
-                } else { //dalla email recuperata in fase di login controllo che sia un professore
-                    intent = new Intent(this, MainActivityDocente.class);
-                    //startActivity(intent);
-                }
-            } else {
-                Toast.makeText(this, "Ho riscontrato un problema in fase di accesso" + pw, Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
-            }
+           // Intent intent = new Intent(this, MainActivityStudente.class); //test
+           // startActivity(intent);///test
+            login(email,pw);
         });
-*/
+
+
         txtOspite.setOnClickListener(view -> {
 
 
@@ -131,5 +90,30 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ActivityRegistrazione.class);
             startActivity(intent);
         });
+    }
+
+    private void login(String email,String pw){
+        Utente.mAuth.signInWithEmailAndPassword(email, pw)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {//se il login è andato a buon fine
+                            if (mAuth.getCurrentUser().isEmailVerified()){//se è stata verificata l'email
+                                if (Credenziali.validitaEmailStudente(email)) {//se l'email è di uno studente
+                                    startActivity(new Intent(MainActivity.this, MainActivityStudente.class));
+                                } else if (Credenziali.validitaEmailProf(email)) {//se l'email è di un prof
+                                    startActivity(new Intent(MainActivity.this, MainActivityDocente.class));
+                                } else
+                                    Toast.makeText(getApplicationContext(),"Email non valida",Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(MainActivity.this, "Per procedere verifica la tua email",Toast.LENGTH_SHORT).show();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

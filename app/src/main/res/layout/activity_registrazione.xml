@@ -6,26 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ActivityRegistrazione">
 
-    <Button
-        android:id="@+id/btn_indietro"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/arrow_back"
-        android:layout_marginStart="@dimen/margine_bordi_laterali"
-        android:layout_marginTop="@dimen/margine_bordi_laterali"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_registrazione"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title=" "
+        />
+
 
     <TextView
         android:id="@+id/txt_registrati"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_registrazione"
         android:layout_marginStart="@dimen/margine_bordi_laterali"
         android:layout_marginTop="@dimen/margine_bordi_laterali"
-        android:layout_below="@id/btn_indietro"
         android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:fontFamily="@font/roboto_bold"
         android:text="Registrati"
         android:textColor="@color/coloreTestoPrimario"
-        android:textSize="@dimen/dimensioni_Testo_Primario"
-        />
+        android:textSize="@dimen/dimensioni_Testo_Primario" />
 
 
     <LinearLayout

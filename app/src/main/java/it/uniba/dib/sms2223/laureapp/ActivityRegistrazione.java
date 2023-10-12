@@ -3,7 +3,9 @@ package it.uniba.dib.sms2223.laureapp;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,17 +29,34 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.uniba.dib.sms2223.laureapp.business.Utente;
+
 public class ActivityRegistrazione extends AppCompatActivity {
+
+    FirebaseAuth mAuth;
+    @Override
+    public void onStart() {
+        super.onStart();
+        // controlla se l'utente è gia registrato --------------------------------------------------------------------------------
+       // FirebaseUser currentUser = mAuth.getCurrentUser();
+       // if(currentUser != null){
+        //    reload();
+       // }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrazione);
 
-        FirebaseAuth mAuth;
-// ...
-// Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();// Initialize Firebase Auth
+
+        //ma va Meglio la toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar_registrazione);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null)
+            ab.setDisplayHomeAsUpEnabled(true);
 
         TextInputLayout edtEmail = findViewById(R.id.edt_email);//associo il TextInputLayout alla omologa variabile Java
         TextInputLayout edtConfermaPassword = findViewById(R.id.edt_conferma_password);
@@ -51,7 +70,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference persona1Ref = db.collection("collectionProva").document("prova@mail.it");
 
-        persona1Ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+     /*   persona1Ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
@@ -67,7 +86,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 // Gestisci errori durante il recupero dei dati
             }
-        });
+        });*/
 
         btnAvanti.setOnClickListener(view -> { //invece di setOnClickListener si possono usare le espressioni lambda introdotte in Java 8 che sono più veloci da scrivere
             String email = String.valueOf(edtEmail.getEditText().getText());
@@ -76,51 +95,8 @@ public class ActivityRegistrazione extends AppCompatActivity {
             String nome = String.valueOf(edtNome.getEditText().getText());
             String cognome = String.valueOf(edtCognome.getEditText().getText());
 
+            new Utente(this).registraUtente(nome,cognome,email,pw,confermaPw);
 
-            if (pw.equals(confermaPw))  {
-                mAuth.createUserWithEmailAndPassword(email, pw)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-
-                                    //invia l'email di verifica
-                                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {// ancora non ho capito bene in base a cosa restituisce il valore
-                                                registraNelDb(email, nome, cognome);
-                                                //Toast.makeText(getApplicationContext(), "utente registrato correttamente", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
-                                            } else
-                                                Toast.makeText(getApplicationContext(), "Email non confermata", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
-
-                                        }
-                                    });
-
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user.getEmail().endsWith(getString(R.string.mail_studente))) {
-                                        startActivity(new Intent(ActivityRegistrazione.this, MainActivityStudente.class));
-                                        finish();
-                                    } else if (user.getEmail().endsWith(getString(R.string.mail_docente))) {
-                                        Log.i(TAG, "Accesso professore!");
-                                        startActivity(new Intent(ActivityRegistrazione.this, MainActivityDocente.class));
-                                        finish();
-                                    }
-                                    Toast.makeText(getApplicationContext(), "utente registrato " + user, Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }else{
-                Toast.makeText(this, "Le due password non coincidono!", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
-            }
         });
     }
 

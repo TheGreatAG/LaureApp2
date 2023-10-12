@@ -13,7 +13,8 @@
         android:layout_marginStart="@dimen/margine_bordi_laterali"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="@dimen/margine_bordi_laterali"
-        android:text="Login"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/app_name"
         android:textColor="@color/coloreTestoPrimario"
         android:textSize="@dimen/dimensioni_Testo_Primario" />
 
@@ -66,7 +67,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="70dp"
             android:backgroundTint="@color/richiamo_azione"
-            android:text="Accedi"
+            android:text="@string/accedi"
             android:textSize="19sp" />
 
     </LinearLayout>
