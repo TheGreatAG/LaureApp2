@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ambiti_informatica">
+        <item>Analisi dei dati</item>
+        <item>Bioinformatica</item>
+        <item>Blockchain</item>
+        <item>Cloud computing</item>
+        <item>Crittografia</item>
+        <item>Data mining</item>
+        <item>Deep learning</item>
+        <item>Elaborazione del linguaggio naturale (NLP)</item>
+        <item>Gaming e gamification</item>
+        <item>Interazione uomo-macchina</item>
+        <item>Intelligenza artificiale e machine learning</item>
+        <item>Internet of things (IoT)</item>
+        <item>Integrazione di sistemi software</item>
+        <item>Ingegneria del software</item>
+        <item>Linguaggi di programmazione</item>
+        <item>Metodi e modelli per la qualità del software</item>
+        <item>Realtà aumentata e realtà virtuale</item>
+        <item>Reti di computer</item>
+        <item>Reti neurali</item>
+        <item>Robotica</item>
+        <item>Sicurezza informatica</item>
+        <item>Sistemi di controllo e automazione</item>
+        <item>Sistemi distribuiti</item>
+        <item>Sistemi embedded</item>
+        <item>Sistemi multiagente</item>
+        <item>Sistemi operativi</item>
+        <item>Software testing</item>
+        <item>Tecnologie web e sviluppo di applicazioni web</item>
+    </string-array>
+</resources>

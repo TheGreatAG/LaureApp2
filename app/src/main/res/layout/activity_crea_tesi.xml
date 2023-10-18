@@ -1,9 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_crea_tesi"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreaTesi">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_crea_tesi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title=" " />
+
+    <TextView
+        android:id="@+id/txt_crea_tesi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_crea_tesi"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginTop="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Crea Tesi"
+        android:textColor="@color/coloreTestoPrimario"
+        android:textSize="@dimen/dimensioni_Testo_Primario" />
+
+    <ScrollView
+        android:id="@+id/scroll_view_crea_tesi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/txt_crea_tesi"
+        android:layout_marginBottom="80dp">
+
+
+        <LinearLayout
+            android:id="@+id/contenitore_edit_text_crea_tesi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/margine_bordi_laterali"
+            android:layout_marginEnd="@dimen/margine_bordi_laterali"
+            android:orientation="vertical">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_titolo_tesi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTitoloTesi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Titolo"
+                    android:inputType="textCapSentences|textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_tipo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:labelFor="@id/radioGroupTipo"
+                app:helperText="Tipo tesi">
+
+                <RadioGroup
+                    android:id="@+id/radioGroupTipo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <RadioButton
+                        android:id="@+id/radioCompilativa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Compilativa" />
+
+                    <RadioButton
+                        android:id="@+id/radioSperimentale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sperimentale" />
+                </RadioGroup>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_Ambito"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:labelFor="@id/spinnerAmbito"
+                app:helperText="Ambito">
+
+                <Spinner
+                    android:id="@+id/spinnerAmbito"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:entries="@array/ambiti_informatica"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_Descrizione"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <EditText
+                    android:id="@+id/etDescrizione"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/descrizione"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:gravity="top|start"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_email_corelatore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:labelFor="@id/spinnerCorelatore"
+                app:helperText="Corelatore">
+
+                <Spinner
+                    android:id="@+id/spinnerCorelatore"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edt_CorsoDiLaurea"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:labelFor="@id/spinnerCorsoDiLaurea"
+                app:helperText="Corso di laurea">
+
+                <Spinner
+                    android:id="@+id/spinnerCorsoDiLaurea"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:entries="@array/cdl_informatica"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/txt_media"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:autoSizeTextType="uniform"
+                    android:text="Media richiesta:" />
+
+                <NumberPicker
+                    android:id="@+id/numberPicker"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@id/txt_media" />
+
+                <TextView
+                    android:id="@+id/txt_durata"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/edt_durata"
+                    android:text="Durata:">
+
+                </TextView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edt_durata"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/txt_ore">
+
+                    <EditText
+                        android:id="@+id/etDurata"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txt_ore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="ore">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:labelFor="@id/grid_view_insegnamenti"
+                app:helperText="Esami richiesti:">
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <GridLayout
+                        android:id="@+id/grid_view_insegnamenti"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:columnCount="2"
+                        android:tooltipText="Esami richiesti">
+
+                    </GridLayout>
+                </HorizontalScrollView>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_avanti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="right"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/richiamo_azione"
+        android:text="@string/avanti"
+        android:textSize="19sp" />
+</RelativeLayout>

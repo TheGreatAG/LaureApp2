@@ -8,37 +8,88 @@ public class Tesi {
 
     //AGGIUNGERE I TASK NEL COSTRUTTORE
 
-    public String titolo,descrizione, dataPubblicazione;
-    public int votoConsigliato,tempoDiLavoroStimatoInOre;
-    public ArrayList<String> propedeuticita;
+    private String titolo, descrizione, dataPubblicazione, ambito, tipo, corsoDiLaurea, relatore,
+            corelatore, studente;
+    private int mediaRichiesta, durata;
+    private ArrayList<String> esamiRichiesti;
 
-    public Relatore relatore;
-    public Corelatore corelatore;
-    public Studente studente;
 
-    public ETipoTesi tipoTesi;
-
-    public Tesi(){}
-    public Tesi(ETipoTesi tipoTesi){
-        this.tipoTesi = tipoTesi;
+    public Tesi() {
     }
 
-    public Tesi(String titolo, String descrizione, String dataPubblicazione,
-                int votoConsigliato, int tempoDiLavoroStimatoInOre,
-                ArrayList<String> propedeuticita, Relatore relatore,
-                Corelatore corelatore, Studente studente,ETipoTesi tipoTesi) {
+    /*  public Tesi(ETipoTesi tipoTesi) {
+          this.tipoTesi = tipoTesi;
+      }
+  */
+
+    public Tesi(String titolo, String tipo, String descrizione, String ambito, String corsoDiLaurea, String dataPubblicazione,
+                int mediaRichiesta, int durata, String relatore,
+                String corelatore, ArrayList<String> esamiRichiesti) {
 
         this.titolo = titolo;
+        this.tipo = tipo;
         this.descrizione = descrizione;
-        this.dataPubblicazione = dataPubblicazione;
-        this.votoConsigliato = votoConsigliato;
-        this.tempoDiLavoroStimatoInOre = tempoDiLavoroStimatoInOre;
-        this.propedeuticita = propedeuticita;
+        this.ambito = ambito;
+        this.corsoDiLaurea = corsoDiLaurea;
         this.relatore = relatore;
         this.corelatore = corelatore;
-        this.studente = studente;
-        this.tipoTesi = tipoTesi;
+        this.mediaRichiesta = mediaRichiesta;
+        this.durata = durata;
+        this.esamiRichiesti = esamiRichiesti;
+        this.dataPubblicazione = dataPubblicazione;
+    }
 
+
+    // Costruttore aggiunto
+    public Tesi(String s, String s1, String s2, int i, int i1, Object o, Object o1, Object o2, Object o3, ETipoTesi compilativa) {
+    }
+
+    public String getTitolo() {
+        return titolo;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public String getDataPubblicazione() {
+        return dataPubblicazione;
+    }
+
+    public String getAmbito() {
+        return ambito;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getCorsoDiLaurea() {
+        return corsoDiLaurea;
+    }
+
+    public String getRelatore() {
+        return relatore;
+    }
+
+    public String getCorelatore() {
+        return corelatore;
+    }
+
+    public int getMediaRichiesta() {
+        return mediaRichiesta;
+    }
+
+    public int getDurata() {
+        return durata;
+    }
+
+    public ArrayList<String> getEsamiRichiesti() {
+        return esamiRichiesti;
+    }
+
+    public String getStudente() {
+        return studente;
     }
 
     @NonNull
