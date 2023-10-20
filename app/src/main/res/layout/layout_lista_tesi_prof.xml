@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margine_bordi_laterali"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="@dimen/margine_bordi_laterali"
+    android:paddingHorizontal="5dp"
+    android:background="@drawable/background_elementi_lista">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/lyt_pubblicazione"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="@dimen/margine_bordi_laterali">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/txt_data_pubblicazione"
+            android:text="Pubblicata il "
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txt_data_pubblicazione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="02/02/2022"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/txt_titolo_tesi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lyt_pubblicazione"
+        android:layout_marginStart="5dp"
+        android:text="Titolo tesi"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:clickable="true"
+        android:contentDescription="more"
+        android:src="@drawable/three_dots_vert" />
+
+    <View
+        android:id="@+id/separation_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/txt_valore_corso"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:background="@android:color/darker_gray" />
+
+
+    <TextView
+        android:id="@+id/txt_valore_corso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_titolo_tesi"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Il corso di laurea a cui si rivolge la tesi"
+        android:textStyle="italic" />
+
+
+
+    <TextView
+        android:id="@+id/txt_corelatore_tesi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separation_line"
+        android:layout_marginStart="5dp"
+        android:text="Co-relatore: "
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_valore_corelatore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/txt_corelatore_tesi"
+        android:layout_toRightOf="@id/txt_corelatore_tesi"
+        android:text="Cognome Nome del co-relatore"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/txt_tipo_tesi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_corelatore_tesi"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Tipo: "
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_valore_tipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/txt_tipo_tesi"
+        android:layout_toRightOf="@id/txt_tipo_tesi"
+        android:text="Compilativa o sperimentale"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/txt_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_tipo_tesi"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Task da svolgere: "
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_valore_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/txt_task"
+        android:layout_toRightOf="@id/txt_task"
+        android:inputType="number"
+        android:text="Numero di task"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/txt_descrizione"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_task"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Descrizione:"
+        android:textStyle="bold" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/txt_descrizione"
+        android:tooltipText="Descrizione"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
+        app:contentPadding="2dp">
+
+
+        <TextView
+            android:id="@+id/txt_descrizione_tesi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec sapien eu urna faucibus lacinia. Duis in justo eu justo tristique scelerisque. Proin dictum, ante id cursus aliquet, mauris urna blandit justo, et fringilla risus elit at ex. Fusce porttitor justo nec dolor eleifend, sit amet semper leo luctus." />
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
