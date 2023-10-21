@@ -19,7 +19,7 @@
          app:menu="@menu/bottoni_navigation_view"/> -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation_bar_studente"
+        android:id="@+id/navigation_bar_docente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -31,7 +31,16 @@
         app:itemActiveIndicatorStyle="@style/navBar.colore.indicatore"
         />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_home_d"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/navigation_bar_docente"
+        tools:layout="@layout/fragment_home_docente"
 
+        />
+
+<!--Il bottone sotto è per test-->
         <Button
             android:id="@+id/btn_logout"
             android:layout_width="wrap_content"
@@ -40,6 +49,7 @@
             android:layout_marginTop="170dp"
             android:text="LOG OUT"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent" />
 
 </RelativeLayout>

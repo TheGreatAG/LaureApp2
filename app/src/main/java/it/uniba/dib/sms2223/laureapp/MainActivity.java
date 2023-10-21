@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             /*------------Righe di test per passare direttamente alla schermata che mi serve-----------------*/
-            Intent intent = new Intent(this, ActivityPrimoAccessoLogin.class);
+            Intent intent = new Intent(this, PrimoAccessoDocente.class);
             startActivity(intent);
             /*------------------------------------------------------------------------------------------------*/
             Toast.makeText(this, "Premuto accedi come ospite", Toast.LENGTH_SHORT).show();
@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
                                 } else if (Credenziali.validitaEmailProf(email)) {//se l'email è di un prof
                                     startActivity(new Intent(MainActivity.this, MainActivityDocente.class));
                                 } else
-                                    Toast.makeText(getApplicationContext(),"Email non valida",Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(MainActivity.this, MainActivityDocente.class));//TEST--
+
+                                    //Toast.makeText(getApplicationContext(),"Email non valida",Toast.LENGTH_SHORT).show();
                             } else
                                 Toast.makeText(MainActivity.this, "Per procedere verifica la tua email",Toast.LENGTH_SHORT).show();
                         } else {

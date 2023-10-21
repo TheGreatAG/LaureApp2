@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
 import it.uniba.dib.sms2223.laureapp.model.Domanda;
+import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
 /**
@@ -111,7 +112,7 @@ public class FragmentQA extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);//mostra a partire dall'elemento 0 in questo caso
         lista.setLayoutManager(layoutManager);//una recycler view deve avere per forza un layout manager
-        lista.addItemDecoration(new FragmentQA.DivisoreElementi(FragmentTask.DivisoreElementi.SPAZIO_DI_DEFAULT-150));
+        lista.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT-150));
 
       /*  VolleyPost volleyPost = new VolleyPost(context);
 
@@ -125,20 +126,5 @@ public class FragmentQA extends Fragment {
         return v;
     }
 
-    class DivisoreElementi  extends  RecyclerView.ItemDecoration {
 
-        private final int spazioTraElementi;
-        //non la uso in questa classe ma quando chiamo i metodi di questa classe
-        public static final int SPAZIO_DI_DEFAULT = 220;//lo metto qua e non in getItemOffSet per non avere una cosa fissa ma variare valore all'occorrenza
-
-        public DivisoreElementi(int spazioTraElementi){
-            this.spazioTraElementi = spazioTraElementi;
-        }
-
-        @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            outRect.bottom = spazioTraElementi;//dovrebbe andare in pixel non ne sono sicuro
-        }
-    }
 }

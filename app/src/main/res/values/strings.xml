@@ -44,6 +44,11 @@
     <string name="filtra_tesi">Filtra tesi</string>
     <string name="titolo_tesi">Titolo tesi...</string>
     <string name="accedi">Accedi</string>
+    <string name="seleziona_insegnamenti">Inserisci i tuoi insegnamenti</string>
+    <string name="indicazioni_primo_accesso_doc">Seleziona ed inserisci i tuoi insegnamenti. puoi modificare in futuro queste queste informazioni da tuo profilo</string>
+    <string name="aggiungi">Aggiungi</string>
+    <string name="insegnamenti_mancanti_avviso">Devi aggiungere almeno un\'insegnamento</string>
+    <string name="home">Home</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

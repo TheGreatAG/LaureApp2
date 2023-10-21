@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PrimoAccessoDocente">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_primo_accesso_docente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/seleziona_insegnamenti"
+        app:titleTextColor="@color/coloreTestoPrimario"
+        app:menu="@menu/toolbar_primo_accesso_doc"/>
+
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginTop="@dimen/margine_bordi_laterali">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/indicazioni_primo_accesso_doc"
+               />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lista_insegnamenti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                tools:listitem="@layout/layout_lista_insegnamenti_docente"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="@string/dipartimento"/>
+
+            <Spinner
+                android:id="@+id/spinner_dipartimento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:text="@string/corso"/>
+
+            <Spinner
+                android:id="@+id/spinner_corso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/insegnamento"/>
+
+            <Spinner
+                android:id="@+id/spinner_insegnamento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_aggiungi_insegnamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                app:icon="@drawable/ic_add"
+                android:layout_marginTop="20dp"
+                app:iconGravity="textStart"
+                android:text="@string/aggiungi"
+                android:textColor="@color/richiamo_azione"
+                app:iconTint="@color/richiamo_azione"
+                android:backgroundTint="@color/background"
+                app:strokeColor="@color/richiamo_azione"
+                app:strokeWidth="1dp"
+                app:rippleColor="#7487B8"
+                android:layout_marginBottom="30dp"
+
+                />
+
+        </LinearLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
+
+</LinearLayout>

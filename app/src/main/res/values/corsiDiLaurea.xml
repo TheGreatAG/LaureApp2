@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="cdl_fisica">
+
+    <!--Ho dovuto cambiare il nome di ogni array per poter recuperare i corsi in base al dip scelto-->
+  <!--  <string-array name="Fisica">
         <item>Fisica</item>
         <item>Scienze dei materiali</item>
     </string-array>
 
-    <string-array name="cdl_chimica">
+    <string-array name="Chimica">
         <item>Chimica</item>
         <item>Biochimica</item>
-    </string-array>
-<string-array name="cdl_informatica">
-    <item>Informatica</item>
-    <item>Informatica e tecnologia per la produzione del software</item>
+    </string-array> -->
+<string-array name="Informatica">
+    <item>Corso di informatica</item>
+    <item>I.T.P.S.</item>
 </string-array>
 </resources>

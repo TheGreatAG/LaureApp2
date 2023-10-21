@@ -37,7 +37,7 @@ import java.util.Locale;
 
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
-public class CreaTesi extends AppCompatActivity {
+public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml con i giusti spazi tra gli elementi --------------------------------------------
     String idDocente;
     CheckBox[] checkBoxes;
 
@@ -102,10 +102,10 @@ public class CreaTesi extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String corsoSelezionato = parent.getSelectedItem().toString();
-                if (corsoSelezionato.equalsIgnoreCase("Informatica")) {
+                if (corsoSelezionato.equalsIgnoreCase("Corso di informatica")) {
                     gridView.removeAllViews(); //rimuovo eventuali checkBox presenti
                     String[] checkBoxValues;
-                    checkBoxValues = getResources().getStringArray(R.array.ins_informatica);
+                    checkBoxValues = getResources().getStringArray(R.array.informtica);//R.array.ins_informatica
                     checkBoxes = new CheckBox[checkBoxValues.length];
                     Arrays.sort(checkBoxValues);
                     for (int i = 0; i < checkBoxValues.length; i++) {
@@ -114,10 +114,10 @@ public class CreaTesi extends AppCompatActivity {
                         checkBoxes[i].setText(checkBoxValues[i]);
                         gridView.addView(checkBoxes[i]);
                     }
-                } else if (corsoSelezionato.equalsIgnoreCase("Informatica e tecnologia" + " per la produzione del software")) {
+                } else if (corsoSelezionato.equalsIgnoreCase("I_T_P_S")) {
                     gridView.removeAllViews();
                     String[] checkBoxValues;
-                    checkBoxValues = getResources().getStringArray(R.array.ins_itps);
+                    checkBoxValues = getResources().getStringArray(R.array.I_T_P_S_);
                     checkBoxes = new CheckBox[checkBoxValues.length];
                     Arrays.sort(checkBoxValues);
                     for (int i = 0; i < checkBoxValues.length; i++) {

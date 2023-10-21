@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
 import it.uniba.dib.sms2223.laureapp.model.Task;
+import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
 /**
@@ -107,12 +108,7 @@ public class FragmentTask extends Fragment {
         lista.setLayoutManager(layoutManager);//una recycler view deve avere per forza un layout manager
         lista.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT-150));
 
-      /*  VolleyPost volleyPost = new VolleyPost(context);
 
-        // ----- RECUPERARE TUTTI GLI ANNUNCI ALL'APERTURA DELL'APP FACENDO ATTENDERE CON UNA SPLAH SCREEN
-        ///// ---------------------- modificare la stringa dell'email in modo che la recuperi in automatico è solo per  PROVA ------
-        //Verificare perchè l'email ha la prima lettera maiuscola NON DEVE ESISTERE DA NESSUNA PARTE !!!!!!!!!!!!!!!!!
-        volleyPost.getAnnunciUtente(Account.ottieniEmail(context).toLowerCase(),null,lista); -*-*-*-*-*-*-*-*TOGLI QUESTO COMMENTO SE NON FUNZIONA*/
         adapter = new CustomAdapterList(listaTask, context, R.layout.layout_lista_task, GenericViewHolder.LISTA_2,fragmentAdapter);
         lista.setAdapter(adapter);
 
@@ -120,20 +116,5 @@ public class FragmentTask extends Fragment {
     }
 
 
-    class DivisoreElementi  extends  RecyclerView.ItemDecoration {
 
-        private final int spazioTraElementi;
-        //non la uso in questa classe ma quando chiamo i metodi di questa classe
-        public static final int SPAZIO_DI_DEFAULT = 220;//lo metto qua e non in getItemOffSet per non avere una cosa fissa ma variare valore all'occorrenza
-
-        public DivisoreElementi(int spazioTraElementi){
-            this.spazioTraElementi = spazioTraElementi;
-        }
-
-        @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            outRect.bottom = spazioTraElementi;//dovrebbe andare in pixel non ne sono sicuro
-        }
-    }
 }

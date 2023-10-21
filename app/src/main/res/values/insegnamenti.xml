@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="ins_informatica">
+    <string-array name="informtica">
         <item>Architettura degli elaboratori e sistemi operativi</item>
         <item>Matematica discreta</item>
         <item>Programmazione</item>
@@ -27,7 +27,7 @@
         <item>Sistemi multimediali</item>
     </string-array>
 
-    <string-array name="ins_itps">
+    <string-array name="I.T.P.S.">
         <item>Architettura degli elaboratori e sistemi operativi</item>
         <item>Matematica discreta</item>
         <item>Programmazione</item>

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="department_options">
-        <item>Chimica</item>
+        <item>Informatica</item>
+        <!--<item>Chimica</item>
         <item>Matematica</item>
         <item>Fisica</item>
-        <item>Informatica</item>
+
         <item>Lettere moderne</item>
         <item>Filosofia</item>
         <item>Giurisprudenza</item>
-        <item>Economia</item>
+        <item>Economia</item> -->
         <!-- Aggiungi altri dipartimenti secondo necessità -->
     </string-array>
 </resources>
