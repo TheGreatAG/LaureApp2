@@ -2,7 +2,6 @@ package it.uniba.dib.sms2223.laureapp;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 
 import it.uniba.dib.sms2223.laureapp.model.Professore;
@@ -59,19 +57,19 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crea_tesi);
 
-      //  numTesi = getIntent().getIntExtra("num tesi",0);
+        //  numTesi = getIntent().getIntExtra("num tesi",0);
 
         Toolbar toolbar = findViewById(R.id.toolbar_crea_tesi);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        if (ab != null)
-            ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) ab.setDisplayHomeAsUpEnabled(true);
 
         String emailProfessore = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-       // final Context context = this;
+        // final Context context = this;
         final GridLayout gridView = findViewById(R.id.grid_view_insegnamenti);
         Spinner spinnerCorsi = findViewById(R.id.spinnerCorsoDiLaurea);
+
         Spinner spinnerAmbiti = findViewById(R.id.spinnerAmbito);
         Spinner spinnerCorelatori = findViewById(R.id.spinnerCorelatore);
 
@@ -84,24 +82,35 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
 
         RadioGroup radioGroupTipo = findViewById(R.id.radioGroupTipo);
 
+        ArrayList<String> corsiDiLaureaList = new ArrayList<>();
+        db.collection("professori").document(emailProfessore).collection("Insegnamento").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot insegnamentoDocument : task.getResult()) {
+                    String corsoDiLaurea = insegnamentoDocument.getString("Corso");
 
-
+                    if (corsoDiLaurea != null && !corsiDiLaureaList.contains(corsoDiLaurea)) {
+                        corsiDiLaureaList.add(corsoDiLaurea);
+                    }
+                }
+                setAdapterSpinner(spinnerCorsi, corsiDiLaureaList);
+            }
+        });
         db.collection("professori").whereNotEqualTo(FieldPath.documentId(), emailProfessore) //interrogo il db richiedendo i dati
                 // di tutti i professori ad eccezione di quello loggato
                 .get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         ArrayList<Professore> professorsList = new ArrayList<>();
                         Professore professoreNullo = new Professore();
-                        professoreNullo.nome ="--";
-                        professoreNullo.cognome ="--";
-                        professoreNullo.email ="--";
+                        professoreNullo.nome = "--";
+                        professoreNullo.cognome = "--";
+                        professoreNullo.email = "--";
                         professorsList.add(professoreNullo);
                         for (QueryDocumentSnapshot document : task.getResult()) { //recupero dal db i prof
-                            Professore prof = new Professore(document.getString("nome"),document.getString("cognome"),document.getId(),null,null,null);
+                            Professore prof = new Professore(document.getString("nome"), document.getString("cognome"), document.getId(), null, null, null);
                             professorsList.add(prof);
                         }
-                     Collections.sort(professorsList, new Professore());//ordina la lista dei corelatori per nome
-                     setAdapterSpinner(spinnerCorelatori,professorsList);
+                        Collections.sort(professorsList, new Professore());//ordina la lista dei corelatori per nome
+                        setAdapterSpinner(spinnerCorelatori, professorsList);
                     }
                 });
 
@@ -122,7 +131,7 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
                         checkBoxes[i].setText(checkBoxValues[i]);
                         gridView.addView(checkBoxes[i]);
                     }
-                } else if (corsoSelezionato.equalsIgnoreCase("I_T_P_S")) {
+                } else if (corsoSelezionato.equalsIgnoreCase("I.T.P.S.")) {
                     gridView.removeAllViews();
                     String[] checkBoxValues;
                     checkBoxValues = getResources().getStringArray(R.array.I_T_P_S_);
@@ -148,8 +157,6 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
         numberPicker.setMaxValue(30); // Imposto il valore massimo del NumberPicker
         numberPicker.setValue(18); // Imposto il valore di default
         numberPicker.setWrapSelectorWheel(false); // Disabilito lo scroll infinito
-
-
 
 
         btn_avanti.setOnClickListener(v -> {
@@ -183,24 +190,20 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
                 SimpleDateFormat formatoData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 //numTesi++;
                 String dataPubblicazione = formatoData.format(dataCorrente);
-                Tesi tesi = new Tesi(null,titolo, tipoTesi, descrizione, ambito, corsoDiLaurea,
-                        dataPubblicazione, mediaRichiesta, durata, emailProfessore,
-                        corelatore, esamiRichiesti);
+                Tesi tesi = new Tesi(null, titolo, tipoTesi, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, emailProfessore, corelatore, esamiRichiesti);
 
                 FirebaseFirestore db1 = FirebaseFirestore.getInstance();
 
 
-                db1.collection("professori").document(emailProfessore).collection("Tesi")
-                        .add(tesi) //se si vuole lasciare al sistema la creazione in automatico di un id per il documento usare collection().add()
+                db1.collection("professori").document(emailProfessore).collection("Tesi").add(tesi) //se si vuole lasciare al sistema la creazione in automatico di un id per il documento usare collection().add()
                         //asltrimenti collection().document(ID documento).set()
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(getApplicationContext(), "Tesi registrata" + " con successo!", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(CreaTesi.this,ActivityCreaTask.class).putExtra("idtesi",documentReference.getId()));
+                                startActivity(new Intent(CreaTesi.this, ActivityCreaTask.class).putExtra("idtesi", documentReference.getId()));
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
+                        }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Log.w(TAG, "Error adding document", e);
@@ -222,9 +225,8 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
         });
     }
 
-    private void setAdapterSpinner(Spinner spinner, ArrayList arrayResource){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arrayResource);
+    private void setAdapterSpinner(Spinner spinner, ArrayList arrayResource) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayResource);
 
 // Specify the layout to use when the list of choices appears.
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
