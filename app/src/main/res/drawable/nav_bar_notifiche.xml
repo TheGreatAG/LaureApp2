@@ -2,11 +2,11 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--quando l'elemento è selezionato-->
-    <item android:drawable="@drawable/ic_domanda_studente_selezionato"
+    <item android:drawable="@drawable/ic_notifiche_selezionato"
         android:state_checked="true"/>
 
     <!--quando l'elemento non è selezionato-->
-    <item android:drawable="@drawable/ic_domanda_studente"
+    <item android:drawable="@drawable/ic_notifiche"
         android:state_checked="false"/>
 
 </selector>

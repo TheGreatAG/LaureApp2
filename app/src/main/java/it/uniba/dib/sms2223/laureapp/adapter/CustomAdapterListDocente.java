@@ -10,17 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import it.uniba.dib.sms2223.laureapp.business.ICostanti;
-import it.uniba.dib.sms2223.laureapp.model.Domanda;
-import it.uniba.dib.sms2223.laureapp.model.Task;
+import it.uniba.dib.sms2223.laureapp.model.Ricevimento;
+import it.uniba.dib.sms2223.laureapp.model.RichiestaTesi;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
-import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
 
 public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHolderDocente>{
 
-    public ArrayList <Universita>listaUniversita;
+    public ArrayList listaElementi;
 
     private Context context;
     private int layoutLista;
@@ -30,7 +28,7 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
     public CustomAdapterListDocente(final ArrayList listaAnnunci, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
         this.context = context;
         this.layoutLista = layoutLista;
-        this.listaUniversita = listaAnnunci;
+        this.listaElementi = listaAnnunci;
         this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
     }
@@ -47,20 +45,30 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
     @Override
     public void onBindViewHolder(@NonNull GenericViewHolderDocente holder, int position) {
         if (tipoDiLista == GenericViewHolderDocente.LISTA_1)
-            holder.setView(listaUniversita.get(position),context,this,position);
+            holder.setView((Universita) listaElementi.get(position),context,this,position);
+        if (tipoDiLista == GenericViewHolderDocente.LISTA_TESI_PROF_HOME)
+            holder.setView((Tesi) listaElementi.get(position),context,this,position);
+        if (tipoDiLista == GenericViewHolderDocente.LISTA_RICEVIMENTI_STUDENTI)
+            holder.setView((Ricevimento) listaElementi.get(position),context,this,position);
+        if (tipoDiLista == GenericViewHolderDocente.LISTA_RICHIESTE_TESI)
+            holder.setView((RichiestaTesi) listaElementi.get(position),context,this,position);
+
+
+
+
        /* if (tipoDiLista == GenericViewHolder.LISTA_2)
-            holder.setView((Task) listaUniversita.get(position),context,listaUniversita,this,position,fragmentAdapter);
+            holder.setView((Task) listaElementi.get(position),context,listaElementi,this,position,fragmentAdapter);
         else if (tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD) {
-            holder.setView((Domanda) listaUniversita.get(position),context,listaUniversita,this,position,fragmentAdapter);
+            holder.setView((Domanda) listaElementi.get(position),context,listaElementi,this,position,fragmentAdapter);
         } else if (tipoDiLista == ICostanti.LISTA_TESI_PREFERITE) {
-            holder.setView((Tesi) listaUniversita.get(position),context,listaUniversita,this,position,fragmentAdapter);
+            holder.setView((Tesi) listaElementi.get(position),context,listaElementi,this,position,fragmentAdapter);
 
         }*/
     }
 
     @Override
     public int getItemCount() {
-        return listaUniversita.size();
+        return listaElementi.size();
     }
 
     public int getLayoutLista() {

@@ -98,17 +98,18 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {//se il login è andato a buon fine
-                            if (mAuth.getCurrentUser().isEmailVerified()){//se è stata verificata l'email
+                           // if (mAuth.getCurrentUser().isEmailVerified()){//se è stata verificata l'email  //TEST togli il commento--------------------------
                                 if (Credenziali.validitaEmailStudente(email)) {//se l'email è di uno studente
                                     startActivity(new Intent(MainActivity.this, MainActivityStudente.class));
                                 } else if (Credenziali.validitaEmailProf(email)) {//se l'email è di un prof
-                                    startActivity(new Intent(MainActivity.this, MainActivityDocente.class));
+                                    startActivity(new Intent(MainActivity.this, PrimoAccessoDocente.class));
                                 } else
                                     startActivity(new Intent(MainActivity.this, MainActivityDocente.class));//TEST--
 
+                            finish();
                                     //Toast.makeText(getApplicationContext(),"Email non valida",Toast.LENGTH_SHORT).show();
-                            } else
-                                Toast.makeText(MainActivity.this, "Per procedere verifica la tua email",Toast.LENGTH_SHORT).show();
+                           // } else //TEST togli il commento****************************************
+                               // Toast.makeText(MainActivity.this, "Per procedere verifica la tua email",Toast.LENGTH_SHORT).show(); //TEST  togli il commento****************************
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

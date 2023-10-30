@@ -16,8 +16,13 @@
         android:theme="@style/Theme.LaureApp"
         tools:targetApi="31">
         <activity
-            android:name=".PrimoAccessoDocente"
+            android:name=".ActivityCreaTask"
+            android:parentActivityName=".CreaTesi"
             android:exported="false" />
+        <activity
+            android:name=".PrimoAccessoDocente"
+            android:exported="false"
+            android:parentActivityName=".MainActivityDocente" />
         <activity
             android:name=".CreaTesi"
             android:exported="false"
@@ -28,6 +33,7 @@
             android:parentActivityName=".MainActivityStudente" />
         <activity
             android:name=".ProfiloStudente"
+            android:parentActivityName=".MainActivityStudente"
             android:exported="false" />
         <activity
             android:name=".ActivityRegistrazione"

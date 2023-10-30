@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ActivityCreaTask">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:title="@string/aggiungi_task"
+        app:titleTextColor="@color/richiamo_azione"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginBottom="@dimen/margine_bordi_laterali"
+        android:text="@string/descrizione_guida_task"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edt_oggetto_task"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginBottom="@dimen/margine_bordi_laterali"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etOggettoTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/oggetto_del_task"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edt_desscrizione_task"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginBottom="@dimen/margine_bordi_laterali"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDescrizioneTask"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:hint="@string/descrizione"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_aggiungi_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/aggiungi"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="80dp"
+        android:backgroundTint="@color/richiamo_azione"/>
+
+
+</LinearLayout>

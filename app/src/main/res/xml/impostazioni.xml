@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/il_tuo_corso"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="cambia_corso"
+            app:fragment=""
+            android:title="@string/cambia_corso"
+            android:summary="@string/desc_cambio_corso"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/il_tuo_account"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="cambia_pw"
+            android:title="@string/cambia_password"
+            android:summary="@string/descrizione_cambio_pw"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
+            android:key="elimina_profilo"
+            app:fragment=""
+            android:title="@string/elimina_profilo"
+            android:summary="@string/descrizione_elimina_profl"
+            app:iconSpaceReserved="false"
+            />
+
+        <Preference
+            android:key="esci"
+            android:title="@string/logout"
+            android:summary="@string/descrizione_esci"
+            app:iconSpaceReserved="false"
+            />
+
+
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

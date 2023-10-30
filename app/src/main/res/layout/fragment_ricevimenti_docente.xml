@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragmentRicevimentiDocente">
+
+    <LinearLayout
+        android:id="@+id/lyt_contenitore_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/Ricevimento"
+            app:titleTextColor="@color/richiamo_azione"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_richieste_ricevimenti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/layout_lista_richieste_ricevimenti"/>
+
+    </LinearLayout>
+
+</FrameLayout>

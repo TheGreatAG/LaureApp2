@@ -1,4 +1,6 @@
 package it.uniba.dib.sms2223.laureapp.business;
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -6,18 +8,29 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import it.uniba.dib.sms2223.laureapp.ActivityPrimoAccessoLogin;
 import it.uniba.dib.sms2223.laureapp.MainActivity;
+import it.uniba.dib.sms2223.laureapp.PrimoAccessoDocente;
 
 public class Utente {
 
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance();// Initialize Firebase Auth
+
+    //PER IL TESTER, VERIFICA COSA SUCCEDE A RIGA 82, VEDI IL COMMENTO ************************************
 
     public Utente(){}
 
@@ -38,14 +51,21 @@ public class Utente {
             return false;// valore di default usato solo per test
     }
 
+    /**
+     * registra l'utente inserendo i dati in Authenticator del servizio offerto da Firebase e nel database firestore
+     * @param nome nome dell'utente
+     * @param cognome cognome dell'utente
+     * @param email email dell'utente
+     * @param pw password inserita dall'utente
+     * @param confermaPw
+     */
     public void registraUtente(String nome,String cognome,String email, String pw,String confermaPw){
-
 
         if (nome != null) {//se il campo nome non è vuoto
             if (cognome != null) { //se il campo cognome non è vuoto
                 if (pw.equals(confermaPw)) {
                     if (new Credenziali().validitaPassword(pw)) {
-                        mAuth.createUserWithEmailAndPassword(email, pw)
+                        mAuth.createUserWithEmailAndPassword(email, pw)// per Authenticator
                                 .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -58,8 +78,9 @@ public class Utente {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {// l'utente ha verificato la sua email
                                                         Toast.makeText(context, "utente registrato, verifica la tua email", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
-                                                        context.startActivity(new Intent(context, MainActivity.class));
-                                                    } else
+                                                        //context.startActivity(new Intent(context, MainActivity.class));
+                                                        inserisciDatiUtente(nome,cognome,email);
+                                                    } else //Per il tester VERIFICARE COSA SUCCEDE A QUESTO PUNTO DELLA REGISTRAZIONE NEI VARI CASI - SE SI VERIFICA l'email e se non si verifica
                                                         Toast.makeText(context, "Email non confermata", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
                                                 }
                                             });
@@ -70,6 +91,7 @@ public class Utente {
                                         }
                                     }
                                 });
+
                     } else
                         Toast.makeText(context, "La password deve contenere almeno 6 caratteri", Toast.LENGTH_SHORT).show();
                 } else {
@@ -84,7 +106,57 @@ public class Utente {
         }
     }
 
-    private void inserisciDatiUtente(String nome,String cognome){
+    /**
+     * Inserisce i dati dell'utente nlla giusta collection nel database differenziando tra studente e professore
+     * @param nome nome utente
+     * @param cognome cognome utente
+     * @param email email dell'utente
+     */
+    private void inserisciDatiUtente(String nome,String cognome,String email){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> user = new HashMap<>();
+        user.put("nome", nome);
+        user.put("cognome", cognome);
+        if (Credenziali.validitaEmailStudente(email)){//se l'email è dello studente
+            db.collection("studenti").document(email).set(user).
+                    addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            context.startActivity(new Intent(context, ActivityPrimoAccessoLogin.class));
+                            Log.d(TAG, email + " studente aggiunto con successo");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Errore nell'inserimento dei dati. RIPROVA.", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+        }
+        if(Credenziali.validitaEmailProf(email)){
+            db.collection("professori").document(email).set(user).
+                    addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            context.startActivity(new Intent(context, PrimoAccessoDocente.class));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Errore nell'inserimento dei dati. RIPROVA.", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+        }
+
+    }
+
+    public void logOut(){
+        FirebaseAuth.getInstance().signOut();
+        context.startActivity(new Intent(context, MainActivity.class));
+        Activity c = (Activity) context;
+        c.finish();
 
     }
 

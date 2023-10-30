@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.ui.AspettoActivity;
 
 public class MainActivityStudente extends AppCompatActivity {
@@ -48,9 +49,7 @@ public class MainActivityStudente extends AppCompatActivity {
 
         Button logout = findViewById(R.id.btn_logout2);
         logout.setOnClickListener(view -> {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+           new Utente(this).logOut();
 
         });
 

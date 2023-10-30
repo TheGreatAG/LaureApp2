@@ -12,12 +12,21 @@
 
     <color name="trasparente">#00FFFFFF</color>
 
+    <color name="ripple_color">#AAB7DA</color>
+
+
     <color name="icone_navbar">#34446C</color>
     <color name="indicatore_elemento_selezionato_navBar">#9FABC9</color>
 
     <color name="testo_task_da_completare">#CF7C7C</color>
     <color name="testo_task_in_lavorazione">#B1954E</color>
     <color name="testo_task_completato">#508F41</color>
+
+    <color name="ripple_rosso">#CBA3A3</color>
+    <color name="ripple_verde">#8EA788</color>
+
+
+
 
 
 </resources>

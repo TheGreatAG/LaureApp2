@@ -1,11 +1,13 @@
 package it.uniba.dib.sms2223.laureapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,11 +40,59 @@ public class MainActivityDocente extends AppCompatActivity {
                 //è la pila in caso si preme il pulsante back mi fa gestire la cosa "nome" può essere null
                 .commit();
 
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+
+
+            if (item.getItemId() == R.id.btn_nvg_home) {
+                Toast.makeText(this, "sei nella Home", Toast.LENGTH_SHORT).show();
+                cambiaFragment(fragmentManager, new FragmentHomeDocente(), null);
+
+            } else if (item.getItemId() == R.id.btn_nvg_ricevimenti) {
+                Toast.makeText(this, "sei nella Home", Toast.LENGTH_SHORT).show();
+                cambiaFragment(fragmentManager, new FragmentRicevimentiDocente(), null);
+
+            } else if (item.getItemId() == R.id.btn_nvg_richieste) {
+                Toast.makeText(this, "sei nella richiesta", Toast.LENGTH_SHORT).show();
+                cambiaFragment(fragmentManager, new FragmentNotifiche(), null);
+            }
+
+           /* if (item.getItemId() != R.id.btn_nvg_home ) {
+                Toast.makeText(this, "sei nella Home", Toast.LENGTH_SHORT).show();
+
+                cambiaFragment(fragmentManager, new FragmentHomeDocente(), null);
+
+            } else if (item.getItemId() == R.id.btn_nvg_richieste) {
+
+                cambiaFragment(fragmentManager, new FragmentRicevimentiDocente(), null);//test il fragment non è valido
+
+                Toast.makeText(this, "hai premuto richieste", Toast.LENGTH_SHORT).show();
+            } else if (item.getItemId() == R.id.btn_nvg_ricevimenti) {
+
+                cambiaFragment(fragmentManager, new FragmentRicevimentiDocente(), null);
+
+                Toast.makeText(this, "hai premuto ricevimenti", Toast.LENGTH_SHORT).show();
+            }*/
+            return true;
+        });
+
+
         Button btn_logout = findViewById(R.id.btn_logout);
         btn_logout.setOnClickListener(view->{
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });
+    }
+
+    private void cambiaFragment(FragmentManager fragmentManager, Fragment fragment, String tag) {//*******aggiungere come secondo parametro il fragment con cui sostituire UNA PARTE DEL PROBLEMA RISOLTO PERò NON SALVARE NELLO STACK I FRAGMENT QUANDO NELLO STACK CI SONO PIù DI 3 ELEMENTI
+        Fragment f = fragmentManager.findFragmentByTag(tag);
+        int count = fragmentManager.getBackStackEntryCount();
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_home_d, fragment, tag)
+                // .setReorderingAllowed(true)
+                //  .addToBackStack(null)
+                .commit();
     }
 }

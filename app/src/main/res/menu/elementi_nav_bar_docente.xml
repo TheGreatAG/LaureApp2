@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/btn_nvg_news"
-        android:icon="@drawable/nav_bar_domande_studenti"
+        android:id="@+id/btn_nvg_richieste"
+        android:icon="@drawable/nav_bar_notifiche"
         android:title="Preferiti"
         />
     <item
@@ -11,7 +11,7 @@
         android:icon="@drawable/nav_bar_home"
         android:title="home" />
     <item
-        android:id="@+id/btn_nvg_cerca"
+        android:id="@+id/btn_nvg_ricevimenti"
         android:icon="@drawable/nav_bar_ricevimenti"
         android:title="cerca"
         />

@@ -8,10 +8,11 @@ public class Tesi {
 
     //AGGIUNGERE I TASK NEL COSTRUTTORE
 
-    private String titolo, descrizione, dataPubblicazione, ambito, tipo, corsoDiLaurea, relatore,
+    public String titolo, descrizione, dataPubblicazione, ambito, tipo, corsoDiLaurea, relatore,
             corelatore, studente;
-    private int mediaRichiesta, durata;
-    private ArrayList<String> esamiRichiesti;
+    public int mediaRichiesta, durata;
+    public String id;
+    public ArrayList<String> esamiRichiesti;
 
 
     public Tesi() {
@@ -22,7 +23,7 @@ public class Tesi {
       }
   */
 
-    public Tesi(String titolo, String tipo, String descrizione, String ambito, String corsoDiLaurea, String dataPubblicazione,
+    public Tesi(String id,String titolo, String tipo, String descrizione, String ambito, String corsoDiLaurea, String dataPubblicazione,
                 int mediaRichiesta, int durata, String relatore,
                 String corelatore, ArrayList<String> esamiRichiesti) {
 
@@ -37,6 +38,7 @@ public class Tesi {
         this.durata = durata;
         this.esamiRichiesti = esamiRichiesti;
         this.dataPubblicazione = dataPubblicazione;
+        this.id = id;
     }
 
 

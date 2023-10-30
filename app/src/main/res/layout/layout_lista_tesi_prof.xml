@@ -7,6 +7,7 @@
     android:layout_marginTop="5dp"
     android:layout_marginEnd="@dimen/margine_bordi_laterali"
     android:paddingHorizontal="5dp"
+    android:id="@+id/lyt_elemento"
     android:background="@drawable/background_elementi_lista">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -46,15 +47,16 @@
         android:textColor="@color/black"
         android:textSize="22sp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btn_tesi_prof"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margine_bordi_laterali"
         android:layout_marginEnd="@dimen/margine_bordi_laterali"
         android:clickable="true"
         android:contentDescription="more"
-        android:src="@drawable/three_dots_vert" />
+        android:background="@drawable/three_dots_vert" />
 
     <View
         android:id="@+id/separation_line"
@@ -153,7 +155,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_below="@id/txt_descrizione"
         android:tooltipText="Descrizione"
         app:cardBackgroundColor="#ffffff"
@@ -170,5 +172,92 @@
 
 
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/lyt_contenitore_dettagli"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cardView"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/media_consigliata"/>
+
+            <TextView
+                android:id="@+id/txt_voto_consigliato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="30"
+                android:textSize="25sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tempo_richiesto"/>
+
+            <TextView
+                android:id="@+id/txt_tempo_richiesto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="300"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/ore"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/esami_richiesti"/>
+
+        <GridLayout
+            android:id="@+id/lyt_grid_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/studente_assegnato"/>
+
+        <TextView
+            android:id="@+id/txt_studente_assegnato"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nessuno"
+            android:textSize="18sp"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

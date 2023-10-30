@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:title="@string/seleziona_insegnamenti"
         app:titleTextColor="@color/coloreTestoPrimario"
-        app:menu="@menu/toolbar_primo_accesso_doc"/>
+       />
 
 
 

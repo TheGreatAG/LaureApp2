@@ -6,6 +6,7 @@ public class Persona {
 
     public String nome, cognome, email;
 
+    public Persona(){}
     public Persona(String nome, String cognome,String email){
         this.nome = nome;
         this.cognome = cognome;

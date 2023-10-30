@@ -29,9 +29,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.uniba.dib.sms2223.laureapp.business.Credenziali;
 import it.uniba.dib.sms2223.laureapp.business.Utente;
 
-public class ActivityRegistrazione extends AppCompatActivity {
+public class ActivityRegistrazione extends AppCompatActivity { //da finire, deve poter salvare il nom e cognome del prof e studente
 
     FirebaseAuth mAuth;
     @Override
@@ -105,7 +106,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("nome", nome);
         user.put("cognome", cognome);
-        if (email.endsWith(getString(R.string.mail_studente))) {
+        if (Credenziali.validitaEmailStudente(email)) {
             db.collection("studenti").document(email).set(user).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -119,7 +120,7 @@ public class ActivityRegistrazione extends AppCompatActivity {
                         }
                     });
 
-        } else if (email.endsWith(getString(R.string.mail_docente))){
+        } else if (Credenziali.validitaEmailProf(email)){
 
             db.collection("professori").document(email).set(user).
                     addOnSuccessListener(new OnSuccessListener<Void>() {

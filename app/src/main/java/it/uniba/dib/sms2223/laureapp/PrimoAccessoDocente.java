@@ -3,6 +3,7 @@ package it.uniba.dib.sms2223.laureapp;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -26,8 +27,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -43,6 +42,8 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
 
 public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti {
+
+    //METTERE il pulsante back nella toolbar solo se si accede dalla home
 
 
     //prima di mandare l'app in produzione sistemare la faccenda del recupero email per ottenere gli insegnamenti
@@ -68,13 +69,18 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
         SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
         activityVisitata = sharedPreferences.getBoolean(PRIMO_ACCESSO_DOCENTE,false);
 
-        boolean b = getIntent().getBooleanExtra("12",false);
-
+        boolean b = getIntent().getBooleanExtra("chiamante",false);
+        Toolbar toolbar = findViewById(R.id.toolbar_primo_accesso_docente);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
         if (activityVisitata && !b) {//se non è la prima volta che vedo questa schermata si passa all'activity successiva, se invece accedo a questa schermata dall'activity home del docente mi fa rimanere
             startActivity(new Intent(this, MainActivityDocente.class));
             finish();
+        }else if (ab !=null){
+            ab.setDisplayHomeAsUpEnabled(true);
+
         }
-        Toolbar toolbar = findViewById(R.id.toolbar_primo_accesso_docente);
+
         Button btnAggiungi = findViewById(R.id.btn_aggiungi_insegnamento);
 
         Spinner spnDipartimento = findViewById(R.id.spinner_dipartimento);
@@ -143,7 +149,7 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.fatto) {
-                    if (adapter.listaUniversita.size()!=0)
+                    if (adapter.listaElementi.size()!=0)
                         startActivity(new Intent(PrimoAccessoDocente.this,MainActivityDocente.class));
                     else
                         Toast.makeText(getApplicationContext(), getString(R.string.insegnamenti_mancanti_avviso), Toast.LENGTH_SHORT).show();
@@ -181,6 +187,7 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
      * @param universita l'istanza contenente le info sull'insegnamento da salvare
      */
     private void salvaInsegnamenti(Universita universita){//da finire non funziona
+        String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> uni = new HashMap<>();
         uni.put("ID", universita.id);
@@ -188,14 +195,14 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
         uni.put("Corso", universita.corso);
         uni.put("Insegnamento", universita.insegnamento);
 
-        db.collection("professori").document("l.camicia@uniba.it").
+        db.collection("professori").document(emailDocente).
                 collection("Insegnamento").document(universita.id)
                 .set(uni)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getApplicationContext(),"Insegnamento inserito",Toast.LENGTH_SHORT).show();
-                        adapter.listaUniversita.add(universita);
+                        adapter.listaElementi.add(universita);
                         adapter.notifyDataSetChanged();
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                     }
@@ -210,7 +217,7 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
     }
 
     private void recuperaInsegnamenti(){//da finire vedi nome utente
-        String emailDocente = "l.camicia@uniba.it";//FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("professori").document(emailDocente).collection("Insegnamento")//mi recuper tutti gli insegnamenti di un dato prof
@@ -225,7 +232,7 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
                                         ,document.get("Corso").toString()
                                         ,document.get("Insegnamento").toString()
                                         ,document.get("ID").toString());
-                                adapter.listaUniversita.add(universita);
+                                adapter.listaElementi.add(universita);
                                 adapter.notifyDataSetChanged();
                                 Log.d("contenuto", document.getId() + " => " + document.get("Dipartimento").toString());
                             }

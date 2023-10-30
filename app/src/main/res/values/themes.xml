@@ -18,4 +18,10 @@
 
     <style name="Theme.LaureApp" parent="Base.Theme.LaureApp" />
 
+    <!--   MODIFICA IL CONTORNO DEL ALERT DIALOG -->
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/custom_dialog_background</item>
+        <!--impostare il colore del testo sui bottoni dell'alert dialog-->
+    </style>
+
 </resources>

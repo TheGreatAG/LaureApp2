@@ -2,6 +2,7 @@ package it.uniba.dib.sms2223.laureapp;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -112,6 +113,9 @@ public class FragmentHomeStudente extends Fragment {
                 if (item.getItemId() == R.id.btn_toolbar_profilo_personale) {
                     Toast.makeText(context, "bybhnj", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(context, ProfiloStudente.class));
+                    //non si può mettere finish qua perche se si preme indietro dalla toolbar della prox activity succede un errore
+
+
                 }
                 return false;
             }

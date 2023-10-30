@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app1="http://schemas.android.com/apk/res-auto"
+    android:elevation="1dp"
+    android:background="@drawable/background_elementi_lista">
+
+    <TextView
+        android:id="@+id/txt_data_richiesta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20/20/2020"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/margine_bordi_laterali"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/txt_data_richiesta"
+        android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="@dimen/margine_bordi_laterali"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_titolo_tesi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TITOLO"
+            android:textSize="20sp"
+            android:textColor="@color/richiamo_azione"
+            android:fontFamily="@font/roboto_bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/propedeuticita"
+            android:layout_marginTop="15dp"
+            />
+
+        <GridLayout
+            android:id="@+id/lyt_contenitore_propedeu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2">
+
+        </GridLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/txt_voto_consigliato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="media voti consigliata 25"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/txt_voto_studente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="media voti sudente 25"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/note_per_il_docente"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/txt_note_studente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bncibeuybey eb  eg ueb y gu b 7 gb eyu vejhv yhvye uyv ev uev euv e"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_richiedente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="Richiesta da: Nom Cognome "/>
+
+                <TextView
+                    android:id="@+id/txt_email_studente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="email@studente.it"/>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btn_contatta_studente"
+                android:layout_width="48dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_invio_email"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                app:strokeWidth="1dp"
+                android:text="@string/rifiuta"
+                android:textColor="@color/testo_task_da_completare"
+                app:strokeColor="@color/testo_task_da_completare"
+                android:textSize="16sp"
+                app:rippleColor="@color/ripple_rosso"
+                android:layout_weight="2"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="3"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                app1:strokeWidth="1dp"
+                android:text="@string/accetta"
+                android:textColor="@color/testo_task_completato"
+                app:strokeColor="@color/testo_task_completato"
+                android:textSize="16sp"
+                app:rippleColor="@color/ripple_verde"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
