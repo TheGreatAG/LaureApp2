@@ -82,6 +82,10 @@
     <string name="descrizione_esci">Uscirai dal tuo profilo, per accedere nuovamente dovrai reinserire le tue credenziali</string>
     <string name="profilo">Profilo</string>
     <string name="cambio_corso">Cambio password</string>
+    <string name="salva">Salva</string>
+    <string name="password">Password</string>
+    <string name="password_attuale">Password attuale</string>
+    <string name="password_cambiata">Password cambiata con successo</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

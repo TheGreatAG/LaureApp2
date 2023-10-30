@@ -16,7 +16,7 @@
         android:theme="@style/Theme.LaureApp"
         tools:targetApi="31">
         <activity
-            android:name=".Cambio_password"
+            android:name=".CambioPassword"
             android:exported="false" />
         <activity
             android:name=".ActivityCreaTask"
