@@ -81,6 +81,7 @@
     <string name="desc_cambio_corso">Cambiando il corso di laurea ti verranno mostrate le tesi disponibili solo per questo corso</string>
     <string name="descrizione_esci">Uscirai dal tuo profilo, per accedere nuovamente dovrai reinserire le tue credenziali</string>
     <string name="profilo">Profilo</string>
+    <string name="cambio_corso">Cambio password</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

@@ -3,16 +3,9 @@ package it.uniba.dib.sms2223.laureapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-
-import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.ui.AspettoActivity;
 
 public class MainActivityStudente extends AppCompatActivity {
@@ -46,12 +39,6 @@ public class MainActivityStudente extends AppCompatActivity {
                 //è la pila in caso si preme il pulsante back mi fa gestire la cosa "nome" può essere null
                 .commit();
         //-------------------------------------------------------------------------------------------------------
-
-        Button logout = findViewById(R.id.btn_logout2);
-        logout.setOnClickListener(view -> {
-           new Utente(this).logOut();
-
-        });
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
 

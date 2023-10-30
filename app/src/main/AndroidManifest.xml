@@ -16,9 +16,12 @@
         android:theme="@style/Theme.LaureApp"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityCreaTask"
-            android:parentActivityName=".CreaTesi"
+            android:name=".Cambio_password"
             android:exported="false" />
+        <activity
+            android:name=".ActivityCreaTask"
+            android:exported="false"
+            android:parentActivityName=".CreaTesi" />
         <activity
             android:name=".PrimoAccessoDocente"
             android:exported="false"
@@ -33,15 +36,16 @@
             android:parentActivityName=".MainActivityStudente" />
         <activity
             android:name=".ProfiloStudente"
-            android:parentActivityName=".MainActivityStudente"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivityStudente" />
         <activity
             android:name=".ActivityRegistrazione"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ActivityPrimoAccessoLogin"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ProfiloStudente" />
         <activity
             android:name=".MainActivityDocente"
             android:exported="false" />

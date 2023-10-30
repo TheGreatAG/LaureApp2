@@ -7,7 +7,6 @@
 
         <Preference
             android:key="cambia_corso"
-            app:fragment=""
             android:title="@string/cambia_corso"
             android:summary="@string/desc_cambio_corso"
             app:iconSpaceReserved="false"/>
