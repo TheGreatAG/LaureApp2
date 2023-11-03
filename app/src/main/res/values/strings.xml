@@ -1,19 +1,19 @@
 <resources>
-    <string name="app_name">LaureApp</string>
-    <string name="me">stringa di prova per github</string>
+    <string name="app_name" translatable="false">LaureApp</string>
+    <string name="me" translatable="false">stringa di prova per github</string>
     <string name="non_sei_registrato">Non sei registrato?</string>
     <string name="oppure">o</string>
     <string name="continua_come_ospite">Continua come ospite</string>
     <string name="registrati">Registrati</string>
-    <string name="mail_docente">\@uniba.it</string>
-    <string name="mail_studente">\@studenti.uniba.it</string>
+    <string name="mail_docente" translatable="false">\@uniba.it</string>
+    <string name="mail_studente" translatable="false">\@studenti.uniba.it</string>
     <string name="conferma_password">Conferma password</string>
     <string name="avanti">Avanti</string>
     <string name="seleziona_corso_di_studi">Seleziona\ncorso di studi</string>
     <string name="messaggio_primo_accesso_studente">Puoi modificare le tue informazioni in ogni istante andando nelle impostazioni del tuo profilo</string>
     <string name="conferma">Conferma</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="compilativa">compilativa</string>
     <string name="Non_consegnato">Non consegnato</string>
     <string name="relatore">Relatore</string>
@@ -25,7 +25,7 @@
 
     <string name="faq">QeA</string>
     <string name="dettagli">Dettagli</string>
-    <string name="task">Task</string>
+    <string name="task" translatable="false">Task</string>
     <string name="la_tua_tesi">La tua tesi</string>
     <string name="tesi_preferite">Tesi preferite</string>
     <string name="corelatore">Co-relatore</string>
@@ -45,10 +45,10 @@
     <string name="titolo_tesi">Titolo tesi...</string>
     <string name="accedi">Accedi</string>
     <string name="seleziona_insegnamenti">Inserisci i tuoi insegnamenti</string>
-    <string name="indicazioni_primo_accesso_doc">Seleziona ed inserisci i tuoi insegnamenti. puoi modificare in futuro queste queste informazioni da tuo profilo</string>
+    <string name="indicazioni_primo_accesso_doc">Seleziona ed inserisci i tuoi insegnamenti. puoi modificare in futuro queste  informazioni da tuo profilo</string>
     <string name="aggiungi">Aggiungi</string>
     <string name="insegnamenti_mancanti_avviso">Devi aggiungere almeno un\'insegnamento</string>
-    <string name="home">Home</string>
+    <string name="home" translatable="false">Home</string>
     <string name="media_consigliata">Media voti consigliata</string>
     <string name="tempo_richiesto">Tempo richiesto</string>
     <string name="ore">Ore</string>
@@ -56,7 +56,7 @@
     <string name="studente_assegnato">Studente assegnato</string>
     <string name="Condividi">Condividi</string>
     <string name="Elimina">Elimina</string>
-    <string name="no_connessione_internet">OOPS!\nNessuna connessione ad Internet</string>
+    <string name="no_connessione_internet" translatable="false">OOPS!\nNessuna connessione ad Internet</string>
     <string name="riprova">Riprova</string>
     <string name="Ricevimento">Ricevimento</string>
     <string name="archivia">Archivia</string>
