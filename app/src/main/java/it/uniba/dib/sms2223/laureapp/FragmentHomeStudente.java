@@ -2,7 +2,6 @@ package it.uniba.dib.sms2223.laureapp;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -19,8 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,9 +36,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.model.Corelatore;
 import it.uniba.dib.sms2223.laureapp.model.Domanda;
 import it.uniba.dib.sms2223.laureapp.model.Task;
+import it.uniba.dib.sms2223.laureapp.model.Tesi;
+import it.uniba.dib.sms2223.laureapp.model.Universita;
+import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
 
 /**
@@ -42,9 +51,11 @@ import it.uniba.dib.sms2223.laureapp.model.Task;
  * Use the {@link FragmentHomeStudente#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentHomeStudente extends Fragment {
+public class FragmentHomeStudente extends Fragment { //DA TERMINARE, GESTIRE GRAFICAMENTE IL CASO DI TESI ASSEGNATA------------------------------
 
     private Context context;
+
+    private String emailStudente;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,6 +100,7 @@ public class FragmentHomeStudente extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -103,6 +115,8 @@ public class FragmentHomeStudente extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_home_studente, container, false);
         // Inflate the layout for this fragment
         Toolbar mToolbar = layout.findViewById(R.id.toolbar_home);
+        LinearLayout lytContenitoreDettaglioTesi = layout.findViewById(R.id.lyt_contenitore1);
+        LinearLayout lytNoTesiAssegnata = layout.findViewById(R.id.lyt_contenitore2);
 
         //mToolbar.setTitle("La tua tesi");
         mToolbar.setTitleTextColor(getResources().getColor(R.color.coloreTestoPrimario));
@@ -112,7 +126,7 @@ public class FragmentHomeStudente extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.btn_toolbar_profilo_personale) {
                     Toast.makeText(context, "bybhnj", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(context, ProfiloStudente.class));
+                    startActivity(new Intent(context, ProfiloUtente.class));
                     //non si può mettere finish qua perche se si preme indietro dalla toolbar della prox activity succede un errore
 
 
@@ -123,6 +137,8 @@ public class FragmentHomeStudente extends Fragment {
 
         tabLayout = layout.findViewById(R.id.tab_layout);
         viewPager2 = layout.findViewById(R.id.pager);
+
+        recuperaTesi(lytContenitoreDettaglioTesi,lytNoTesiAssegnata);
 
 
         //trovare il modo di avere sempre un riferimento aggiornato alla lista annunci il resto farà tutto
@@ -141,10 +157,10 @@ public class FragmentHomeStudente extends Fragment {
 
         //fragmentAdapter.aggiungiFragment(new TestFragment());
         ArrayList<Domanda> listaDomande = new ArrayList<>();
+       /* listaDomande.add(new Domanda("", "", "", "", ""));
         listaDomande.add(new Domanda("", "", "", "", ""));
         listaDomande.add(new Domanda("", "", "", "", ""));
-        listaDomande.add(new Domanda("", "", "", "", ""));
-        listaDomande.add(new Domanda("", "", "", "", ""));
+        listaDomande.add(new Domanda("", "", "", "", ""));*/
 
         fragmentAdapter.aggiungiFragment(new FragmentQA(listaDomande, fragmentAdapter));
         fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi());
@@ -178,6 +194,95 @@ public class FragmentHomeStudente extends Fragment {
 
         //-------------------------------------------------------------------------------------
         return layout;
+    }
+
+
+    private void recuperaTesi(ViewGroup lytContenitoreDettaglioTesi, ViewGroup lytContenitoreNoTesi){//da rivedere non mi convince come rrecupera la tesi
+
+        //------recupero i professori---------------------
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("professori")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("ABC 2.1","recupero i professori " + task.getResult());
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {//recupero i professori
+                                Log.d("ABC 2","recupero i professori " + document.getId());
+
+                                getTesi(document.getId(),db,lytContenitoreDettaglioTesi,lytContenitoreNoTesi);//recupero le tesi dei prof del corso specificato
+
+
+                            }
+                        } else {
+                        }
+                    }
+                });
+
+        //recuperare il corso dello studente
+        //recuperare le tesi di quel corso
+
+    }
+
+    private void getTesi(String emailProf, FirebaseFirestore db,ViewGroup lytContenitoreDettaglioTesi, ViewGroup lytContenitoreNoTesi){
+        Log.d("siamo nel recupero", emailProf);
+
+        db.collection("professori").document(emailProf).collection("Tesi")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<Tesi> listaTesi = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {//recupero le tesi NON SO PERCHè NON MI RECUPERA LE TESI DEL PRIMO PROF PRESENTE NELLA LISTA DEI PROF**********************
+                                Log.d("ABC 3", "recupero le tesi");
+
+                                    if (document.get("studente") != null && document.getString("studente").split(" ")[0].equals(emailStudente)) {
+                                        String id = document.getId();
+                                        Corelatore corelatore = null;
+                                        if (document.getString("corelatore") != null) {
+                                            String[] datiCorelatore = document.getString("corelatore").split(" ");
+                                            corelatore = new Corelatore(datiCorelatore[0], datiCorelatore[1], datiCorelatore[2]);
+                                        }
+                                        // String corelatore = document.getString("corelatore");
+                                        String corsoDiLaurea = document.getString("corsoDiLaurea");
+                                        String dataPubblicazione = document.getString("dataPubblicazione");
+                                        String descrizione = document.getString("descrizione");
+                                        int durata = Integer.parseInt(String.valueOf(document.get("durata"))); //intero
+                                        ArrayList<String> li = new ArrayList<>();
+                                        li = (ArrayList) document.get("esamiRichiesti");
+                                        int mediaRichiesta = Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
+                                        String relatore = document.getString("relatore");
+                                        String studente = document.getString("studente");
+                                        String tipo = document.getString("tipo");
+                                        String titolo = document.getString("titolo");
+                                        String ambito = document.getString("ambito");
+
+                                        Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, null, corelatore, li);
+                                        listaTesi.add(tesi);
+                                        break;//esco dal ciclo perchè lo studente può avere solo una tesi assegnata, inutile ciclare ancora dopo aver trovato la tesi
+                                    } else {
+
+                                    }
+
+                            }
+                            if (listaTesi.size() == 0) {
+                                lytContenitoreDettaglioTesi.setVisibility(View.GONE);
+                                lytContenitoreNoTesi.setVisibility(View.VISIBLE);
+                                Toast.makeText(context,"non hai tesi assegnate",Toast.LENGTH_SHORT).show();
+                            } else {
+                                lytContenitoreDettaglioTesi.setVisibility(View.VISIBLE);
+                                lytContenitoreNoTesi.setVisibility(View.GONE);
+                                Toast.makeText(context," hai una tesi assegnata",Toast.LENGTH_SHORT).show();
+
+                            }
+                        } else {
+                        }
+                    }
+                });
     }
 
     private void visualizzaTask(ArrayList<Task> lis) {

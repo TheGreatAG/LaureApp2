@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margine_bordi_laterali"
         android:layout_marginStart="@dimen/margine_bordi_laterali"
+        android:elevation="1dp"
         android:layout_marginEnd="@dimen/margine_bordi_laterali">
 
         <TextView
@@ -70,7 +71,7 @@
         android:textColor="@color/black"/>
 
     <TextView
-        android:id="@+id/id_email_corelatore"
+        android:id="@+id/txt_email_corelatore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margine_bordi_laterali"

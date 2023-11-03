@@ -41,7 +41,8 @@ import java.util.Locale;
 import it.uniba.dib.sms2223.laureapp.model.Professore;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
-public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml con i giusti spazi tra gli elementi --------------------------------------------
+public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml con i giusti spazi tra gli elementi
+    // -------------------------------------------- NELLA CREAZIONE TESI INSERIRE NOME E COGNOME DEL PROF, EMAIL E LO STESSO PER CORELATORE, SERVE per creare l'istanza Tesi da passare al GenericViewHolder e impostare le TextView correttamente
     String emailProf;
     CheckBox[] checkBoxes;
 
@@ -167,6 +168,7 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
                 descrizione = "Nessuna descrizione";//meglio nessuna descrizione perchè dopo da problemi nella lista, descrizione deve essere un campo obbligatorio quindi in ogni caso non deve creare problemi
             }
             String corelatore = spinnerCorelatori.getSelectedItem().toString();
+            Log.d("Dati corelator", corelatore);
             String corsoDiLaurea = spinnerCorsi.getSelectedItem().toString();
             String ambito = spinnerAmbiti.getSelectedItem().toString();
             int mediaRichiesta = numberPicker.getValue();
@@ -202,6 +204,7 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(getApplicationContext(), "Tesi registrata" + " con successo!", Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(CreaTesi.this, ActivityCreaTask.class).putExtra("idtesi", documentReference.getId()));
+                                finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

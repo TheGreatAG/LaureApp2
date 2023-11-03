@@ -86,6 +86,10 @@
     <string name="password">Password</string>
     <string name="password_attuale">Password attuale</string>
     <string name="password_cambiata">Password cambiata con successo</string>
+    <string name="no_tesi_trovate">Non sono state ancora caricate tesi per il tuo corso di laurea</string>
+    <string name="salva_tesi">Salva tesi</string>
+    <string name="crea_task">Crea task</string>
+    <string name="descrizione_no_tesi_assegnata">"Ancora non ti è stata assegnata una tesi, attendi \nl’approvazioni di un relatore oppure cerca una tesi "</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

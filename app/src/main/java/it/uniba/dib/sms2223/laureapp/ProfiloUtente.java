@@ -8,12 +8,12 @@ import android.os.Bundle;
 
 import it.uniba.dib.sms2223.laureapp.ui.preferences.Impostazioni;
 
-public class ProfiloStudente extends AppCompatActivity {
+public class ProfiloUtente extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profilo_studente);
+        setContentView(R.layout.activity_profilo_utente);
 
         Toolbar toolbar = findViewById(R.id.tlb_profilo);
         setSupportActionBar(toolbar);

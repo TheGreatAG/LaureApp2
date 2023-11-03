@@ -3,13 +3,12 @@
     <style name="Base.Theme.LaureApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here.  -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/black</item> <!--è la causa dei drawable neri-->
         <item name="colorPrimaryVariant">@color/rosso</item>
         <!-- <item name="android:background">@color/background</item>  così facendo si risolvono i glitch sui buttons che erano dovuti a conflitti sul tema"-->
 
         <item name="android:colorBackground">@color/background</item> <!--sostituito il tag sopra perchè non impostava in modo automatico il colore di sfondo delle activity-->
         <item name="android:colorAccent">@color/richiamo_azione</item> <!-- colore dei bottoni di default ma non funziona vedrò come fare, intanto lo modifico dal layout-->
-
     </style>
 
     <style name="navBar.colore.indicatore" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">

@@ -11,7 +11,7 @@
         android:id="@+id/toolbar_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:title="@string/aggiungi_task"
+        app:title="@string/crea_task"
         app:titleTextColor="@color/richiamo_azione"/>
 
     <TextView
@@ -57,16 +57,31 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_aggiungi_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/aggiungi"
+        android:text="@string/aggiungi_task"
         android:textSize="18sp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:paddingHorizontal="80dp"
-        android:backgroundTint="@color/richiamo_azione"/>
+        app:backgroundTint="@color/background"
+        android:textColor="@color/richiamo_azione"
+        app:strokeWidth="1dp"
+        app:rippleColor="@color/ripple_color"
+        app:strokeColor="@color/richiamo_azione"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_salva_tesi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/salva_tesi"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="80dp"
+        app:backgroundTint="@color/richiamo_azione"/>
 
 
 </LinearLayout>

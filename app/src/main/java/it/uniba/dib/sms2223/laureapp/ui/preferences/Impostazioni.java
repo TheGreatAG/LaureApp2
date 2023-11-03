@@ -9,9 +9,13 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import it.uniba.dib.sms2223.laureapp.ActivityPrimoAccessoLogin;
 import it.uniba.dib.sms2223.laureapp.CambioPassword;
+import it.uniba.dib.sms2223.laureapp.PrimoAccessoDocente;
 import it.uniba.dib.sms2223.laureapp.R;
+import it.uniba.dib.sms2223.laureapp.business.Credenziali;
 import it.uniba.dib.sms2223.laureapp.business.Utente;
 
 public class Impostazioni extends PreferenceFragmentCompat {
@@ -24,7 +28,11 @@ public class Impostazioni extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(@NonNull Preference preference) {
                 Toast.makeText(getContext(),"vvyvyv",Toast.LENGTH_SHORT).show();
-                getContext().startActivity(new Intent(getContext(), ActivityPrimoAccessoLogin.class).putExtra("key",true));
+                if (Credenziali.validitaEmailStudente(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+                    getContext().startActivity(new Intent(getContext(), ActivityPrimoAccessoLogin.class).putExtra("key", true));
+                } else {
+                    getContext().startActivity(new Intent(getContext(), PrimoAccessoDocente.class).putExtra("chiamante",true));
+                }
                 return false;
             }
         });

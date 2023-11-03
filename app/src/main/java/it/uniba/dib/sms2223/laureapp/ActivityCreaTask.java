@@ -34,12 +34,14 @@ public class ActivityCreaTask extends AppCompatActivity {
         TextInputLayout edtDescrizioneTask = findViewById(R.id.edt_desscrizione_task);
 
         Button btnAggiungi = findViewById(R.id.btn_aggiungi_task);
-
+        Button btnSalvatesi = findViewById(R.id.btn_salva_tesi);
         Toolbar toolbar = findViewById(R.id.toolbar_task);
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null)
-            ab.setDisplayHomeAsUpEnabled(true); //abilita la freccia torna indietro ma non è il massimo tornare di nuovo alla schermata di creazione tesi, confonde l'utente
+
+        btnSalvatesi.setOnClickListener(view -> {
+            startActivity(new Intent(this,MainActivityDocente.class));
+            finish();
+        });
+
 
         btnAggiungi.setOnClickListener(view -> {
             String oggetto = String.valueOf(edtOggettoTask.getEditText().getText());

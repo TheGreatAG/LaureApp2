@@ -52,7 +52,7 @@ public class Utente {
     }
 
     /**
-     * registra l'utente inserendo i dati in Authenticator del servizio offerto da Firebase e nel database firestore
+     * registra l'utente inserendo i dati in Authenticator del servizio offerto da Firebase e nel database firestore inviando un'email per verificare l'account
      * @param nome nome dell'utente
      * @param cognome cognome dell'utente
      * @param email email dell'utente
@@ -73,7 +73,11 @@ public class Utente {
                                             // l'utente è registrato nel db
                                             //FirebaseUser user = mAuth.getCurrentUser(); //per recuperare l'utente attuale
                                             Toast.makeText(context, "utente registrato", Toast.LENGTH_SHORT).show();
-                                            mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                            inserisciDatiUtente(nome,cognome,email);
+
+
+                                          /*  mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {// l'utente ha verificato la sua email
@@ -83,7 +87,7 @@ public class Utente {
                                                     } else //Per il tester VERIFICARE COSA SUCCEDE A QUESTO PUNTO DELLA REGISTRAZIONE NEI VARI CASI - SE SI VERIFICA l'email e se non si verifica
                                                         Toast.makeText(context, "Email non confermata", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
                                                 }
-                                            });
+                                            });*/
                                         } else {
                                             // If sign in fails, display a message to the user.
                                             Log.w("TAG", "createUserWithEmail:failure", task.getException());

@@ -8,11 +8,14 @@ public class Tesi {
 
     //AGGIUNGERE I TASK NEL COSTRUTTORE
 
-    public String titolo, descrizione, dataPubblicazione, ambito, tipo, corsoDiLaurea, relatore,
-            corelatore, studente;
+    public String titolo, descrizione, dataPubblicazione, ambito, tipo, corsoDiLaurea, sRelatore,
+            sCorelatore, studente;
     public int mediaRichiesta, durata;
     public String id;
     public ArrayList<String> esamiRichiesti;
+
+    public Relatore relatore;
+    public Corelatore corelatore;
 
 
     public Tesi() {
@@ -32,8 +35,8 @@ public class Tesi {
         this.descrizione = descrizione;
         this.ambito = ambito;
         this.corsoDiLaurea = corsoDiLaurea;
-        this.relatore = relatore;
-        this.corelatore = corelatore;
+        this.sRelatore = relatore;
+        this.sCorelatore = corelatore;
         this.mediaRichiesta = mediaRichiesta;
         this.durata = durata;
         this.esamiRichiesti = esamiRichiesti;
@@ -41,6 +44,23 @@ public class Tesi {
         this.id = id;
     }
 
+    public Tesi(String id,String titolo, String tipo, String descrizione, String ambito, String corsoDiLaurea, String dataPubblicazione,
+                int mediaRichiesta, int durata, Relatore relatore,
+                Corelatore corelatore, ArrayList<String> esamiRichiesti) {
+        this.titolo = titolo;
+        this.descrizione = descrizione;
+        this.dataPubblicazione = dataPubblicazione;
+        this.ambito = ambito;
+        this.tipo = tipo;
+        this.corsoDiLaurea = corsoDiLaurea;
+        this.studente = studente;
+        this.mediaRichiesta = mediaRichiesta;
+        this.durata = durata;
+        this.id = id;
+        this.esamiRichiesti = esamiRichiesti;
+        this.relatore = relatore;
+        this.corelatore = corelatore;
+    }
 
     // Costruttore aggiunto
     public Tesi(String s, String s1, String s2, int i, int i1, Object o, Object o1, Object o2, Object o3, ETipoTesi compilativa) {
@@ -68,14 +88,6 @@ public class Tesi {
 
     public String getCorsoDiLaurea() {
         return corsoDiLaurea;
-    }
-
-    public String getRelatore() {
-        return relatore;
-    }
-
-    public String getCorelatore() {
-        return corelatore;
     }
 
     public int getMediaRichiesta() {

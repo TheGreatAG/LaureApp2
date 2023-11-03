@@ -13,19 +13,33 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.model.Corelatore;
 import it.uniba.dib.sms2223.laureapp.model.ETipoTesi;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
+import it.uniba.dib.sms2223.laureapp.model.Universita;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
+import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +50,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
 
     private ArrayList<Tesi> listaTesi = new ArrayList<>();
     private Context context;
+    private Universita universita;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -79,6 +94,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         listaTesi.add(new Tesi("","","",0,0,null,null,null,null, ETipoTesi.Compilativa));
         listaTesi.add(new Tesi("","","",0,0,null,null,null,null,ETipoTesi.Compilativa));
         listaTesi.add(new Tesi("","","",0,0,null,null,null,null,ETipoTesi.Compilativa));
@@ -100,16 +116,19 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         Toolbar toolbar = v.findViewById(R.id.toolbar_cerca_tesi);
         MenuItem searchItem = toolbar.getMenu().findItem(R.id.search_item);
         SearchView searchView = (SearchView) searchItem.getActionView();
-
-        RecyclerView listaTesiPrefe = v.findViewById(R.id.lista_tesi);
+        ImageView imgNoTesi = v.findViewById(R.id.img_no_tesi_disponibili);
+        TextView txtNoTesi = v.findViewById(R.id.txt_no_tesi_trovate);
+        RecyclerView recyclerView = v.findViewById(R.id.lista_tesi);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);//mostra a partire dall'elemento 0 in questo caso
-        listaTesiPrefe.setLayoutManager(layoutManager);//una recycler view deve avere un layout manager
-        listaTesiPrefe.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT-80));
-        CustomAdapterList adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, LISTA_TESI,null);////////modificato con ultimo parametro
-        listaTesiPrefe.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);//una recycler view deve avere un layout manager
+        recyclerView.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT-80));
+
+        recuperaCorsoStudente();//definisco la variabile globale Universita con dipartimento e corso NON FUNZIONA BENE A VOLTE RESTITUISCE UN OGGETTO UNIVERSITA NULLO **************************************
+        recuperaTesi(recyclerView,imgNoTesi,txtNoTesi);
+       // getTesi(new Universita("Informatica","Corso di informatica",null,null),"andrea@uniba.it",FirebaseFirestore.getInstance(),recyclerView);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -146,4 +165,117 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
 
         return v;
     }
+
+    private void recuperaTesi(RecyclerView recyclerView,ImageView img,TextView txt){
+
+        //------recupero i professori---------------------
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("professori")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("ABC 2.1","recupero i professori " + task.getResult());
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {//recupero i professori
+                                Log.d("ABC 2","recupero i professori " + document.getId());
+
+                                getTesi(universita,document.getId(),db,recyclerView,img,txt);//recupero le tesi dei prof del corso specificato
+
+
+                            }
+                        } else {
+                        }
+                    }
+                });
+
+        //recuperare il corso dello studente
+        //recuperare le tesi di quel corso
+
+    }
+
+    private void getTesi(Universita universita, String emailProf, FirebaseFirestore db, RecyclerView recyclerView, ImageView img, TextView txt){
+        Log.d("siamo nel recupero", emailProf);
+
+        db.collection("professori").document(emailProf).collection("Tesi")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<Tesi> listaTesi = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {//recupero le tesi
+                                Log.d("ABC 3","recupero le tesi");
+
+                                if (document.getString("corsoDiLaurea").equals("Corso di informatica")){//universita è nullo non funziona
+
+                                    String id = document.getId();
+                                    Corelatore corelatore = null;
+                                    if (document.getString("corelatore") != null) {
+                                        String[] datiCorelatore = document.getString("corelatore").split(" ");
+                                        corelatore = new Corelatore(datiCorelatore[0], datiCorelatore[1], datiCorelatore[2]);
+                                    }
+                                  // String corelatore = document.getString("corelatore");
+                                   String corsoDiLaurea= document.getString("corsoDiLaurea");
+                                    String dataPubblicazione= document.getString("dataPubblicazione");
+                                    String descrizione= document.getString("descrizione");
+                                    int durata= Integer.parseInt(String.valueOf(document.get("durata"))); //intero
+                                    ArrayList<String> li = new ArrayList<>();
+                                    li = (ArrayList) document.get("esamiRichiesti");
+                                    int mediaRichiesta= Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
+                                    String relatore= document.getString("relatore");
+                                    String studente= document.getString("studente");
+                                    String tipo= document.getString("tipo");
+                                    String titolo= document.getString("titolo");
+                                    String ambito = document.getString("ambito");
+
+                                    Tesi tesi = new Tesi(id,titolo,tipo,descrizione,ambito,corsoDiLaurea,dataPubblicazione,mediaRichiesta,durata,null,corelatore,li);
+                                    listaTesi.add(tesi);
+                                }
+                                if (listaTesi.size()==0){
+                                    img.setVisibility(View.VISIBLE);
+                                    txt.setVisibility(View.VISIBLE);
+                                    recyclerView.setVisibility(View.GONE);
+                                }else {
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    img.setVisibility(View.GONE);
+                                    txt.setVisibility(View.GONE);
+                                    Log.d("tipo lista A",""+ GenericViewHolder.LISTA_TESI);
+                                    CustomAdapterList adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI, null);////////modificato con ultimo parametro
+                                    recyclerView.setAdapter(adapter);
+                                    //Log.d(TAG, document.getId() + " => " + document.getData());
+                                }
+                            }
+                        } else {
+                        }
+                    }
+                });
+    }
+
+    private void recuperaCorsoStudente(){
+        String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("studenti").document(emailStudente).collection("Corso").document("c_s");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        universita = new Universita(document.getString("Dipartimento"),document.getString("Corso"),null,null);
+                        Log.d("ABC 1","recupero il corso dello studente "  + "Dip: " + universita.dipartimento + " corso: "+ universita.corso);
+
+                    } else {
+                        //universita = null;
+                    }
+                } else {
+                    //Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+    }
+
 }

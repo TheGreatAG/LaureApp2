@@ -143,7 +143,7 @@ public class FragmentHomeDocente extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.btn_toolbar_profilo_personale) {
-                    startActivity(new Intent(context, PrimoAccessoDocente.class).putExtra("chiamante",true));
+                    startActivity(new Intent(context, ProfiloUtente.class).putExtra("chiamante",true));
                 }
                 return false;
             }
@@ -183,8 +183,15 @@ public class FragmentHomeDocente extends Fragment {
                                 String dataPubblicazione = document.get("dataPubblicazione").toString();
                                 int mediaVoti = Integer.parseInt(document.get("mediaRichiesta").toString());
                                 int durata = Integer.parseInt(document.get("durata").toString());
-                                String relatore = document.get("relatore").toString();
-                                String corelatore = document.get("corelatore").toString();
+                                String relatore = null;
+                                String corelatore = null;
+                                try {
+                                    relatore = document.get("relatore").toString();
+                                    corelatore = document.get("corelatore").toString();
+                                } catch (NullPointerException e){
+                                    e.printStackTrace();
+                                }
+
                                 ArrayList<String> li = new ArrayList<>();
                                 li = (ArrayList) document.get("esamiRichiesti");
                                 Tesi tesi = new Tesi(id,titolo,tipo,descrizione,ambito,corsoDiLaurea,dataPubblicazione,mediaVoti,durata,relatore,corelatore,li);

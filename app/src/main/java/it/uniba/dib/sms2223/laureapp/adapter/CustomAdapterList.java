@@ -1,6 +1,7 @@
 package it.uniba.dib.sms2223.laureapp.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
         this.listaAnnunci = listaAnnunci;
         this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
+        Log.d("tipo lista B",""+ tipoDiLista);
+
     }
 
     @NonNull
@@ -51,8 +54,11 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
             holder.setView((Domanda) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
         } else if (tipoDiLista == ICostanti.LISTA_TESI_PREFERITE) {
             holder.setView((Tesi) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
+        } else if (tipoDiLista == GenericViewHolder.LISTA_TESI){
+            holder.setView((Tesi) listaAnnunci.get(position), context, listaAnnunci, this, position, fragmentAdapter);
 
         }
+        Log.d("tipo lista C", "" + "" + tipoDiLista);
     }
 
     @Override

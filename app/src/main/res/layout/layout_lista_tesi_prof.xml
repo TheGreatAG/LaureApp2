@@ -160,7 +160,6 @@
         android:tooltipText="Descrizione"
         app:cardBackgroundColor="#ffffff"
         app:cardCornerRadius="8dp"
-        app:cardElevation="5dp"
         app:contentPadding="2dp">
 
 

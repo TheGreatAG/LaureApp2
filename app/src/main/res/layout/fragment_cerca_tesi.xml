@@ -20,10 +20,31 @@
             app:menu="@menu/toolbar_cerca_tesi"
             />
 
+        <ImageView
+            android:id="@+id/img_no_tesi_disponibili"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="60dp"
+            android:layout_gravity="center"
+            android:src="@drawable/no_tesi_trovate"/>
+
+        <TextView
+            android:id="@+id/txt_no_tesi_trovate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margine_bordi_laterali"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:text="@string/no_tesi_trovate"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_tesi"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margine_bordi_laterali"
+            android:layout_marginEnd="@dimen/margine_bordi_laterali"
+            android:visibility="gone"
             tools:listitem="@layout/layout_lista_tesi_preferite"/>
 
     </LinearLayout>
