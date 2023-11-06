@@ -108,6 +108,8 @@
     <string name="txt_no_tesi_preferite">Non hai nessuna tesi preferita</string>
     <string name="campi_richiesta_mancanti">Devi inserire la media dei tuoi voti \ne il numero di esami alla laurea</string>
     <string name="richiesta_inviata">Richiesta inviata</string>
+    <string name="tesi_assegnata">Tesi assegnata</string>
+    <string name="no_richieste">Non ci sono richieste da soddisfare</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

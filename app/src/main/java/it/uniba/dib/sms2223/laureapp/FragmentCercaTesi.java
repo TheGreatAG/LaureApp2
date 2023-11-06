@@ -270,11 +270,11 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                     String tipo= document.getString("tipo");
                                     String titolo= document.getString("titolo");
                                     String ambito = document.getString("ambito");
-                                   // if (studente != null) {
+                                    if (studente == null) {
                                     Log.d("GBV",relatore);
                                         Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
                                         listaTesi.add(tesi);
-                                    //}
+                                    }
                                 }
                                 if (listaTesi.size()==0){
                                     img.setVisibility(View.VISIBLE);

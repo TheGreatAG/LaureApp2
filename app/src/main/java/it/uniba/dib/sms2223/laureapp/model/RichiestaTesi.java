@@ -10,7 +10,7 @@ public class RichiestaTesi {
     public double mediaVotiStudente;
     public int esamiMancanti;
     public ArrayList<String> propedeuticita;
-    public int id;
+    public String id;
 
     public RichiestaTesi(Studente studente, Tesi tesi, String note, String dataRichiesta,
                          double mediaVotiStudente,int esamiMancanti, ArrayList<String> propedeuticita) {

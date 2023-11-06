@@ -6,4 +6,6 @@ public class Relatore extends Professore {
                     String dipartimento, String corso, String insegnamento) {
         super(nome, cognome, email, dipartimento, corso, insegnamento);
     }
+
+
 }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +29,8 @@ import it.uniba.dib.sms2223.laureapp.R;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
 import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
 import it.uniba.dib.sms2223.laureapp.business.Utile;
+import it.uniba.dib.sms2223.laureapp.model.Persona;
+import it.uniba.dib.sms2223.laureapp.model.Relatore;
 import it.uniba.dib.sms2223.laureapp.model.Ricevimento;
 import it.uniba.dib.sms2223.laureapp.model.RichiestaTesi;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
@@ -42,7 +45,7 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
 
     private TextView txtDip,txtCorso,txtMateria;
     private int tipoLista;
-    private Button btnRimuoviInsegnamento,btnTesiProf;
+    private Button btnRimuoviInsegnamento,btnTesiProf,btnAccetta,btnRifiuta;
 
     private TextView txtData,txtTitoloTesi,txtCorsoDiLaurea,txtCorelatore,txtTipoTesi
             ,txtDescrizione,txtMediaVoti,txtTempoRichiesto,txtStudenteAssegnato,txtTaskDaSvolgere;
@@ -82,6 +85,8 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
                 txtNote = v.findViewById(R.id.txt_note_studente);
                 txtEmail = v.findViewById(R.id.txt_email_studente);
                 gridLayout = v.findViewById(R.id.lyt_contenitore_propedeu);
+                btnAccetta = v.findViewById(R.id.btn_accetta);
+                btnRifiuta = v. findViewById(R.id.btn_rifiuta);
 
         }
     }
@@ -131,20 +136,45 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
         txtNote.setText(richiestaTesi.note);
         txtEmail.setText(richiestaTesi.studente.email);
 
-        for (int i =0;i<richiestaTesi.tesi.esamiRichiesti.size(); i++){
-            for (int j =0; j<richiestaTesi.propedeuticita.size();j++) {
-                if (richiestaTesi.tesi.esamiRichiesti.get(i).equals(richiestaTesi.propedeuticita.get(j))) {
-                    MaterialButton testSignIn = new MaterialButton(context);
-                    String buttonText = richiestaTesi.propedeuticita.get(j);
-                    testSignIn.setText(buttonText);
-                    testSignIn.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background)));
-                    testSignIn.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.richiamo_azione)));
-                    testSignIn.setTextColor(ContextCompat.getColor(context, R.color.richiamo_azione));
-                    testSignIn.setStrokeWidth(3);
-                    gridLayout.addView(testSignIn);
-                }
+        int indiceDaCuiRipartire =0;
+
+
+        int propedeuticaIndex = 0; // Inizializza l'indice per scorrere richiestaTesi.propedeuticita
+
+        for (int i = 0; i < richiestaTesi.tesi.esamiRichiesti.size(); i++) {
+            String esameRichiesto = richiestaTesi.tesi.esamiRichiesti.get(i);
+
+            MaterialButton testSignIn = new MaterialButton(context);
+            testSignIn.setText(esameRichiesto);
+            testSignIn.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background)));
+
+            if (propedeuticaIndex < richiestaTesi.propedeuticita.size() && esameRichiesto.equals(richiestaTesi.propedeuticita.get(propedeuticaIndex))) {//esame soddisfatto
+                // L'esame corrisponde, imposta il colore corrispondente
+               // testSignIn.setBackground(context.getDrawable(R.drawable.esame_soddisfatto));
+                testSignIn.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.richiamo_azione)));
+                testSignIn.setTextColor(ContextCompat.getColor(context, R.color.richiamo_azione));
+                propedeuticaIndex++; // Passa all'elemento successivo di richiestaTesi.propedeuticita
+            } else {
+                // L'esame non corrisponde, imposta un altro colore
+                //testSignIn.setBackground(AppCompatResources.getDrawable(context,R.drawable.esame_non_soddisfatto));
+
+                testSignIn.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.rosso)));
+                testSignIn.setTextColor(ContextCompat.getColor(context, R.color.rosso));
             }
+
+            testSignIn.setStrokeWidth(3);
+            gridLayout.addView(testSignIn);
         }
+
+        btnAccetta.setOnClickListener(view -> {
+
+            new GestioneTesi().assegnaTesi(richiestaTesi.tesi.relatore,richiestaTesi.studente,richiestaTesi,adapter,context);
+        });
+
+        btnRifiuta.setOnClickListener(view -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            new GestioneTesi().eliminaRichiesta(adapter,richiestaTesi,db);
+        });
     }
 
 
