@@ -14,6 +14,7 @@
 
     <color name="ripple_color">#AAB7DA</color>
 
+    <color name="drawable_add">#AAB7DA</color>
 
     <color name="icone_navbar">#34446C</color>
     <color name="indicatore_elemento_selezionato_navBar">#9FABC9</color>

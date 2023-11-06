@@ -18,9 +18,24 @@
     <style name="Theme.LaureApp" parent="Base.Theme.LaureApp" />
 
     <!--   MODIFICA IL CONTORNO DEL ALERT DIALOG -->
-    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="CustomAlertDialog" parent="ThemeOverlay.Material3.Dialog">
         <item name="android:windowBackground">@drawable/custom_dialog_background</item>
         <!--impostare il colore del testo sui bottoni dell'alert dialog-->
+        <!-- Colore del testo per i pulsanti
+          <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+          <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+         -->
+
     </style>
+
+    <!-- Stile personalizzato per i buttons
+      <style name="PositiveButtonStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">#0000FF</item> >
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">#FF0000</item>
+    </style>
+    -->
 
 </resources>
