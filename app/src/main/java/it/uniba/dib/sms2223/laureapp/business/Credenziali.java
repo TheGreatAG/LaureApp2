@@ -1,5 +1,8 @@
 package it.uniba.dib.sms2223.laureapp.business;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 public class Credenziali implements ICostanti{
 
     /**
@@ -82,6 +85,20 @@ public class Credenziali implements ICostanti{
             }
         }
         return false;
+    }
+
+    /**
+     * recuper il nome e il cognome dello studente registrato
+     * @param context
+     * @return
+     */
+    public String[] recuperaNomeCognomeStudente(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(NOME_COGNOME_STUD, Context.MODE_PRIVATE);
+        String nome = sharedPreferences.getString(INFO_STUD,null);
+        String cognome = sharedPreferences.getString(INFO_STUD+"c",null);
+        String [] info= {nome,cognome};
+        return info;
+
     }
 
 }

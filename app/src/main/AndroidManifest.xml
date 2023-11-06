@@ -16,6 +16,10 @@
         android:theme="@style/Theme.LaureApp"
         tools:targetApi="31">
         <activity
+            android:name=".RichiestaTesiStudente"
+            android:exported="false"
+            android:parentActivityName=".MainActivityStudente"/>
+        <activity
             android:name=".CambioPassword"
             android:exported="false"
             android:parentActivityName=".ProfiloUtente" />

@@ -25,10 +25,10 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
     private int tipoDiLista;  //flag per capire se la lista è lato prof o studente
     private FragmentAdapter fragmentAdapter;///
 
-    public CustomAdapterListDocente(final ArrayList listaAnnunci, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
+    public CustomAdapterListDocente(final ArrayList listaElementi, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
         this.context = context;
         this.layoutLista = layoutLista;
-        this.listaElementi = listaAnnunci;
+        this.listaElementi = listaElementi;
         this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
     }

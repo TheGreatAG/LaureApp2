@@ -2,6 +2,7 @@ package it.uniba.dib.sms2223.laureapp.ui.lista;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,10 +15,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -45,6 +48,8 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
             ,txtDescrizione,txtMediaVoti,txtTempoRichiesto,txtStudenteAssegnato,txtTaskDaSvolgere;
     private GridLayout gridLayout;
     ViewGroup elementoLista,espansioneLista;
+
+    TextView txtMediaVotiStudente,txtNote,txtEmail,txtMediaVotiConsigliata;
     public GenericViewHolderDocente(@NonNull View v, int tipoLista) {
         super(v);
         Log.d("lista docente", "siamo nella lista del docente");
@@ -68,6 +73,16 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
                 txtDescrizione = v.findViewById(R.id.txt_descrizione_tesi);
                 btnTesiProf = v.findViewById(R.id.btn_tesi_prof);
                 elementoLista = v.findViewById(R.id.lyt_elemento);
+                break;
+            case LISTA_RICHIESTE_TESI:
+                txtTitoloTesi = v.findViewById(R.id.txt_titolo_tesi);
+                txtData = v.findViewById(R.id.txt_data_richiesta);
+                txtMediaVotiConsigliata = v.findViewById(R.id.txt_voto_consigliato);
+                txtMediaVotiStudente = v.findViewById(R.id.txt_voto_studente);
+                txtNote = v.findViewById(R.id.txt_note_studente);
+                txtEmail = v.findViewById(R.id.txt_email_studente);
+                gridLayout = v.findViewById(R.id.lyt_contenitore_propedeu);
+
         }
     }
 
@@ -108,8 +123,28 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
 
     }
 
-    public void setView(RichiestaTesi tesi, Context context, CustomAdapterListDocente adapter, int indice) {
+    public void setView(RichiestaTesi richiestaTesi, Context context, CustomAdapterListDocente adapter, int indice) { //DA FINIRE COMPLETARE CON L'accetta e rifiuta e mostrare gli esami dati dallo studente
+        txtData.setText(richiestaTesi.dataRichiesta);
+        txtTitoloTesi.setText(richiestaTesi.tesi.titolo);
+        txtMediaVotiConsigliata.setText(context.getString(R.string.media_consigliata) + ": "+String.valueOf(richiestaTesi.tesi.mediaRichiesta));
+        txtMediaVotiStudente.setText(context.getString(R.string.media_voti_attuale) + ": " +String.valueOf(richiestaTesi.mediaVotiStudente));
+        txtNote.setText(richiestaTesi.note);
+        txtEmail.setText(richiestaTesi.studente.email);
 
+        for (int i =0;i<richiestaTesi.tesi.esamiRichiesti.size(); i++){
+            for (int j =0; j<richiestaTesi.propedeuticita.size();j++) {
+                if (richiestaTesi.tesi.esamiRichiesti.get(i).equals(richiestaTesi.propedeuticita.get(j))) {
+                    MaterialButton testSignIn = new MaterialButton(context);
+                    String buttonText = richiestaTesi.propedeuticita.get(j);
+                    testSignIn.setText(buttonText);
+                    testSignIn.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background)));
+                    testSignIn.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.richiamo_azione)));
+                    testSignIn.setTextColor(ContextCompat.getColor(context, R.color.richiamo_azione));
+                    testSignIn.setStrokeWidth(3);
+                    gridLayout.addView(testSignIn);
+                }
+            }
+        }
     }
 
 

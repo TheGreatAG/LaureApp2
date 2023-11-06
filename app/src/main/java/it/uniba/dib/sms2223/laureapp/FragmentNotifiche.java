@@ -8,14 +8,27 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
+import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.model.RichiestaTesi;
+import it.uniba.dib.sms2223.laureapp.model.Studente;
+import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
 
@@ -24,7 +37,7 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
  * Use the {@link FragmentNotifiche#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentNotifiche extends Fragment {
+public class FragmentNotifiche extends Fragment implements ICostanti {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -88,11 +101,70 @@ public class FragmentNotifiche extends Fragment {
         recyclerView.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT-150));
 
         ArrayList listaTesi = new ArrayList();
-        listaTesi.add(new RichiestaTesi(null,null,null,null,0,null));
-        listaTesi.add(new RichiestaTesi(null,null,null,null,0,null));
+        ///listaTesi.add(new RichiestaTesi(null,null,null,null,0,null));
+       /// listaTesi.add(new RichiestaTesi(null,null,null,null,0,null));
+        recuperaRichieste(recyclerView);
 
-        CustomAdapterListDocente adapter = new CustomAdapterListDocente(listaTesi, context, R.layout.layout_lista_richieste_tesi, GenericViewHolderDocente.LISTA_RICHIESTE_TESI,null);//anche queste righe sono da sistemare
-        recyclerView.setAdapter(adapter);
         return v;
+    }
+
+    private void recuperaRichieste(RecyclerView recyclerView){
+        String emailProf = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(COLLECTION_PROF).document(emailProf).collection(COLLECTION_RICHIESTE)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<RichiestaTesi> listaRichieste = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {//recupero le tesi
+                                Map<String,Object> mapTesi= (Map<String,Object>)document.get("tesi");
+                                Map<String,Object> mapStudente= (Map<String,Object>)document.get("studente");
+
+
+                                ArrayList<String> esamiStudente = (ArrayList)document.get("propedeuticita");
+
+                                String titolo = mapTesi.get("titolo").toString();
+                                String corsoDiLaurea = mapTesi.get("corsoDiLaurea").toString();
+                                String dataPubblicazione = mapTesi.get("dataPubblicazione").toString();
+
+                                String sCorelatore = null;
+                                if (mapTesi.get("sCorelatore") != null) {
+                                    sCorelatore = mapTesi.get("sCorelatore").toString();
+                                }
+
+                                ArrayList<String> esamiPropedeutici =(ArrayList) mapTesi.get("sCorelatore");
+                                int mediaRichiesta = Integer.parseInt(mapTesi.get("mediaRichiesta").toString());
+
+                                String emailStudente = mapStudente.get("email").toString();
+
+                                String notePerIlDocente = document.getString("note");
+                                double mediaVotiStudente = Double.parseDouble(document.get("mediaVotiStudente").toString());
+                                String dataRichiesta = document.getString("dataRichiesta");
+                                int esamiMancanti = Integer.parseInt(document.get("esamiMancanti").toString());
+
+                                Studente stud = new Studente();
+                                stud.email = emailStudente;
+
+                                Tesi tesi = new Tesi();
+                                tesi.titolo = titolo;
+                                tesi.corsoDiLaurea = corsoDiLaurea;
+                                tesi.dataPubblicazione = dataPubblicazione;
+                                tesi.sCorelatore = sCorelatore;
+                                tesi.esamiRichiesti = esamiPropedeutici;
+                                tesi.mediaRichiesta = mediaRichiesta;
+
+                                RichiestaTesi richiestaTesi = new RichiestaTesi(stud,tesi,notePerIlDocente,dataRichiesta,mediaVotiStudente,esamiMancanti,esamiStudente);
+                                listaRichieste.add(richiestaTesi);
+
+                            }
+                            CustomAdapterListDocente adapterListDocente = new CustomAdapterListDocente(listaRichieste,context,
+                                    R.layout.layout_lista_richieste_tesi,GenericViewHolderDocente.LISTA_RICHIESTE_TESI,null);
+                            recyclerView.setAdapter(adapterListDocente);
+                        }
+                    }
+                });
     }
 }

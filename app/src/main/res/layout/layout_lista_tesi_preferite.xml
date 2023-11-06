@@ -24,19 +24,19 @@
             android:layout_weight="2"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_preferito"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginEnd="15dp"
             android:background="@drawable/ic_preferito_selezionato"/>
 
 
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_condividi_info_tesi"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/ic_condividi"
          />
 
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="nome cognoem"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_marginStart="@dimen/margine_bordi_laterali"
         android:layout_marginEnd="@dimen/margine_bordi_laterali"
         android:textColor="@color/black"/>
@@ -67,7 +67,7 @@
         android:layout_marginStart="@dimen/margine_bordi_laterali"
         android:layout_marginEnd="@dimen/margine_bordi_laterali"
         android:text="nome cognoem"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="@color/black"/>
 
     <TextView

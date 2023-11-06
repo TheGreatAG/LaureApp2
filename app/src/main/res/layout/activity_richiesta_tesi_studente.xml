@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RichiestaTesiStudente">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tlb_dettaglio_tesi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/dettaglio_tesi"
+        app:titleTextColor="@color/richiamo_azione"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/margine_bordi_laterali"
+            android:layout_marginEnd="@dimen/margine_bordi_laterali">
+
+
+            <TextView
+                android:id="@+id/txt_titolo_tesi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/titolo_tesi"
+                android:textSize="23sp" />
+
+            <TextView
+                android:id="@+id/txt_nome_corso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="afjfadn"
+                />
+
+            <TextView
+                android:id="@+id/txt_tipologia_tesi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tipologia_tesi"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_relatore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/relatore"/>
+                    <TextView
+                        android:id="@+id/txt_nome_relatore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="afhsvnsakm"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+
+                <Button
+                    android:id="@+id/btn_contatta_relatore"
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_invio_email"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/lyt_info_corelatore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_co_relatore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/corelatore"/>
+                    <TextView
+                        android:id="@+id/txt_nome_co_relatore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="afhsvnsakm"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/btn_contatta_co_relatore"
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_invio_email"/>
+            </LinearLayout>
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/descrizione"
+                android:layout_marginTop="20dp"
+                />
+            <TextView
+                android:id="@+id/txt_descrizione_tesi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="afhsvnsakmgbjhksdvfnvdfmvdmv.,"
+                android:textSize="20sp"/>
+            <View
+                android:id="@+id/separation_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/txt_valore_corso"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="@dimen/margine_bordi_laterali"
+                android:layout_marginEnd="@dimen/margine_bordi_laterali"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/txt_votazione"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="votazione media consigliata: 28"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/txt_tempo_lavoro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tempo di lavoro stimato: 200 ore"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/txt_esami_richiesti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Esami richiesti:"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp"/>
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <GridLayout
+                    android:id="@+id/grid_view_insegnamenti"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:columnCount="2"
+                    android:tooltipText="Esami richiesti">
+
+                </GridLayout>
+            </HorizontalScrollView>
+
+            <Button
+                android:id="@+id/btn_richiedi_tesi"
+                android:paddingHorizontal="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/richiamo_azione"
+                android:text="@string/richiedi_tesi"
+                android:textSize="17sp"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -22,14 +22,18 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,8 +47,9 @@ import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
 public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml con i giusti spazi tra gli elementi
     // -------------------------------------------- NELLA CREAZIONE TESI INSERIRE NOME E COGNOME DEL PROF, EMAIL E LO STESSO PER CORELATORE, SERVE per creare l'istanza Tesi da passare al GenericViewHolder e impostare le TextView correttamente
-    String emailProf;
+    String emailProfessore;
     CheckBox[] checkBoxes;
+    String nomeProf, cognomeProf;
 
 
     @Override
@@ -65,7 +70,10 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
         ActionBar ab = getSupportActionBar();
         if (ab != null) ab.setDisplayHomeAsUpEnabled(true);
 
-        String emailProfessore = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        emailProfessore = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        recuperaNomeCognomeProf();
+
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // final Context context = this;
         final GridLayout gridView = findViewById(R.id.grid_view_insegnamenti);
@@ -192,8 +200,9 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
                 SimpleDateFormat formatoData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 //numTesi++;
                 String dataPubblicazione = formatoData.format(dataCorrente);
-                Tesi tesi = new Tesi(null, titolo, tipoTesi, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, emailProfessore, corelatore, esamiRichiesti);
-
+                String relatore = nomeProf +" "+cognomeProf + " " + emailProfessore;
+                Tesi tesi = new Tesi(null, titolo, tipoTesi, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, esamiRichiesti);
+                Log.d("ASD 1", tesi.sCorelatore);
                 FirebaseFirestore db1 = FirebaseFirestore.getInstance();
 
 
@@ -226,6 +235,32 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
                 Toast.makeText(getApplicationContext(), "Non dimenticarti di compilare" + " tutti i campi!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void recuperaNomeCognomeProf(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d("email prof", emailProfessore);
+
+        DocumentReference docRef = db.collection("professori").document(emailProfessore);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        nomeProf = document.getString("nome");
+                        cognomeProf = document.getString("cognome");
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
     }
 
     private void setAdapterSpinner(Spinner spinner, ArrayList arrayResource) {

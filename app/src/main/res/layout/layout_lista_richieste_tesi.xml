@@ -43,13 +43,17 @@
             android:layout_marginTop="15dp"
             />
 
-        <GridLayout
-            android:id="@+id/lyt_contenitore_propedeu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="2">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <GridLayout
+                android:id="@+id/lyt_contenitore_propedeu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2">
+            </GridLayout>
+        </HorizontalScrollView>
 
-        </GridLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

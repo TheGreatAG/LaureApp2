@@ -7,6 +7,9 @@ public class Studente extends Persona {
     public String password;
     int mediaVoti;
 
+    public Studente(){
+
+    }
     public Studente(String email,String password,String nome, String cognome,int mediaVoti){
         super(nome,cognome, email);
         this.mediaVoti = mediaVoti;

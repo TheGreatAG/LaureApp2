@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,7 +27,7 @@ import it.uniba.dib.sms2223.laureapp.ActivityPrimoAccessoLogin;
 import it.uniba.dib.sms2223.laureapp.MainActivity;
 import it.uniba.dib.sms2223.laureapp.PrimoAccessoDocente;
 
-public class Utente {
+public class Utente implements ICostanti{
 
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance();// Initialize Firebase Auth
 
@@ -121,11 +122,13 @@ public class Utente {
         Map<String, Object> user = new HashMap<>();
         user.put("nome", nome);
         user.put("cognome", cognome);
+        user.put("Tesi assegnata",false);
         if (Credenziali.validitaEmailStudente(email)){//se l'email è dello studente
             db.collection("studenti").document(email).set(user).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
+                         //   salvaInFile(nome,cognome);
                             context.startActivity(new Intent(context, ActivityPrimoAccessoLogin.class));
                             Log.d(TAG, email + " studente aggiunto con successo");
                         }
@@ -154,6 +157,16 @@ public class Utente {
                     });
         }
 
+    }
+
+    private void salvaInFile(String nome, String cognome){
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(NOME_COGNOME_STUD,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(INFO_STUD,nome);
+        editor.putString(INFO_STUD+"c",cognome);
+
+        editor.apply();
     }
 
     public void logOut(){

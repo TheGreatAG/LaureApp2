@@ -1,10 +1,13 @@
 package it.uniba.dib.sms2223.laureapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-public class Tesi {
+public class Tesi implements Parcelable {
 
     //AGGIUNGERE I TASK NEL COSTRUTTORE
 
@@ -44,6 +47,8 @@ public class Tesi {
         this.id = id;
     }
 
+
+
     public Tesi(String id,String titolo, String tipo, String descrizione, String ambito, String corsoDiLaurea, String dataPubblicazione,
                 int mediaRichiesta, int durata, Relatore relatore,
                 Corelatore corelatore, ArrayList<String> esamiRichiesti) {
@@ -65,6 +70,34 @@ public class Tesi {
     // Costruttore aggiunto
     public Tesi(String s, String s1, String s2, int i, int i1, Object o, Object o1, Object o2, Object o3, ETipoTesi compilativa) {
     }
+
+    protected Tesi(Parcel in) {
+        titolo = in.readString();
+        descrizione = in.readString();
+        dataPubblicazione = in.readString();
+        ambito = in.readString();
+        tipo = in.readString();
+        corsoDiLaurea = in.readString();
+        sRelatore = in.readString();
+        sCorelatore = in.readString();
+        studente = in.readString();
+        mediaRichiesta = in.readInt();
+        durata = in.readInt();
+        id = in.readString();
+        esamiRichiesti = in.createStringArrayList();
+    }
+
+    public static final Creator<Tesi> CREATOR = new Creator<Tesi>() {
+        @Override
+        public Tesi createFromParcel(Parcel in) {
+            return new Tesi(in);
+        }
+
+        @Override
+        public Tesi[] newArray(int size) {
+            return new Tesi[size];
+        }
+    };
 
     public String getTitolo() {
         return titolo;
@@ -109,6 +142,33 @@ public class Tesi {
     @NonNull
     @Override
     public String toString() {
-        return super.toString();
+        return "TITOLO TESI\n"+ titolo + "\nDESCRIZIONE\n"+ descrizione+
+        "\nDATA DI PUBBLICAZIONE\n"+ dataPubblicazione+ "\nAMBITO\n "+ambito +
+        "\nTIPO\n"+tipo + "\nCORSO DI LAUREA\n " +corsoDiLaurea +
+        "\nINFO RELATORE\n"+ sRelatore +"\nINFO CORELATORE\n"+sCorelatore+
+                "\nMEDIA VOTI RICHIESTA\n"+ mediaRichiesta +"\nTEMPO STIMATO DI LAVORO\n"+durata+
+                "\nESAMI RICHIESTI:\n"+ esamiRichiesti.toString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(titolo);
+        parcel.writeString(descrizione);
+        parcel.writeString(dataPubblicazione);
+        parcel.writeString(ambito);
+        parcel.writeString(tipo);
+        parcel.writeString(corsoDiLaurea);
+        parcel.writeString(sRelatore);
+        parcel.writeString(sCorelatore);
+        parcel.writeString(studente);
+        parcel.writeInt(mediaRichiesta);
+        parcel.writeInt(durata);
+        parcel.writeString(id);
+        parcel.writeStringList(esamiRichiesti);
     }
 }

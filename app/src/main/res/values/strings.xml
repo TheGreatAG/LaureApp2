@@ -65,7 +65,7 @@
     <string name="richieste">Richieste</string>
     <string name="propedeuticita">Propedeuticità</string>
     <string name="note_per_il_docente">Note per il docente</string>
-    <string name="rifiuta">Rifiuata</string>
+    <string name="rifiuta">Rifiuta</string>
     <string name="accetta">Accetta</string>
     <string name="aggiungi_task">Aggiungi task</string>
     <string name="descrizione_guida_task">"Aggiungi dei task alla tesi, potrai modificarli o eliminarli nella schermata di dettaglio della tesi. "</string>
@@ -90,6 +90,24 @@
     <string name="salva_tesi">Salva tesi</string>
     <string name="crea_task">Crea task</string>
     <string name="descrizione_no_tesi_assegnata">"Ancora non ti è stata assegnata una tesi, attendi \nl’approvazioni di un relatore oppure cerca una tesi "</string>
+    <string name="dettaglio_tesi">Dettaglio tesi</string>
+    <string name="tipologia_tesi">Tipologia tesi</string>
+    <string name="richiedi_tesi">Richiedi tesi</string>
+    <string name="votazione_consigliata">"Votazione consigliata: "</string>
+    <string name="invia_email">Invia email</string>
+    <string name="teasi_preferita_aggiunta">Tesi aggiunta nei preferiti</string>
+    <string name="Mostra_qr">Mostra QR</string>
+    <string name="Condividi_tesi">Condividi tesi</string>
+    <string name="condividi_con">Condividi con</string>
+    <string name="scansiona_qr">Scansiona il QR</string>
+    <string name="inserisci_info">Inserisci le tue informazioni</string>
+    <string name="seleziona_esami_convalidati">Seleziona quali tra questi esami hai già convalidato</string>
+    <string name="media_voti_attuale">Media voti attuale</string>
+    <string name="numero_di_esami_alla_laurea">Numero di esami alla laurea</string>
+    <string name="tesi_no_preferiti">Tesi eliminata dai preferiti</string>
+    <string name="txt_no_tesi_preferite">Non hai nessuna tesi preferita</string>
+    <string name="campi_richiesta_mancanti">Devi inserire la media dei tuoi voti \ne il numero di esami alla laurea</string>
+    <string name="richiesta_inviata">Richiesta inviata</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

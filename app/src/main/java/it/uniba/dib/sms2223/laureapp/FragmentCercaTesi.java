@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
@@ -51,6 +52,9 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
     private ArrayList<Tesi> listaTesi = new ArrayList<>();
     private Context context;
     private Universita universita;
+    private CustomAdapterList adapter;
+    ArrayList <Tesi> listaTesiPrecedenti;
+
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -146,17 +150,51 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         if (searchView != null) {
             searchView.setQueryHint(getString(R.string.titolo_tesi));
 
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    adapter.listaAnnunci = listaTesiPrecedenti;
+                    adapter.notifyDataSetChanged();
+                    return false;
+                }
+            });
+
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {//query è il testo inserito che per noi corrisponderà al titolo della tesi
                     Log.d("RICERCA", "cerca1 " + query); //quando si preme sul tasto "cerca" dopo aver inserito il testo
+
+
+                    ArrayList <Tesi> listaRisultatiRicercaTesi = new ArrayList<>();
+                    for (int i =0; i<adapter.listaAnnunci.size();i++){
+                        Tesi tesi = (Tesi)adapter.listaAnnunci.get(i);
+                        Log.d("BHM 1", query + " -> "+ tesi.titolo);
+                        String [] titoloTesi = tesi.titolo.split(" ");
+                        for (int j =0; j<titoloTesi.length; j++){
+                            if (query.equals(titoloTesi[j])){
+                                listaRisultatiRicercaTesi.add(tesi);
+                                Log.d("BHM 2", query + " -> "+ tesi.titolo);
+                            }
+                        }
+
+                    }
+                    adapter.listaAnnunci = listaRisultatiRicercaTesi;
+
+                    adapter.notifyDataSetChanged();
+                    //adapter.listaAnnunci = listaTesiPrecedenti;
 
                     return false;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    Log.d("RICERCA", "cerca2");
+                    Log.d("RICERCA", "cerca2 " + newText);
+                    if (newText.equals("")){
+                        adapter.listaAnnunci = listaTesiPrecedenti;
+                        adapter.notifyDataSetChanged();
+                    }
+                        Log.d("FGF"," no ricerca");
+
 
                     return false;
                 }
@@ -212,10 +250,9 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                 if (document.getString("corsoDiLaurea").equals("Corso di informatica")){//universita è nullo non funziona
 
                                     String id = document.getId();
-                                    Corelatore corelatore = null;
-                                    if (document.getString("corelatore") != null) {
-                                        String[] datiCorelatore = document.getString("corelatore").split(" ");
-                                        corelatore = new Corelatore(datiCorelatore[0], datiCorelatore[1], datiCorelatore[2]);
+                                    String corelatore = null;
+                                    if (!document.getString("sCorelatore").equals( "-- -- --")) {
+                                        corelatore = document.getString("sCorelatore");
                                     }
                                   // String corelatore = document.getString("corelatore");
                                    String corsoDiLaurea= document.getString("corsoDiLaurea");
@@ -225,14 +262,19 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                     ArrayList<String> li = new ArrayList<>();
                                     li = (ArrayList) document.get("esamiRichiesti");
                                     int mediaRichiesta= Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
-                                    String relatore= document.getString("relatore");
-                                    String studente= document.getString("studente");
+                                    String relatore= document.getString("sRelatore");
+
+                                    String studente= document.getString("studente");//fare il controllo su studente
+                                    // perchè se è null allora si mostra la tesi altrimenti vuol dire che è già stata assegnata e quindi non viene resa visibile
+
                                     String tipo= document.getString("tipo");
                                     String titolo= document.getString("titolo");
                                     String ambito = document.getString("ambito");
-
-                                    Tesi tesi = new Tesi(id,titolo,tipo,descrizione,ambito,corsoDiLaurea,dataPubblicazione,mediaRichiesta,durata,null,corelatore,li);
-                                    listaTesi.add(tesi);
+                                   // if (studente != null) {
+                                    Log.d("GBV",relatore);
+                                        Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
+                                        listaTesi.add(tesi);
+                                    //}
                                 }
                                 if (listaTesi.size()==0){
                                     img.setVisibility(View.VISIBLE);
@@ -243,7 +285,10 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                     img.setVisibility(View.GONE);
                                     txt.setVisibility(View.GONE);
                                     Log.d("tipo lista A",""+ GenericViewHolder.LISTA_TESI);
-                                    CustomAdapterList adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI, null);////////modificato con ultimo parametro
+                                   listaTesiPrecedenti= listaTesi;
+
+                                    adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI, null);////////modificato con ultimo parametro
+                                    Log.d("TGT", "num "+ adapter.getItemCount());
                                     recyclerView.setAdapter(adapter);
                                     //Log.d(TAG, document.getId() + " => " + document.getData());
                                 }
