@@ -1,6 +1,7 @@
 package it.uniba.dib.sms2223.laureapp.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
         this.listaElementi = listaElementi;
         this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
+        Log.d("HJH",""+this.listaElementi.size());
     }
 
     @NonNull

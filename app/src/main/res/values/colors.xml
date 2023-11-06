@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#EDF0F8</color>
@@ -24,6 +29,8 @@
 
     <color name="ripple_rosso">#CBA3A3</color>
     <color name="ripple_verde">#8EA788</color>
+
+    <color name="bottone_inattivo">#585858</color>
 
 
 

@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,12 +20,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import it.uniba.dib.sms2223.laureapp.ActivityCreaTask;
 import it.uniba.dib.sms2223.laureapp.CreaTesi;
 import it.uniba.dib.sms2223.laureapp.R;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
+import it.uniba.dib.sms2223.laureapp.model.Relatore;
 import it.uniba.dib.sms2223.laureapp.model.RichiestaTesi;
 import it.uniba.dib.sms2223.laureapp.model.Studente;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
@@ -96,6 +100,62 @@ public class GestioneTesi {
                         }
                     });
         }
+    }
+
+    public void assegnaTesi(Relatore relatore,Studente studente,RichiestaTesi richiestaTesi,
+                            CustomAdapterListDocente adpter,Context context){
+        // Ottieni un riferimento al documento da aggiornare
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection(ICostanti.COLLECTION_PROF)
+                .document(relatore.email).collection(ICostanti.COLLECTION_TESI)
+                .document(richiestaTesi.tesi.id);
+
+// Crea un oggetto Map con i campi da aggiornare
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("studente", studente.email);
+
+// Esegui l'aggiornamento sul documento
+        documentReference.update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // L'aggiornamento è avvenuto con successo
+                        Toast.makeText(context, context.getString(R.string.tesi_assegnata) ,Toast.LENGTH_SHORT).show();
+                        eliminaRichiesta(adpter,richiestaTesi,db);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Si è verificato un errore durante l'aggiornamento
+                    }
+                });
+
+    }
+
+    public void eliminaRichiesta(CustomAdapterListDocente adapter, RichiestaTesi richiestaTesi, FirebaseFirestore db){
+        String emailProf = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        db.collection(ICostanti.COLLECTION_PROF).document(emailProf).collection(ICostanti.COLLECTION_RICHIESTE)
+                .document(String.valueOf(richiestaTesi.id))
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        adapter.listaElementi.remove(richiestaTesi);
+                        adapter.notifyDataSetChanged();
+                        if (adapter.listaElementi.size()==0){
+
+                        }
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");//elimina la lista richieste dall'adaptere e aggiorna
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
     }
 
     public void modificaTesi(){}

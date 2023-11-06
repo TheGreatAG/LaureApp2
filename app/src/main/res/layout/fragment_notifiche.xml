@@ -7,9 +7,9 @@
     tools:context=".FragmentNotifiche">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -19,14 +19,26 @@
             app:title="@string/richieste"
             app:titleTextColor="@color/richiamo_azione"/>
 
+        <TextView
+            android:id="@+id/txt_no_richieste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:fontFamily="@font/roboto_bold"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:text="@string/no_richieste"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_richieste_tesi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margine_bordi_laterali"
             android:layout_marginStart="@dimen/margine_bordi_laterali"
+            android:visibility="visible"
+            android:layout_below="@+id/toolbar_notf_doc"
             tools:listitem="@layout/layout_lista_richieste_tesi"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>

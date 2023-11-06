@@ -1,10 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.LaureApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/richiamo_azione</item>
+        <item name="colorPrimaryDark">@color/background</item>
+        <item name="colorAccent">#000000</item>
+
         <!-- Customize your light theme here.  -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">@color/black</item> <!--è la causa dei drawable neri-->
-        <item name="colorPrimaryVariant">@color/rosso</item>
+        <!--<item name="colorPrimary">@color/black</item> --><!--è la causa dei drawable neri-->
+        <!--<item name="colorPrimaryVariant">@color/rosso</item>-->
         <!-- <item name="android:background">@color/background</item>  così facendo si risolvono i glitch sui buttons che erano dovuti a conflitti sul tema"-->
 
         <item name="android:colorBackground">@color/background</item> <!--sostituito il tag sopra perchè non impostava in modo automatico il colore di sfondo delle activity-->

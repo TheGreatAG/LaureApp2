@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,12 +21,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.model.Relatore;
 import it.uniba.dib.sms2223.laureapp.model.RichiestaTesi;
 import it.uniba.dib.sms2223.laureapp.model.Studente;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
@@ -93,6 +97,7 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
         View v = inflater.inflate(R.layout.fragment_notifiche, container, false);
 
         RecyclerView recyclerView = v.findViewById(R.id.lista_richieste_tesi);
+        TextView txtNoRichieste = v.findViewById(R.id.txt_no_richieste);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -103,12 +108,12 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
         ArrayList listaTesi = new ArrayList();
         ///listaTesi.add(new RichiestaTesi(null,null,null,null,0,null));
        /// listaTesi.add(new RichiestaTesi(null,null,null,null,0,null));
-        recuperaRichieste(recyclerView);
+        recuperaRichieste(recyclerView,txtNoRichieste);
 
         return v;
     }
 
-    private void recuperaRichieste(RecyclerView recyclerView){
+    private void recuperaRichieste(RecyclerView recyclerView, TextView txtNoRichieste){
         String emailProf = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -125,17 +130,24 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
 
 
                                 ArrayList<String> esamiStudente = (ArrayList)document.get("propedeuticita");
+                                Log.d("HJH 2",""+esamiStudente.size());
 
                                 String titolo = mapTesi.get("titolo").toString();
                                 String corsoDiLaurea = mapTesi.get("corsoDiLaurea").toString();
                                 String dataPubblicazione = mapTesi.get("dataPubblicazione").toString();
+                                String idTesi = mapTesi.get("id").toString();
 
                                 String sCorelatore = null;
                                 if (mapTesi.get("sCorelatore") != null) {
                                     sCorelatore = mapTesi.get("sCorelatore").toString();
                                 }
 
-                                ArrayList<String> esamiPropedeutici =(ArrayList) mapTesi.get("sCorelatore");
+
+                                ArrayList<String> esamiPropedeutici =(ArrayList) mapTesi.get("esamiRichiesti");
+                                Log.d("HJH 1",""+esamiPropedeutici.size());
+
+
+
                                 int mediaRichiesta = Integer.parseInt(mapTesi.get("mediaRichiesta").toString());
 
                                 String emailStudente = mapStudente.get("email").toString();
@@ -148,6 +160,12 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
                                 Studente stud = new Studente();
                                 stud.email = emailStudente;
 
+                                String infoRelatore [] = mapTesi.get("sRelatore").toString().split(" ");
+                                String nome = infoRelatore[0];
+                                String cognome = infoRelatore[1];
+                                String email = infoRelatore[2];
+                                Relatore relatore =  new Relatore(nome,cognome,email,null,null,null);
+
                                 Tesi tesi = new Tesi();
                                 tesi.titolo = titolo;
                                 tesi.corsoDiLaurea = corsoDiLaurea;
@@ -155,14 +173,23 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
                                 tesi.sCorelatore = sCorelatore;
                                 tesi.esamiRichiesti = esamiPropedeutici;
                                 tesi.mediaRichiesta = mediaRichiesta;
+                                tesi.relatore = relatore;
+                                tesi.id = idTesi;
+                                String id = document.getId();
+
 
                                 RichiestaTesi richiestaTesi = new RichiestaTesi(stud,tesi,notePerIlDocente,dataRichiesta,mediaVotiStudente,esamiMancanti,esamiStudente);
+                                richiestaTesi.id = id;
                                 listaRichieste.add(richiestaTesi);
 
                             }
-                            CustomAdapterListDocente adapterListDocente = new CustomAdapterListDocente(listaRichieste,context,
-                                    R.layout.layout_lista_richieste_tesi,GenericViewHolderDocente.LISTA_RICHIESTE_TESI,null);
-                            recyclerView.setAdapter(adapterListDocente);
+                            if (listaRichieste.size() ==0){
+                                txtNoRichieste.setVisibility(View.VISIBLE);
+                            }else {
+                                CustomAdapterListDocente adapterListDocente = new CustomAdapterListDocente(listaRichieste, context,
+                                        R.layout.layout_lista_richieste_tesi, GenericViewHolderDocente.LISTA_RICHIESTE_TESI, null);
+                                recyclerView.setAdapter(adapterListDocente);
+                            }
                         }
                     }
                 });

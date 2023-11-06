@@ -82,9 +82,16 @@ public class RichiestaTesiStudente extends AppCompatActivity {
             new Utile(this).condividiInfo(emailrelatore,getString(R.string.app_name) +": "+ tesi.titolo, ICostanti.INVIO_EMAIL,null);
         });
 
-        btnRichiedi.setOnClickListener(view -> {
+        if (tesi.studente !=null){
+            btnRichiedi.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottone_inattivo)));
+            btnRichiedi.setTextColor(ContextCompat.getColor(this, R.color.white));
+        }
 
-            inizializzaDialog(tesi,emailStudente).show();
+        btnRichiedi.setOnClickListener(view -> {
+            if (tesi.studente== null)
+                inizializzaDialog(tesi,emailStudente).show();
+            else
+                Toast.makeText(this,getString(R.string.tesi_assegnata),Toast.LENGTH_SHORT).show();
         });
 
 
