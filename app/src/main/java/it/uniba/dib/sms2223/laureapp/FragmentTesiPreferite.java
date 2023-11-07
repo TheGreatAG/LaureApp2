@@ -143,7 +143,8 @@ public class FragmentTesiPreferite extends Fragment implements ICostanti {
                                 // if (studente != null) {
                                 Log.d("GBV",relatore);
                                 Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
-                                tesi.studente = studente;
+                                Log.d("GTG 2",""+studente);
+
                                 listaTesi.add(tesi);
 
                             }

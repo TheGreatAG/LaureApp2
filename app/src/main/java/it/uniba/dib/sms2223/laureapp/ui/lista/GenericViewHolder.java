@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,21 +13,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import it.uniba.dib.sms2223.laureapp.R;
 import it.uniba.dib.sms2223.laureapp.RichiestaTesiStudente;
@@ -48,19 +57,20 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
     //TOLTI I PULSANTI MODIFICA ED ELIMINA DAGLI ANNUNCI PERSONALE, METTERE TALI FUNZIONI AL CLICK SULL'ANNUNCIO E ACCORCIARE LA DATA
     //DI CREAZIONE CHE APPARE SULL'ANNUNCIO DEL PROFILO PERSONALE
 
-    Button btnDaCompletare,btnInLavorazione,btnCompletato;
     private TextView txtTitoloTask,txtDescrizioneTask,txtUltimaModifica,txtTitoloTesi,txtNomeRelatore,txtEmailRelatore
-            ,txtCoRelatore,txtEmailCoRelatore,txtDescrizioneTesi;
+            ,txtCoRelatore,txtEmailCoRelatore,txtDescrizioneTesi,txtDataDomanda,txtDataRisposta,txtDomanda,txtRisposta;
 
     private Button btnRichiediTesi;
     private ImageButton btnPreferiti,btnCondividi;
     private final int tipoDilista;
     private RelativeLayout annuncio;
+    private LinearLayout lytRispostaDomanda;
     //private ViewGroup layoutAnnuncio;
 
     public static final int LISTA_1 = 50;//lista dei risultati
     public static final int LISTA_2 = 51;//lista profilo personale
 
+    protected MaterialButton btnDaCompletare,btnInLavorazione,btnCompletato;
     public static final int LISTA_DOMANDE_RISPOSTE_LATO_STUD = 52;//lista profilo personale
     public static final int LISTA_TESI = 54;//lista tesi disponibili
 
@@ -68,12 +78,17 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
 
     public GenericViewHolder(@NonNull View view, int tipoDiLista) {
         super(view);
-        //QUA METTERE GLI IF PER CONTROLLARE IL TIPO DI LISTA E IN BASE A QUESTO INIZIALIZZARE LE VIEW CORRISPONDENTI CON FINDVIEWBYID()
-
         this.tipoDilista = tipoDiLista; //se la lista dei task del prof o dello studente
-        txtTitoloTask = view.findViewById(R.id.txt_titolo_task);
-        txtDescrizioneTask = view.findViewById(R.id.txt_descrizione_task);
-        txtUltimaModifica = view.findViewById(R.id.txt_data_ultima_modifica);
+
+        //QUA METTERE GLI IF PER CONTROLLARE IL TIPO DI LISTA E IN BASE A QUESTO INIZIALIZZARE LE VIEW CORRISPONDENTI CON FINDVIEWBYID()
+        if (tipoDiLista == LISTA_2) {
+            txtTitoloTask = view.findViewById(R.id.txt_titolo_task);
+            txtDescrizioneTask = view.findViewById(R.id.txt_descrizione_task);
+            txtUltimaModifica = view.findViewById(R.id.txt_data_ultima_modifica);
+            btnDaCompletare = view.findViewById(R.id.btn_da_completare);
+            btnInLavorazione = view.findViewById(R.id.btn_in_lavorazione);
+            btnCompletato = view.findViewById(R.id.btn_completato);
+        }
         if (tipoDiLista == LISTA_TESI || tipoDiLista == LISTA_TESI_PREFERITE){
             txtTitoloTesi = view.findViewById(R.id.txt_titolo_tesi);
             txtNomeRelatore = view.findViewById(R.id.txt_nome_relatore);
@@ -85,19 +100,17 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
             btnPreferiti = view.findViewById(R.id.btn_preferito);
             btnCondividi = view.findViewById(R.id.btn_condividi_info_tesi);
         }
+        if (tipoDiLista == LISTA_DOMANDE_RISPOSTE_LATO_STUD){
+            txtTitoloTask = view.findViewById(R.id.txt_num_task);
+            txtDataDomanda = view.findViewById(R.id.txt_data_domanda);
+            txtDataRisposta = view.findViewById(R.id.txt_data_risposta);
+            txtDomanda = view.findViewById(R.id.txt_domanda);
+            txtRisposta = view.findViewById(R.id.txt_risposta);
+            lytRispostaDomanda = view.findViewById(R.id.lyt_risposta);
 
-        //corso = view.findViewById(R.id.corso_annuncio_txt_lista);
-        //dipartimento = view.findViewById(R.id.dipartimento_annuncio_txt_lista);
 
-        //REFERENZIARE GLI ELEMENTI DELLA LISTA CON CUI INTERAGIRE
-      /*
-        if (tipoDiLista == LISTA_1) {
-            iconaApp = view.findViewById(R.id.img_app);
         }
-        else if (tipoDiLista == LISTA_2) {
-            btnEliminaAnnuncio = view.findViewById(R.id.btn_elimina);
-            btnModificaAnnuncio = view.findViewById(R.id.btn_modifica);
-        }*/
+
     }
 
     /**
@@ -105,28 +118,79 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
      * con i vari listener per i vari bottoni presenti sugli elementi della lista
      * @param task Oggetto task su cui prelevare i dati
      * @param context
-     * @param listaAnnunci ArrayList contenenti i task
      * @param adapter l'adapter da assegnare per la vista della ReciclerView
      * @param posizione un intero per indicare la posizione corrente dell'elemento nella lista
-     * @param fragmentAdapter di tipo FragmentAdapter serve per aggiornare i dati, ovvero il numero di annunci presenti
-     *                        nel TabLayoutMediator presente nella classe HomeFragment
+
      */
 
-    public void setView(Task task, Context context, ArrayList<Task> listaAnnunci,
-                        CustomAdapterList adapter, int posizione, FragmentAdapter fragmentAdapter){
+    public void setView(Task task, Context context,
+                        CustomAdapterList adapter, int posizione, Tesi tesi){
 
         txtTitoloTask.setText(task.titolo);
         txtDescrizioneTask.setText(task.descrizione);
-        txtUltimaModifica.setText(task.ultimaModifica);
+        txtUltimaModifica.setText(context.getString(R.string.ultima_modifica) + " " +task.ultimaModifica);
+
+        if (task.stato.equals(TASK_DA_COMPLETARE)){
+            btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_da_completare)));
+            btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.white));
+        } else if (task.stato.equals(TASK_IN_LAVORAZIONE)){
+            btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione)));
+            btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.white));
+        } else if(task.stato.equals(TASK_COMPLETATO)){
+            btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_completato)));
+            btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+        }
+
+        btnDaCompletare.setOnClickListener(view -> {
+            impostaStatoTask(task,TASK_DA_COMPLETARE,tesi,txtUltimaModifica,context);
+            btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_da_completare)));
+            btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+            btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+            btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione));
+            btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+            btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.testo_task_completato));
+
+        });
+
+        btnInLavorazione.setOnClickListener(view -> {
+            impostaStatoTask(task,TASK_IN_LAVORAZIONE,tesi,txtUltimaModifica,context);
+
+            btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione)));
+            btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+            btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+            btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.testo_task_da_completare));
+            btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+            btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.testo_task_completato));
+        });
+
+        btnCompletato.setOnClickListener(view -> {
+            impostaStatoTask(task,TASK_COMPLETATO,tesi,txtUltimaModifica,context);
+
+            btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_completato)));
+            btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+            btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+            btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione));
+            btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+            btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.testo_task_da_completare));
+        });
 
     }
 
     public void setView(Domanda domanda, Context context, ArrayList listaDomande,
                         CustomAdapterList adapter, int posizione, FragmentAdapter fragmentAdapter){
-//inserire qui i valori da inizializzare nell'elenco della lista
-       // txtTitoloTask.setText(task.titolo);
-        //txtDescrizioneTask.setText(task.descrizione);
-        //txtUltimaModifica.setText(task.ultimaModifica);
+        txtTitoloTask.setText("Task: " + domanda.titoloTask);
+        txtDataDomanda.setText(domanda.dataDomanda);
+        txtDomanda.setText(domanda.domanda);
+
+        if (domanda.risposta != null) {
+            lytRispostaDomanda.setVisibility(View.VISIBLE);
+            txtDataRisposta.setText(domanda.dataRisposta);
+            txtRisposta.setText(domanda.risposta);
+        }
 
     }
 
@@ -252,6 +316,38 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
                 return false;
             }
         });
+    }
+
+    public void impostaStatoTask(Task task,String stato,Tesi tesi,TextView txtUltimaModifica,Context context){
+
+        Log.d("ASD", COLLECTION_PROF + " "+ tesi.relatore.email+" "+COLLECTION_TESI+" "+tesi.id+ " " +COLLECTION_TASK+ " "+ task.id);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection(ICostanti.COLLECTION_PROF)
+                .document(tesi.relatore.email).collection(ICostanti.COLLECTION_TESI)
+                .document(tesi.id).collection(COLLECTION_TASK).document(task.id);
+
+        Date dataCorrente = new Date();
+        SimpleDateFormat formatoData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String ultimaModifica = formatoData.format(dataCorrente);
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("stato", stato);
+        updates.put("ultimaModifica", ultimaModifica);
+
+// Esegui l'aggiornamento sul documento
+        documentReference.update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        txtUltimaModifica.setText(context.getString(R.string.ultima_modifica) + " " +ultimaModifica);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Si è verificato un errore durante l'aggiornamento
+                    }
+                });
     }
 
 

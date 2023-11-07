@@ -42,7 +42,7 @@ public class MainActivityStudente extends AppCompatActivity {
 
 
             if (item.getItemId() != R.id.btn_nvg_preferiti && item.getItemId() != R.id.btn_nvg_cerca) {
-                Toast.makeText(this, "sei nella Home", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "sei nella Home", Toast.LENGTH_SHORT).show();
 
                 cambiaFragment(fragmentManager, new FragmentHomeStudente(), null);
 
@@ -50,12 +50,12 @@ public class MainActivityStudente extends AppCompatActivity {
 
                 cambiaFragment(fragmentManager, new FragmentTesiPreferite(), null);
 
-                Toast.makeText(this, "hai premuto Preferiti", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "hai premuto Preferiti", Toast.LENGTH_SHORT).show();
             } else if (item.getItemId() == R.id.btn_nvg_cerca) {
 
                 cambiaFragment(fragmentManager, new FragmentCercaTesi(), null);
 
-                Toast.makeText(this, "hai premuto cerca", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "hai premuto cerca", Toast.LENGTH_SHORT).show();
             }
             return true;
         });

@@ -9,6 +9,12 @@ public interface ICostanti {
     int INVIO_EMAIL = 22;
     int INVIO_TESTO =23;
 
+    String COLLECTION_TASK ="TASK";
+    String TASK_DA_COMPLETARE= "da completare";
+    String TASK_IN_LAVORAZIONE="in lavorazione";
+    String TASK_COMPLETATO = "completato";
+    String COLLECTION_DOMANDE_TASK = "DOMANDE TASK";
+
     String COLLECTION_PROF = "professori";
     String COLLECTION_RICHIESTE = "richieste";
     String COLLECTION_TESI = "Tesi";

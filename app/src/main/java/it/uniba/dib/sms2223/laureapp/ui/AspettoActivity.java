@@ -8,6 +8,8 @@ import android.view.Window;
 
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.button.MaterialButton;
+
 public class AspettoActivity {
 
     private Context context;
@@ -39,6 +41,7 @@ public class AspettoActivity {
                 decor.setSystemUiVisibility(0);//imposta il colore delle icone della status bar di bianco
             }
         }
+
         //---- NOTE
         // clear FLAG_TRANSLUCENT_STATUS flag:
         //  window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

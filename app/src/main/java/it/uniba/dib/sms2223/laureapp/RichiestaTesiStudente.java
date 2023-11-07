@@ -40,7 +40,9 @@ import it.uniba.dib.sms2223.laureapp.model.Studente;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.utils.QRCodeGenerator;
 
-public class RichiestaTesiStudente extends AppCompatActivity {
+public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema che se la tesi viene salvata nei preferiti si crea una copia di quella tesi al momento di quando era disponibile e non si
+    //aggiorna le il prof la assegna, risultando cosi sempre disponibile e lo studente che l'aveva nei preferiti può farne richiesta
+    //anche se la tesi è stata già assegnata*********************************************--------------------------
 
     TextView txtTitoloTesi,txtCorsoDiLaurea, txtTipologiaTesi, txtRelatore
             ,txtCorelatore, txtDescrizione, txtVotazioneConsigliata,txtTempoRichiesto;
@@ -82,6 +84,7 @@ public class RichiestaTesiStudente extends AppCompatActivity {
             new Utile(this).condividiInfo(emailrelatore,getString(R.string.app_name) +": "+ tesi.titolo, ICostanti.INVIO_EMAIL,null);
         });
 
+        Log.d("GTG",""+tesi.studente);
         if (tesi.studente !=null){
             btnRichiedi.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottone_inattivo)));
             btnRichiedi.setTextColor(ContextCompat.getColor(this, R.color.white));
@@ -203,6 +206,7 @@ public class RichiestaTesiStudente extends AppCompatActivity {
         }
         return customDialog;
     }
+
 
 
 }

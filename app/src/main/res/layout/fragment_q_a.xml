@@ -6,15 +6,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FragmentQA">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:indeterminateTint="@color/viola"/>
+
+    <TextView
+        android:id="@+id/txt_no_domande_presenti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="@string/no_domande_presenti"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lista"
-        android:paddingBottom="50dp"
-        android:clipToPadding="false"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        android:paddingBottom="50dp"
+        android:visibility="gone"
         tools:listitem="@layout/layout_lista_domande" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

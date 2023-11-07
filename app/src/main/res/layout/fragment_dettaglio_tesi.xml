@@ -68,7 +68,7 @@
             android:id="@+id/lyt_txt_relatore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <TextView
@@ -88,13 +88,22 @@
             <!--                android:contentDescription="Richiedi ricevimento"
             serve per gli screen reader usati dai non vedenti, descrive l'azione di un elemento-->
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_invio_email_ricevimento1"
-                android:layout_width="35dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/richiedi_ricevimento"
-                android:background="@drawable/ic_invio_email"
+                app:icon="@drawable/ic_invio_email"
+                app:iconGravity="textStart"
+                android:text="contatta"
+                android:backgroundTint="@color/background"
+                app:strokeColor="@color/richiamo_azione"
+                app:rippleColor="@color/ripple_color"
+                app:strokeWidth="1dp"
+                android:textColor="@color/richiamo_azione"
+                app:iconTint="@color/richiamo_azione"
+                android:paddingHorizontal="15dp"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
@@ -120,13 +129,22 @@
                 android:layout_below="@id/t2"
                 android:textSize="20sp"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_invio_email_ricevimento2"
-                android:layout_width="35dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/richiedi_ricevimento"
-                android:background="@drawable/ic_invio_email"
+                app:icon="@drawable/ic_invio_email"
+                app:iconGravity="textStart"
+                android:text="contatta"
+                android:backgroundTint="@color/background"
+                app:strokeColor="@color/richiamo_azione"
+                app:rippleColor="@color/ripple_color"
+                app:strokeWidth="1dp"
+                android:textColor="@color/richiamo_azione"
+                app:iconTint="@color/richiamo_azione"
+                android:paddingHorizontal="15dp"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>

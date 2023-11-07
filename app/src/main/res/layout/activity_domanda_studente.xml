@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,12 +15,22 @@
         app:title="Domanda"
         app:titleTextColor="@color/richiamo_azione"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:indeterminateTint="@color/ripple_verde"/>
+
     <LinearLayout
         android:id="@+id/lyt_contenitore1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="15dp"
+        android:visibility="gone"
         android:layout_marginStart="@dimen/margine_bordi_laterali"
         android:layout_marginEnd="@dimen/margine_bordi_laterali">
 
@@ -29,23 +39,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Invia a: Robe Trt"
-            android:textSize="16sp"
+            android:textSize="17sp"
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/inserisci_qui_domanda_task"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/seleziona_task"/>
 
         <Spinner
             android:id="@+id/spn_selezionaTask"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"/>
+           />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edt_email"
+            android:id="@+id/edt_domanda"
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
+                android:id="@+id/etDomanda"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:hint="@string/scrivi_domanda"
@@ -71,4 +93,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

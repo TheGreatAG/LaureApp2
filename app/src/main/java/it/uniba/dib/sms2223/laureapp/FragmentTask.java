@@ -13,12 +13,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.model.Task;
+import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
@@ -27,7 +35,7 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
  * Use the {@link FragmentTask#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentTask extends Fragment {
+public class FragmentTask extends Fragment implements ICostanti {
 
     private Context context;
 
@@ -36,10 +44,6 @@ public class FragmentTask extends Fragment {
     CustomAdapterList adapter;
 
     FragmentAdapter fragmentAdapter;
-
-
-
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -56,14 +60,16 @@ public class FragmentTask extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Tesi tesi;
 
     public FragmentTask() {
         // Required empty public constructor
     }
 
-    public FragmentTask(ArrayList <Task> listaTask, FragmentAdapter fragmentAdapter) {
+    public FragmentTask(Tesi tesi, FragmentAdapter fragmentAdapter) {
         this.fragmentAdapter = fragmentAdapter;
-        this.listaTask = listaTask;
+        //this.listaTask = listaTask;
+        this.tesi = tesi;
 
     }
 
@@ -101,6 +107,7 @@ public class FragmentTask extends Fragment {
         View v = inflater.inflate(R.layout.fragment_task, container, false);
 
         RecyclerView lista = v.findViewById(R.id.lista);
+        TextView txtTaskDaCompletare = v.findViewById(R.id.txt_num_task);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getParentFragment().getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -108,11 +115,43 @@ public class FragmentTask extends Fragment {
         lista.setLayoutManager(layoutManager);//una recycler view deve avere per forza un layout manager
         lista.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT-150));
 
-
-        adapter = new CustomAdapterList(listaTask, context, R.layout.layout_lista_task, GenericViewHolder.LISTA_2,fragmentAdapter);
-        lista.setAdapter(adapter);
+        Log.d("GYG",""+tesi.id);
+        recuperaInizializzaListaTask(tesi,lista,txtTaskDaCompletare);
 
         return v;
+    }
+
+    private void recuperaInizializzaListaTask(Tesi tesi,RecyclerView recyclerView,TextView txtTaskDaCompletare){
+        Log.d("GYG 2",""+tesi.id);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(COLLECTION_PROF).document(tesi.relatore.email).
+                collection(COLLECTION_TESI).document(tesi.id).collection(COLLECTION_TASK)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<Task> listaTask = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String descrizione=document.getString("descrizione");
+                                String id=document.getId();
+                                String stato=document.getString("stato");
+                                String titolo=document.getString("titolo");
+                                String ultimaModifica=document.getString("ultimaModifica");
+                                Task task1 = new Task(id,titolo,descrizione,ultimaModifica,stato);
+                                listaTask.add(task1);
+                            }
+                            Log.d("GYG 3",""+listaTask.size());
+
+                            txtTaskDaCompletare.setText(context.getString(R.string.task_da_completare)+ " "+ listaTask.size());
+                            CustomAdapterList adapter = new CustomAdapterList(listaTask, context, R.layout.layout_lista_task
+                                    , GenericViewHolder.LISTA_2,null,tesi);
+                            recyclerView.setAdapter(adapter);
+
+                        }
+                    }
+                });
     }
 
 

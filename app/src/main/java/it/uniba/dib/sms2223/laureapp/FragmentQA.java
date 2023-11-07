@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,14 +16,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.model.Domanda;
+import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
@@ -31,7 +41,7 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
  * Use the {@link FragmentQA#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentQA extends Fragment {
+public class FragmentQA extends Fragment implements ICostanti {
 
     private Context context;
 
@@ -50,6 +60,8 @@ public class FragmentQA extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Tesi tesi;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -62,9 +74,9 @@ public class FragmentQA extends Fragment {
         // Required empty public constructor
     }
 
-    public FragmentQA(ArrayList<Domanda> listaDomande, FragmentAdapter fragmentAdapter){
-        this.fragmentAdapter = fragmentAdapter;
-        this.listaDomande = listaDomande;
+    public FragmentQA(Tesi tesi){
+        this.tesi = tesi;
+        this.listaDomande = new ArrayList<>();
 
     }
 
@@ -98,14 +110,22 @@ public class FragmentQA extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_q_a, container, false);
+
+        return inflater.inflate(R.layout.fragment_q_a, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+
 
         RecyclerView lista = v.findViewById(R.id.lista);
         FloatingActionButton fab = v.findViewById(R.id.fab);
+        ProgressBar progressBar = v.findViewById(R.id.progressBar);
+        TextView txtNoDomnde = v.findViewById(R.id.txt_no_domande_presenti);
 
         fab.setOnClickListener(view -> {
-            startActivity(new Intent(getContext(),DomandaStudente.class));
+            startActivity(new Intent(getContext(),DomandaStudente.class).putExtra("Tesi",tesi));
         });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getParentFragment().getContext());
@@ -114,16 +134,48 @@ public class FragmentQA extends Fragment {
         lista.setLayoutManager(layoutManager);//una recycler view deve avere per forza un layout manager
         lista.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT-150));
 
-      /*  VolleyPost volleyPost = new VolleyPost(context);
+        recuperaDomande(tesi,lista,progressBar,txtNoDomnde);
+    }
 
-        // ----- RECUPERARE TUTTI GLI ANNUNCI ALL'APERTURA DELL'APP FACENDO ATTENDERE CON UNA SPLAH SCREEN
-        ///// ---------------------- modificare la stringa dell'email in modo che la recuperi in automatico è solo per  PROVA ------
-        //Verificare perchè l'email ha la prima lettera maiuscola NON DEVE ESISTERE DA NESSUNA PARTE !!!!!!!!!!!!!!!!!
-        volleyPost.getAnnunciUtente(Account.ottieniEmail(context).toLowerCase(),null,lista); -*-*-*-*-*-*-*-*TOGLI QUESTO COMMENTO SE NON FUNZIONA*/
-        adapter = new CustomAdapterList(listaDomande, context, R.layout.layout_lista_domande, GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD,fragmentAdapter);
-        lista.setAdapter(adapter);
+    private void recuperaDomande(Tesi tesi, RecyclerView recyclerView,ProgressBar progressBar,TextView txtNoDomande){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(COLLECTION_PROF).document(tesi.relatore.email).collection(COLLECTION_TESI)
+                .document(tesi.id).collection(COLLECTION_DOMANDE_TASK)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<Domanda> listaDomande = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {//recupero le domande
 
-        return v;
+                                String dataDomanda = document.getString("dataDomanda");
+                                String dataRisposta = document.getString("dataRisposta");
+                                String domanda = document.getString("domanda");
+                                String id = document.getId();
+                                String idTask = document.getString("idTask");
+                                String risposta = document.getString("risposta");
+                                String titoloTask = document.getString("titoloTask");
+
+                                Domanda domanda1 = new Domanda(dataDomanda,dataRisposta,domanda,risposta,titoloTask,idTask,id);
+                                listaDomande.add(domanda1);
+
+                            }
+                            progressBar.setVisibility(View.GONE);
+
+                            if (listaDomande.size()==0){
+                                txtNoDomande.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                            } else {
+                                txtNoDomande.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                CustomAdapterList adapter = new CustomAdapterList(listaDomande, context, R.layout.layout_lista_domande, GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD, null);
+                                recyclerView.setAdapter(adapter);
+                            }
+
+                        }
+                    }
+                });
     }
 
 

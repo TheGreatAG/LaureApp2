@@ -2,11 +2,21 @@ package it.uniba.dib.sms2223.laureapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.google.android.material.button.MaterialButton;
+
+import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,8 +34,14 @@ public class FragmentDettaglioTesi extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Tesi tesi;
+
     public FragmentDettaglioTesi() {
         // Required empty public constructor
+    }
+
+    public FragmentDettaglioTesi(Tesi tesi){
+        this.tesi = tesi;
     }
 
     /**
@@ -49,16 +65,53 @@ public class FragmentDettaglioTesi extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
+            tesi = getArguments().getParcelable("tesi");
+            // Fai qualcosa con l'oggetto Parcelable ricevuto
+        }
+
+        /*if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        }*/
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater vi, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dettaglio_tesi, container, false);
+        return vi.inflate(R.layout.fragment_dettaglio_tesi, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+
+        TextView txtTitoloTesi = v.findViewById(R.id.txt_titolo_tesi);
+        ImageView imgStatoTesi = v.findViewById(R.id.img_stato_tesi);
+        TextView txtStatoTesi = v.findViewById(R.id.txt_stato_tesi);
+        TextView txtTipoTesi = v.findViewById(R.id.txt_tipo_tesi);
+        TextView txtNomeRelatore = v.findViewById(R.id.txt_nome_relatore);
+        TextView txtNomeCorelatore = v.findViewById(R.id.txt_nome_corelatore);
+        MaterialButton btnInvioEmailRicevimento1 = v.findViewById(R.id.btn_invio_email_ricevimento1);
+        MaterialButton btnInvioEmailRicevimento2 = v.findViewById(R.id.btn_invio_email_ricevimento2);
+        TextView txtDescrizioneTesi = v.findViewById(R.id.txt_descrizione_tesi);
+        TextView txtNomeFile = v.findViewById(R.id.txt_nome_file);
+        MaterialButton btnCaricaTesi = v.findViewById(R.id.btn_carica_tesi);
+        Button btnInvioTesi = v.findViewById(R.id.btn_invio_tesi);
+
+        RelativeLayout lytTxtCorelatore = v.findViewById(R.id.lyt_txt_corelatore);
+
+        txtTitoloTesi.setText(tesi.titolo);
+        txtTipoTesi.setText(tesi.tipo);
+        txtNomeRelatore.setText(tesi.relatore.nome + " " + tesi.relatore.cognome);
+
+        if (tesi.corelatore == null)
+            lytTxtCorelatore.setVisibility(View.GONE);
+        else
+            txtNomeCorelatore.setText(tesi.corelatore.nome + " "+ tesi.corelatore.cognome);
+
+        txtDescrizioneTesi.setText(tesi.descrizione);
     }
 }

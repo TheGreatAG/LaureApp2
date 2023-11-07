@@ -26,6 +26,7 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
     private int layoutLista;
     private int tipoDiLista;  //flag per capire se la lista è lato prof o studente
     private FragmentAdapter fragmentAdapter;///
+    private Tesi tesi;
 
     public CustomAdapterList(final ArrayList listaAnnunci, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
         this.context = context;
@@ -33,6 +34,18 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
         this.listaAnnunci = listaAnnunci;
         this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
+        Log.d("tipo lista B",""+ tipoDiLista);
+
+    }
+
+    public CustomAdapterList(final ArrayList listaAnnunci, Context context,
+                             int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter,Tesi tesi){//
+        this.context = context;
+        this.layoutLista = layoutLista;
+        this.listaAnnunci = listaAnnunci;
+        this.tipoDiLista = tipoDiLista;  //decommenta
+        this.fragmentAdapter = fragmentAdapter;
+        this.tesi = tesi;
         Log.d("tipo lista B",""+ tipoDiLista);
 
     }
@@ -49,7 +62,7 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull GenericViewHolder holder, int position) {
         if (tipoDiLista == GenericViewHolder.LISTA_2)
-            holder.setView((Task) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
+            holder.setView((Task) listaAnnunci.get(position),context,this,position,tesi);
         else if (tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD) {
             holder.setView((Domanda) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
         } else if (tipoDiLista == ICostanti.LISTA_TESI_PREFERITE) {
