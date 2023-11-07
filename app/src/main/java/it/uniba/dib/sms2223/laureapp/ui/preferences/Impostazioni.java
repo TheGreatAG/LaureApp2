@@ -43,13 +43,6 @@ public class Impostazioni extends PreferenceFragmentCompat {
                 return false;
             }
         });
-        findPreference("elimina_profilo").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {
-                Toast.makeText(getContext(),"88888",Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
         findPreference("esci").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(@NonNull Preference preference) {

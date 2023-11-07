@@ -42,10 +42,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
+import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.model.Professore;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
-public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml con i giusti spazi tra gli elementi
+public class CreaTesi extends AppCompatActivity implements ICostanti { //da sistemare la parte xml con i giusti spazi tra gli elementi
     // -------------------------------------------- NELLA CREAZIONE TESI INSERIRE NOME E COGNOME DEL PROF, EMAIL E LO STESSO PER CORELATORE, SERVE per creare l'istanza Tesi da passare al GenericViewHolder e impostare le TextView correttamente
     String emailProfessore;
     CheckBox[] checkBoxes;
@@ -202,6 +203,7 @@ public class CreaTesi extends AppCompatActivity { //da sistemare la parte xml co
                 String dataPubblicazione = formatoData.format(dataCorrente);
                 String relatore = nomeProf +" "+cognomeProf + " " + emailProfessore;
                 Tesi tesi = new Tesi(null, titolo, tipoTesi, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, esamiRichiesti);
+                tesi.stato = STATO_TESI_DA_CONSEGNARE;
                 Log.d("ASD 1", tesi.sCorelatore);
                 FirebaseFirestore db1 = FirebaseFirestore.getInstance();
 

@@ -110,7 +110,7 @@
     <string name="richiesta_inviata">Richiesta inviata</string>
     <string name="tesi_assegnata">Tesi assegnata</string>
     <string name="no_richieste">Non ci sono richieste da soddisfare</string>
-    <string name="task_da_completare">Task da completare</string>
+    <string name="task_da_completare">Task da svolgere</string>
     <string name="ultima_modifica">Ultima modifica</string>
     <string name="inserisci_qui_domanda_task">inserisci qui una domanda da fare al tuo relatore riguardo un task</string>
     <string name="seleziona_task">Seleziona task</string>
@@ -118,6 +118,7 @@
     <string name="domanda_inviata">Domanda inviata correttamente</string>
     <string name="errore_domanda_inviata">DOmanda non inviata. Riprova</string>
     <string name="no_domande_presenti">Non ci sono domande da visualizzare</string>
+    <string name="attendi_la_revisione">Attendi la revisione ...</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

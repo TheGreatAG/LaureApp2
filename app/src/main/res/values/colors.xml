@@ -18,6 +18,7 @@
     <color name="trasparente">#00FFFFFF</color>
 
     <color name="ripple_color">#AAB7DA</color>
+    <color name="ripple_color_2">#A3AAB7DA</color>
 
     <color name="drawable_add">#AAB7DA</color>
 

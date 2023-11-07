@@ -24,14 +24,6 @@
             app:iconSpaceReserved="false"/>
 
         <Preference
-            android:key="elimina_profilo"
-            app:fragment=""
-            android:title="@string/elimina_profilo"
-            android:summary="@string/descrizione_elimina_profl"
-            app:iconSpaceReserved="false"
-            />
-
-        <Preference
             android:key="esci"
             android:title="@string/logout"
             android:summary="@string/descrizione_esci"

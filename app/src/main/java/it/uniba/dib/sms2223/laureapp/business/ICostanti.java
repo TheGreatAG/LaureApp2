@@ -24,4 +24,9 @@ public interface ICostanti {
     String PRIMO_ACCESSO_DOCENTE = "primo doc";
     String PRIMOACCESSO_STUDENTE = "primo stud";
 
+    String STATO_TESI_DA_CONSEGNARE= "Da consegnare";
+    String STATO_TESI_CONSEGNATA = "Consegnata";
+    String STATO_TESI_APPROVATA = "Approvata";
+    String STATO_TESI_RIGETTATA = "Rigettata";
+
 }

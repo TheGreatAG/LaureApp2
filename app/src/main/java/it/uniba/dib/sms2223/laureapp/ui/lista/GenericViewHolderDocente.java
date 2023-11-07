@@ -118,7 +118,7 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
         txtData.setText(tesi.dataPubblicazione);
         txtTitoloTesi.setText(tesi.titolo);
         txtCorsoDiLaurea.setText(tesi.corsoDiLaurea);
-        txtCorelatore.setText(tesi.sCorelatore);
+        txtCorelatore.setText(tesi.corelatore.nome + " " + tesi.corelatore.cognome);
         txtTipoTesi.setText(tesi.tipo);
         txtTaskDaSvolgere.setText(String.valueOf(tesi.esamiRichiesti.size()));//passare un array di task
         txtDescrizione.setText(tesi.descrizione);

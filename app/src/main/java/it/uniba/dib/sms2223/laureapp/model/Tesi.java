@@ -19,6 +19,7 @@ public class Tesi implements Parcelable {
 
     public Relatore relatore;
     public Corelatore corelatore;
+    public String stato;
 
 
     public Tesi() {
@@ -85,6 +86,7 @@ public class Tesi implements Parcelable {
         durata = in.readInt();
         id = in.readString();
         esamiRichiesti = in.createStringArrayList();
+        stato = in.readString();
     }
 
     public static final Creator<Tesi> CREATOR = new Creator<Tesi>() {
@@ -170,5 +172,6 @@ public class Tesi implements Parcelable {
         parcel.writeInt(durata);
         parcel.writeString(id);
         parcel.writeStringList(esamiRichiesti);
+        parcel.writeString(stato);
     }
 }

@@ -39,6 +39,8 @@ import java.util.Map;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
 import it.uniba.dib.sms2223.laureapp.business.Utile;
+import it.uniba.dib.sms2223.laureapp.model.Corelatore;
+import it.uniba.dib.sms2223.laureapp.model.Relatore;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
@@ -183,11 +185,14 @@ public class FragmentHomeDocente extends Fragment {
                                 String dataPubblicazione = document.get("dataPubblicazione").toString();
                                 int mediaVoti = Integer.parseInt(document.get("mediaRichiesta").toString());
                                 int durata = Integer.parseInt(document.get("durata").toString());
-                                String relatore = null;
-                                String corelatore = null;
+                                Relatore relatore = null;
+                                Corelatore corelatore = null;
                                 try {
-                                    relatore = document.get("relatore").toString();
-                                    corelatore = document.get("corelatore").toString();
+                                    String [] infoRelatore = document.getString("sRelatore").split(" ");
+                                    String [] infoCorelatore = document.getString("sCorelatore").split(" ");
+
+                                    relatore = new Relatore(infoRelatore[0],infoRelatore[1],infoRelatore[2],null,null,null);
+                                    corelatore = new Corelatore(infoCorelatore[0],infoCorelatore[1],infoCorelatore[2]);
                                 } catch (NullPointerException e){
                                     e.printStackTrace();
                                 }

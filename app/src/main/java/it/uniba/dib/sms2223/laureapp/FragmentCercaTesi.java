@@ -263,7 +263,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                     li = (ArrayList) document.get("esamiRichiesti");
                                     int mediaRichiesta= Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
                                     String relatore= document.getString("sRelatore");
-
+                                    String stato =document.getString("stato");
                                     String studente= document.getString("studente");//fare il controllo su studente
                                     // perchè se è null allora si mostra la tesi altrimenti vuol dire che è già stata assegnata e quindi non viene resa visibile
 
@@ -273,6 +273,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                     if (studente == null) {
                                     Log.d("GBV",relatore);
                                         Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
+                                        tesi.stato = stato;
                                         listaTesi.add(tesi);
                                     }
                                 }

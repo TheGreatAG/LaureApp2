@@ -185,6 +185,7 @@ public class FragmentHomeStudente extends Fragment {
                                         String tipo = document.getString("tipo");
                                         String titolo = document.getString("titolo");
                                         String ambito = document.getString("ambito");
+                                        String stato = document.getString("stato");
 
                                         Relatore relatore = null;
                                         if (document.getString("sRelatore") != null) {
@@ -194,6 +195,7 @@ public class FragmentHomeStudente extends Fragment {
 
                                         tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
                                         tesi.studente = studente;
+                                        tesi.stato = stato;
                                         tesi.sRelatore = document.getString("sRelatore");
                                         tesi.sCorelatore = document.getString("sCorelatore");
 
