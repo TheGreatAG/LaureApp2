@@ -97,6 +97,7 @@
         android:layout_marginTop="15dp"
         android:backgroundTint="@color/richiamo_azione"
         android:text="@string/invia"
+        android:textColor="@color/white"
         android:layout_gravity="center"
         android:textSize="18sp"
         />
