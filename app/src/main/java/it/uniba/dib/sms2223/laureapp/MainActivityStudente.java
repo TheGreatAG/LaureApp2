@@ -71,7 +71,7 @@ public class MainActivityStudente extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container_home_s, fragment, tag)
                 // .setReorderingAllowed(true)
-                //  .addToBackStack(null)
+                  .addToBackStack(null)
                 .commit();
 
            /* if (tag.equals(TAG_HOME_FRAGMENT)) {

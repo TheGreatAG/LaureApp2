@@ -25,6 +25,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +53,10 @@ public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_richiesta_tesi_studente);
 
+
         Tesi tesi =getIntent().getExtras().getParcelable("Tesi");
+
+
         Button btnRichiedi = findViewById(R.id.btn_richiedi_tesi);
 
         String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -80,7 +85,7 @@ public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema
         Button btnContattaCorelatore = findViewById(R.id.btn_contatta_co_relatore);
 
         btnContattaRelatore.setOnClickListener(view -> {
-            String emailrelatore = tesi.sRelatore.split(" ")[2];
+           String emailrelatore = tesi.sRelatore.split(" ")[2];
             new Utile(this).condividiInfo(emailrelatore,getString(R.string.app_name) +": "+ tesi.titolo, ICostanti.INVIO_EMAIL,null);
         });
 
@@ -101,7 +106,7 @@ public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema
 
          inizializzaSchermata(tesi,gridLayout);
          txtTitoloTesi.setText(tesi.titolo);
-        Log.d("dati tesi",tesi.esamiRichiesti.get(0));
+        //Log.d("dati tesi",tesi.esamiRichiesti.get(0));
     }
 
     private void inizializzaSchermata(Tesi tesi,GridLayout gridLayout){
@@ -143,6 +148,7 @@ public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema
         TextInputLayout edtNote = customDialog.findViewById(R.id.edt_note); //diventa bianco quando si clicca per scrivere SISTEMARE
 
         ArrayList<String> esamiSostenuti = new ArrayList<>();
+
         for (String esame : tesi.esamiRichiesti) {
             // Crea un oggetto LinearLayout orizzontale
             LinearLayout linearLayout = new LinearLayout(getApplicationContext());
@@ -189,21 +195,22 @@ public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema
                     }
                 }
             });
-            btnRichiedi.setOnClickListener(view -> {
-                String note = String.valueOf(edtNote.getEditText().getText());
-                Studente studente = new Studente(emailStudente,null,null,null,0);
 
-
-                double mediaVoti=0; int esamiMancanti=0;
-                if (!edtVoto.getText().toString().equals("")){
-                    mediaVoti = Double.parseDouble(edtVoto.getText().toString());
-                }
-                if (!edtNumEsami.getText().toString().equals("")){
-                    esamiMancanti = Integer.parseInt(edtNumEsami.getText().toString());
-                }
-                GestioneTesi.inviaRichiestaPerLaTesi(this,tesi,note,studente,mediaVoti,esamiMancanti,esamiSostenuti,customDialog);
-            });
         }
+        btnRichiedi.setOnClickListener(view -> {
+            String note = String.valueOf(edtNote.getEditText().getText());
+            Studente studente = new Studente(emailStudente,null,null,null,0);
+            Log.d("WWR","premuto");
+
+            double mediaVoti=0; int esamiMancanti=0;
+            if (!edtVoto.getText().toString().equals("")){
+                mediaVoti = Double.parseDouble(edtVoto.getText().toString());
+            }
+            if (!edtNumEsami.getText().toString().equals("")){
+                esamiMancanti = Integer.parseInt(edtNumEsami.getText().toString());
+            }
+            GestioneTesi.inviaRichiestaPerLaTesi(this,tesi,note,studente,mediaVoti,esamiMancanti,esamiSostenuti,customDialog);
+        });
         return customDialog;
     }
 

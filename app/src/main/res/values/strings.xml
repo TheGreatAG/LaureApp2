@@ -127,6 +127,8 @@
     <string name="risposto_il">Risposto il</string>
     <string name="testo_ricevimento">Inserisci qui l\'argomento del ricevmiento</string>
     <string name="aggiungi_una_descrizione">Aggiungi una descrizione</string>
+    <string name="ricevimento">Ricevimento</string>
+    <string name="errore">Errore. Riprova</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

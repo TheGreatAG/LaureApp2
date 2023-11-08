@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,7 +78,7 @@ public class GestioneTesi {
             Toast.makeText(context, context.getString(R.string.campi_richiesta_mancanti), Toast.LENGTH_LONG).show();
         } else {
             RichiestaTesi richiestaTesi = new RichiestaTesi(studente, tesi, note, dataRichiesta, mediaVoti, esamiMancanti, listaEsamiRichiesti);
-            Log.d("FGF",richiestaTesi.toString());
+            //Log.d("FGF",richiestaTesi.toString());
 
             //invio i dati al db-----------
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -96,14 +97,16 @@ public class GestioneTesi {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
+                            Toast.makeText(context, context.getString(R.string.errore), Toast.LENGTH_LONG).show();
+
+                            //Log.w(TAG, "Error adding document", e);
                         }
                     });
         }
     }
 
     public void assegnaTesi(Relatore relatore,Studente studente,RichiestaTesi richiestaTesi,
-                            CustomAdapterListDocente adpter,Context context){
+                            CustomAdapterListDocente adpter,Context context,int indice){
         // Ottieni un riferimento al documento da aggiornare
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -122,19 +125,21 @@ public class GestioneTesi {
                     public void onSuccess(Void aVoid) {
                         // L'aggiornamento è avvenuto con successo
                         Toast.makeText(context, context.getString(R.string.tesi_assegnata) ,Toast.LENGTH_SHORT).show();
-                        eliminaRichiesta(adpter,richiestaTesi,db);
+                        eliminaRichiesta(adpter,richiestaTesi,db,indice,context);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, context.getString(R.string.errore), Toast.LENGTH_LONG).show();
+
                         // Si è verificato un errore durante l'aggiornamento
                     }
                 });
 
     }
 
-    public void eliminaRichiesta(CustomAdapterListDocente adapter, RichiestaTesi richiestaTesi, FirebaseFirestore db){
+    public void eliminaRichiesta(CustomAdapterListDocente adapter, RichiestaTesi richiestaTesi, FirebaseFirestore db, int indice,Context context){
         String emailProf = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         db.collection(ICostanti.COLLECTION_PROF).document(emailProf).collection(ICostanti.COLLECTION_RICHIESTE)
                 .document(String.valueOf(richiestaTesi.id))
@@ -142,18 +147,17 @@ public class GestioneTesi {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        adapter.listaElementi.remove(richiestaTesi);
+                        adapter.listaElementi.remove(indice);
                         adapter.notifyDataSetChanged();
                         if (adapter.listaElementi.size()==0){
-
                         }
-                        Log.d(TAG, "DocumentSnapshot successfully deleted!");//elimina la lista richieste dall'adaptere e aggiorna
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting document", e);
+                        Toast.makeText(context, context.getString(R.string.errore), Toast.LENGTH_LONG).show();
+
                     }
                 });
     }

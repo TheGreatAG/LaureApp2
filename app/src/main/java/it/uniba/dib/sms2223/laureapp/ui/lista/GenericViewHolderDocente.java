@@ -30,6 +30,7 @@ import it.uniba.dib.sms2223.laureapp.FragmentHomeStudente;
 import it.uniba.dib.sms2223.laureapp.R;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
 import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
+import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.business.Utile;
 import it.uniba.dib.sms2223.laureapp.model.Persona;
 import it.uniba.dib.sms2223.laureapp.model.Relatore;
@@ -38,7 +39,7 @@ import it.uniba.dib.sms2223.laureapp.model.RichiestaTesi;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
 
-public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da completare
+public class GenericViewHolderDocente extends RecyclerView.ViewHolder implements ICostanti { //da completare
     public static final int LISTA_1 = 99;
     public static final int LISTA_TESI_PROF_HOME = 100;
     public static final int LISTA_RICEVIMENTI_STUDENTI = 101;
@@ -51,7 +52,7 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
 
     private TextView txtData,txtTitoloTesi,txtCorsoDiLaurea,txtCorelatore,txtTipoTesi
             ,txtDescrizione,txtMediaVoti,txtTempoRichiesto,txtStudenteAssegnato,txtTaskDaSvolgere,
-            txtMittente;
+            txtMittente,txtNoRichieste;
     private GridLayout gridLayout;
 
     private MaterialButton btnEliminaRicevimento,btnRispondi;
@@ -129,7 +130,7 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container_home_d, new FragmentHomeStudente(tesi), null)
                     // .setReorderingAllowed(true)
-                    //  .addToBackStack(null)
+                      .addToBackStack(null)
                     .commit();
             Toast.makeText(context,"Elemento selezionato",Toast.LENGTH_SHORT).show();
 
@@ -148,8 +149,13 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
         txtTitoloTesi.setText(ricevimento.tesi.titolo);
         txtData.setText(ricevimento.data);
         txtDescrizione.setText(ricevimento.descrizione);
-//        btnEliminaRicevimento ;
-  //      btnRispondi ;
+
+        btnEliminaRicevimento.setOnClickListener(view -> {
+            eliminaRicevimento(ricevimento,adapter,indice,context);
+        }); ;
+        btnRispondi.setOnClickListener(view -> {
+            new Utile(context).condividiInfo(ricevimento.tesi.studente,context.getString(R.string.ricevimento)+":"+ricevimento.tesi.titolo,8,null);
+        }); ;
     }
 
     public void setView(RichiestaTesi richiestaTesi, Context context, CustomAdapterListDocente adapter, int indice) { //DA FINIRE COMPLETARE CON L'accetta e rifiuta e mostrare gli esami dati dallo studente
@@ -160,9 +166,8 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
         txtNote.setText(richiestaTesi.note);
         txtEmail.setText(richiestaTesi.studente.email);
 
-        int indiceDaCuiRipartire =0;
 
-
+        gridLayout.removeAllViews();
         int propedeuticaIndex = 0; // Inizializza l'indice per scorrere richiestaTesi.propedeuticita
 
         for (int i = 0; i < richiestaTesi.tesi.esamiRichiesti.size(); i++) {
@@ -192,12 +197,12 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
 
         btnAccetta.setOnClickListener(view -> {
 
-            new GestioneTesi().assegnaTesi(richiestaTesi.tesi.relatore,richiestaTesi.studente,richiestaTesi,adapter,context);
+            new GestioneTesi().assegnaTesi(richiestaTesi.tesi.relatore,richiestaTesi.studente,richiestaTesi,adapter,context,indice);
         });
 
         btnRifiuta.setOnClickListener(view -> {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            new GestioneTesi().eliminaRichiesta(adapter,richiestaTesi,db);
+            new GestioneTesi().eliminaRichiesta(adapter,richiestaTesi,db,indice,context);
         });
     }
 
@@ -249,8 +254,7 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
                             .setTitle("Elimina tesi")
                             .setMessage("Sicuro di voler eliminare questa tesi?")
 
-                            // Specifying a listener allows you to take an action before dismissing the dialog.
-                            // The dialog is automatically dismissed when a dialog button is clicked.
+
                             .setPositiveButton("ELIMINA TESI", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     new GestioneTesi().eliminaTesi(tesi,context,adapter,indice);
@@ -258,7 +262,6 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
                                 }
                             })
                             .setNegativeButton("ANNULLA", null)
-                            //.setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
                     return true;
 
@@ -266,5 +269,35 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
                 return false;
             }
         });
+    }
+
+    /**
+     * elimina il ricevimento dalla lista dei ricevimenti
+     * @param ricevimento il riferimento all'oggetto ricevimento
+     * @param adapter l'adapter da cui eliminare le informazioni
+     * @param indice l'indice da prelevare per eliminare l'elemento dalla lista degli elementi dell'adapter
+     * @param context
+     */
+    private void eliminaRicevimento(Ricevimento ricevimento,CustomAdapterListDocente adapter, int indice,Context context){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        db.collection(COLLECTION_PROF).document(emailDocente).
+                collection(COLLECTION_RICEVIMENTI)
+                .document(ricevimento.id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        adapter.listaElementi.remove(indice);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context,"ERRORE, riprova",Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

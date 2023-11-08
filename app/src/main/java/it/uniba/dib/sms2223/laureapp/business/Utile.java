@@ -53,7 +53,7 @@ public class Utile implements ICostanti{
      * Prepara l'Intent per l'invio di informazioni
      * @param emailDestinatario email del destinatario
      * @param oggetto l'oggetto dell'email
-     * @param tipoIntent specifica se l'Intent deve essere impostato per l'apertura di un servizio di email o un generico servizio per l'invio di un testo
+     * @param tipoIntent specifica se l'Intent deve essere impostato per l'apertura di un servizio di email o un generico servizio per l'invio di un testo. per inviare le info tramite email usare INVIO_EMAIL
      * @param testo il testo da inviare. se si è scelto di usare un intent generico
      */
     public void condividiInfo(String emailDestinatario, String oggetto, int tipoIntent, String testo){

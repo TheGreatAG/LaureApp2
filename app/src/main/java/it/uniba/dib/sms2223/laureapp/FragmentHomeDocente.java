@@ -121,8 +121,6 @@ public class FragmentHomeDocente extends Fragment {
         ProgressBar progressBar = view.findViewById(R.id.progressbar_caricamento_tesi);
         Button btnRicarica = view.findViewById(R.id.btn_ricarica);
 
-        //METTERE IMMAGINE PER DIRE CHE NON CI SONO TESI
-
 
         if (new Utile(context).connessione()){//se c'è connessione carica la lista
             inizializzaListatesiProf(listaTesi,listaTesiProf,progressBar,view,txtNoConnesione);
@@ -173,7 +171,6 @@ public class FragmentHomeDocente extends Fragment {
 
         String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-//--------------------------------------da finire, voglio recuperare le tesi create del prof ---------------------------
         db.collection("professori").document(emailDocente).collection("Tesi")//mi recuper tutti gli insegnamenti di un dato prof
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -214,7 +211,6 @@ public class FragmentHomeDocente extends Fragment {
                                 listaTesi.add(tesi);
                                // adapter.listaElementi.add(tesi);
                                // adapter.notifyDataSetChanged();
-                                Log.d("contenuto", "" + tesi.id);
                             }
 
                             if (listaTesi.size() ==0){

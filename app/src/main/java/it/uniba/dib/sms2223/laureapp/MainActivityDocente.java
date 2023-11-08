@@ -33,20 +33,21 @@ public class MainActivityDocente extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction().add(R.id.fragment_container_home_d, FragmentHomeDocente.class, null)//R.id.fragment_container è colui che contiene il fragment - IlMioFrag.class è il fragment che voglio nel contenitore
+        fragmentManager.beginTransaction().replace(R.id.fragment_container_home_d, FragmentHomeDocente.class, null)//R.id.fragment_container è colui che contiene il fragment - IlMioFrag.class è il fragment che voglio nel contenitore
                 .setReorderingAllowed(true)
                 .addToBackStack("home")//questo metodo permette di inserire il fragment in una pila in modo che se si preme indietrto si torna indietro con la navigazione dei fragment. Quando non ci sono più fragment si torna al ciclo di vita dell'activity
                 //senza addToBackStack() il fragment viene ditrutto e quindi impossibile tornare indietro a recuperarlo quando è sostituito
                 //è la pila in caso si preme il pulsante back mi fa gestire la cosa "nome" può essere null
                 .commit();
 
+       // cambiaFragment(fragmentManager, new FragmentHomeDocente(), "home");
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
 
             if (item.getItemId() == R.id.btn_nvg_home) {
                 Toast.makeText(this, "sei nella Home", Toast.LENGTH_SHORT).show();
-                cambiaFragment(fragmentManager, new FragmentHomeDocente(), null);
+                cambiaFragment(fragmentManager, new FragmentHomeDocente(), "home");
 
             } else if (item.getItemId() == R.id.btn_nvg_ricevimenti) {
                 Toast.makeText(this, "sei nella Home", Toast.LENGTH_SHORT).show();
@@ -89,10 +90,19 @@ public class MainActivityDocente extends AppCompatActivity {
         Fragment f = fragmentManager.findFragmentByTag(tag);
         int count = fragmentManager.getBackStackEntryCount();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_home_d, fragment, tag)
-                // .setReorderingAllowed(true)
-                //  .addToBackStack(null)
-                .commit();
+        if (tag != null){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_home_d, fragment, tag)
+                    // .setReorderingAllowed(false)
+                     .addToBackStack(null)
+                    .commit();
+        } else {
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_home_d, fragment, tag)
+                     .setReorderingAllowed(false)
+                     .addToBackStack(null)
+                    .commit();
+        }
     }
 }
