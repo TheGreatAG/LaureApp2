@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
     private int layoutLista;
     private int tipoDiLista;  //flag per capire se la lista è lato prof o studente
     private FragmentAdapter fragmentAdapter;///
+    private FragmentManager fragmentManager;
 
     public CustomAdapterListDocente(final ArrayList listaElementi, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
         this.context = context;
@@ -32,6 +34,15 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
         this.listaElementi = listaElementi;
         this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
+        Log.d("HJH",""+this.listaElementi.size());
+    }
+
+    public CustomAdapterListDocente(final ArrayList listaElementi, Context context, int layoutLista, int tipoDiLista, FragmentManager fragmentManager,String str){//
+        this.context = context;
+        this.layoutLista = layoutLista;
+        this.listaElementi = listaElementi;
+        this.tipoDiLista = tipoDiLista;  //decommenta
+        this.fragmentManager = fragmentManager;
         Log.d("HJH",""+this.listaElementi.size());
     }
 
@@ -49,7 +60,7 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
         if (tipoDiLista == GenericViewHolderDocente.LISTA_1)
             holder.setView((Universita) listaElementi.get(position),context,this,position);
         if (tipoDiLista == GenericViewHolderDocente.LISTA_TESI_PROF_HOME)
-            holder.setView((Tesi) listaElementi.get(position),context,this,position);
+            holder.setView((Tesi) listaElementi.get(position),context,this,position,fragmentManager);
         if (tipoDiLista == GenericViewHolderDocente.LISTA_RICEVIMENTI_STUDENTI)
             holder.setView((Ricevimento) listaElementi.get(position),context,this,position);
         if (tipoDiLista == GenericViewHolderDocente.LISTA_RICHIESTE_TESI)

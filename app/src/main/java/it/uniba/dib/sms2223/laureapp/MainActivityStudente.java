@@ -11,6 +11,7 @@ import it.uniba.dib.sms2223.laureapp.ui.AspettoActivity;
 public class MainActivityStudente extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

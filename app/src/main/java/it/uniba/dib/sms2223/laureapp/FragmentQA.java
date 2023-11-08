@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.business.Credenziali;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.model.Domanda;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
@@ -98,12 +100,18 @@ public class FragmentQA extends Fragment implements ICostanti {
         return fragment;
     }
 
+    private boolean docente =false;
+    private String emailStudente;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+        if (Credenziali.validitaEmailProf(emailStudente)){
+            docente =true;
         }
     }
 
@@ -123,6 +131,9 @@ public class FragmentQA extends Fragment implements ICostanti {
         FloatingActionButton fab = v.findViewById(R.id.fab);
         ProgressBar progressBar = v.findViewById(R.id.progressBar);
         TextView txtNoDomnde = v.findViewById(R.id.txt_no_domande_presenti);
+
+        if (docente)
+            fab.setVisibility(View.GONE);
 
         fab.setOnClickListener(view -> {
             startActivity(new Intent(getContext(),DomandaStudente.class).putExtra("Tesi",tesi));
@@ -156,8 +167,10 @@ public class FragmentQA extends Fragment implements ICostanti {
                                 String idTask = document.getString("idTask");
                                 String risposta = document.getString("risposta");
                                 String titoloTask = document.getString("titoloTask");
+                                String tesiId = document.getString("tesiId");
 
-                                Domanda domanda1 = new Domanda(dataDomanda,dataRisposta,domanda,risposta,titoloTask,idTask,id);
+                                Domanda domanda1 = new Domanda(dataDomanda,dataRisposta,domanda,risposta,titoloTask,idTask,id,tesiId);
+
                                 listaDomande.add(domanda1);
 
                             }
@@ -169,7 +182,12 @@ public class FragmentQA extends Fragment implements ICostanti {
                             } else {
                                 txtNoDomande.setVisibility(View.GONE);
                                 recyclerView.setVisibility(View.VISIBLE);
-                                CustomAdapterList adapter = new CustomAdapterList(listaDomande, context, R.layout.layout_lista_domande, GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD, null);
+                                CustomAdapterList adapter;
+                                if (docente) {
+                                    adapter = new CustomAdapterList(listaDomande, context, R.layout.layout_lista_domande, GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_RELATORE, null);
+                                }else {
+                                    adapter = new CustomAdapterList(listaDomande, context, R.layout.layout_lista_domande, GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD, null);
+                                }
                                 recyclerView.setAdapter(adapter);
                             }
 

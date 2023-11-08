@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -106,7 +108,14 @@ public class FragmentHomeDocente extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home_docente, container, false);
+
+        return inflater.inflate(R.layout.fragment_home_docente, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         RecyclerView listaTesiProf = view.findViewById(R.id.lista_tesi_prof);
         TextView txtNoConnesione = view.findViewById(R.id.txt_no_connessione);
         ProgressBar progressBar = view.findViewById(R.id.progressbar_caricamento_tesi);
@@ -150,11 +159,9 @@ public class FragmentHomeDocente extends Fragment {
                 return false;
             }
         });
-
-        return view;
     }
 
-    private void inizializzaListatesiProf(ArrayList<Tesi> listaTesi, RecyclerView recyclerView, ProgressBar progressBar,View v,TextView txt){
+    private void inizializzaListatesiProf(ArrayList<Tesi> listaTesi, RecyclerView recyclerView, ProgressBar progressBar, View v, TextView txt){
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);//mostra a partire dall'elemento 0 in questo caso
@@ -183,6 +190,8 @@ public class FragmentHomeDocente extends Fragment {
                                 String tipo = document.get("tipo").toString();
                                 String corsoDiLaurea = document.get("corsoDiLaurea").toString();
                                 String dataPubblicazione = document.get("dataPubblicazione").toString();
+                                String studente = document.getString("studente");//riga nuova
+                                String stato = document.getString("stato");
                                 int mediaVoti = Integer.parseInt(document.get("mediaRichiesta").toString());
                                 int durata = Integer.parseInt(document.get("durata").toString());
                                 Relatore relatore = null;
@@ -200,6 +209,8 @@ public class FragmentHomeDocente extends Fragment {
                                 ArrayList<String> li = new ArrayList<>();
                                 li = (ArrayList) document.get("esamiRichiesti");
                                 Tesi tesi = new Tesi(id,titolo,tipo,descrizione,ambito,corsoDiLaurea,dataPubblicazione,mediaVoti,durata,relatore,corelatore,li);
+                                tesi.stato = stato;
+                                tesi.studente = studente;
                                 listaTesi.add(tesi);
                                // adapter.listaElementi.add(tesi);
                                // adapter.notifyDataSetChanged();
@@ -217,7 +228,8 @@ public class FragmentHomeDocente extends Fragment {
                             }
                             progressBar.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
-                            CustomAdapterListDocente adapter = new CustomAdapterListDocente(listaTesi, context, R.layout.layout_lista_tesi_prof, GenericViewHolderDocente.LISTA_TESI_PROF_HOME,null);//anche queste righe sono da sistemare
+                            FragmentManager fragmentManager = getParentFragmentManager();
+                            CustomAdapterListDocente adapter = new CustomAdapterListDocente(listaTesi, context, R.layout.layout_lista_tesi_prof, GenericViewHolderDocente.LISTA_TESI_PROF_HOME,fragmentManager,"frfr");//anche queste righe sono da sistemare
                             recyclerView.setAdapter(adapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

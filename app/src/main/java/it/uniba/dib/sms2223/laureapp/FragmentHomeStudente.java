@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.business.Credenziali;
 import it.uniba.dib.sms2223.laureapp.model.Corelatore;
 import it.uniba.dib.sms2223.laureapp.model.Relatore;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
@@ -61,6 +63,11 @@ public class FragmentHomeStudente extends Fragment {
         // Required empty public constructor
     }
 
+    public FragmentHomeStudente(Tesi tesi) {
+        this.tesi = tesi;
+    }
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -79,6 +86,7 @@ public class FragmentHomeStudente extends Fragment {
         return fragment;
     }
 
+    private boolean docente =false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,14 +95,22 @@ public class FragmentHomeStudente extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        if (Credenziali.validitaEmailProf(emailStudente)){
+            docente =true;
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //----------------IN LAVORAZIONE NON TOCCARE-----------------------------------------------------
-        View layout = inflater.inflate(R.layout.fragment_home_studente, container, false);
+        return inflater.inflate(R.layout.fragment_home_studente, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View layout, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(layout, savedInstanceState);
+
         // Inflate the layout for this fragment
         Toolbar mToolbar = layout.findViewById(R.id.toolbar_home);
         LinearLayout lytContenitoreDettaglioTesi = layout.findViewById(R.id.lyt_contenitore1);
@@ -120,14 +136,20 @@ public class FragmentHomeStudente extends Fragment {
         tabLayout = layout.findViewById(R.id.tab_layout);
         viewPager2 = layout.findViewById(R.id.pager);
 
-        recuperaTesi(lytContenitoreDettaglioTesi,lytNoTesiAssegnata,progressBar,viewPager2,tabLayout);
 
-        return layout;
+
+        if (!docente) //se non si è nel lato studente ma lato docente
+            recuperaTesi(lytContenitoreDettaglioTesi,lytNoTesiAssegnata,progressBar,viewPager2,tabLayout);//c'ra solo questa riga
+        else{
+            impostaFragmentLatoDocente(progressBar);
+        }
+
+
+
     }
 
-
     private void recuperaTesi(ViewGroup lytContenitoreDettaglioTesi, ViewGroup lytContenitoreNoTesi
-            ,ProgressBar progressBar,ViewPager2 viewPager2,TabLayout tabLayout){//da rivedere non mi convince come rrecupera la tesi
+            , ProgressBar progressBar, ViewPager2 viewPager2, TabLayout tabLayout){//da rivedere non mi convince come rrecupera la tesi
 
         //------recupero i professori---------------------
 
@@ -231,5 +253,25 @@ public class FragmentHomeStudente extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void impostaFragmentLatoDocente(ProgressBar progressBar){//riga nuova
+        progressBar.setVisibility(View.GONE);
+        FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), getLifecycle());
+        fragmentAdapter.aggiungiFragment(new FragmentQA(tesi));
+        //ArrayList<Domanda> listaDomande = new ArrayList<>();
+
+        fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi(tesi));
+
+        fragmentAdapter.aggiungiFragment(new FragmentTask(tesi, fragmentAdapter));
+
+        viewPager2.setAdapter(fragmentAdapter); //DECOMMENTARE *********************
+
+        new TabLayoutMediator(tabLayout, viewPager2, (tab1, position1) -> {//DA SISTEMARE deve aggiotnare il numero di annunci quando se ne elimina uno
+            //in set setx bisongna passare un array di stringhe per tutti,visibili e non visibili
+            String str[] = {getString(R.string.faq), getString(R.string.dettagli), getString(R.string.task)};
+            tab1.setText(str[position1]);//tab è il titolo che si da ai tab sopra, deve essere sostituito rispettivamente da tutti, visibili e non visibili
+
+        }).attach();
     }
 }

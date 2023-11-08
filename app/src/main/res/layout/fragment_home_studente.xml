@@ -67,6 +67,7 @@
 
     </LinearLayout>
 
+        <!--deve tornare gone-->
 
         <LinearLayout
             android:id="@+id/lyt_contenitore2"
@@ -96,10 +97,12 @@
 
         </LinearLayout>
 
+        <!--deve tornare visible-->
         <ProgressBar
             android:id="@+id/progress_carica_tesi"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="visible"
             android:indeterminateTint="#B1954E"/>
 
 

@@ -63,7 +63,7 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
     public void onBindViewHolder(@NonNull GenericViewHolder holder, int position) {
         if (tipoDiLista == GenericViewHolder.LISTA_2)
             holder.setView((Task) listaAnnunci.get(position),context,this,position,tesi);
-        else if (tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD) {
+        else if (tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD || tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_RELATORE) {
             holder.setView((Domanda) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
         } else if (tipoDiLista == ICostanti.LISTA_TESI_PREFERITE) {
             holder.setView((Tesi) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);

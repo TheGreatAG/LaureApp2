@@ -2,13 +2,12 @@ package it.uniba.dib.sms2223.laureapp.model;
 
 public class Ricevimento {
 
-    public Professore professore;
-    public String titolo,oggetto,descrizione,data;
+    public String titolo,descrizione,data,id;
+    public Tesi tesi;
 
-    public Ricevimento(Professore professore, String titolo, String oggetto, String descrizione, String data) {
-        this.professore = professore;
-        this.titolo = titolo;
-        this.oggetto = oggetto;
+    public Ricevimento(Tesi tesi, String descrizione, String data,String id) {
+        this.tesi = tesi;
+        this.id = id;
         this.descrizione = descrizione;
         this.data = data;
     }

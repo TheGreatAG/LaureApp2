@@ -96,7 +96,7 @@
                 android:contentDescription="@string/richiedi_ricevimento"
                 app:icon="@drawable/ic_invio_email"
                 app:iconGravity="textStart"
-                android:text="contatta"
+                android:text="@string/Ricevimento"
                 android:backgroundTint="@color/background"
                 app:strokeColor="@color/richiamo_azione"
                 app:rippleColor="@color/ripple_color"
@@ -137,7 +137,7 @@
                 android:contentDescription="@string/richiedi_ricevimento"
                 app:icon="@drawable/ic_invio_email"
                 app:iconGravity="textStart"
-                android:text="contatta"
+                android:text="@string/Ricevimento"
                 android:backgroundTint="@color/background"
                 app:strokeColor="@color/richiamo_azione"
                 app:rippleColor="@color/ripple_color"
@@ -217,8 +217,34 @@
             android:layout_marginTop="50dp"
             android:text="@string/consegna_tesi"
             android:textSize="18sp"
+            android:visibility="visible"
             android:backgroundTint="@color/richiamo_azione"
             />
+
+        <Button
+            android:id="@+id/btn_approva"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/approva"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:backgroundTint="@color/approva_tesi"
+            />
+
+        <Button
+            android:id="@+id/btn_rigetta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/respingi"
+            android:textSize="18sp"
+            android:visibility="gone"
+
+            android:backgroundTint="@color/respingi_tesi"
+            />
+
+
 
 
     </LinearLayout>

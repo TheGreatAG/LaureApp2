@@ -119,6 +119,14 @@
     <string name="errore_domanda_inviata">DOmanda non inviata. Riprova</string>
     <string name="no_domande_presenti">Non ci sono domande da visualizzare</string>
     <string name="attendi_la_revisione">Attendi la revisione ...</string>
+    <string name="invia_risposta">Invia risposta</string>
+    <string name="approva">Approva tesi</string>
+    <string name="respingi">Respingi tesi</string>
+    <string name="scarica">Scarica</string>
+    <string name="contatta">Contatta</string>
+    <string name="risposto_il">Risposto il</string>
+    <string name="testo_ricevimento">Inserisci qui l\'argomento del ricevmiento</string>
+    <string name="aggiungi_una_descrizione">Aggiungi una descrizione</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

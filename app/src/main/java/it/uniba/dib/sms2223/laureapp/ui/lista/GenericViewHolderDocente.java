@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,6 +26,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import it.uniba.dib.sms2223.laureapp.FragmentHomeStudente;
 import it.uniba.dib.sms2223.laureapp.R;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
 import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
@@ -48,8 +50,11 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
     private Button btnRimuoviInsegnamento,btnTesiProf,btnAccetta,btnRifiuta;
 
     private TextView txtData,txtTitoloTesi,txtCorsoDiLaurea,txtCorelatore,txtTipoTesi
-            ,txtDescrizione,txtMediaVoti,txtTempoRichiesto,txtStudenteAssegnato,txtTaskDaSvolgere;
+            ,txtDescrizione,txtMediaVoti,txtTempoRichiesto,txtStudenteAssegnato,txtTaskDaSvolgere,
+            txtMittente;
     private GridLayout gridLayout;
+
+    private MaterialButton btnEliminaRicevimento,btnRispondi;
     ViewGroup elementoLista,espansioneLista;
 
     TextView txtMediaVotiStudente,txtNote,txtEmail,txtMediaVotiConsigliata;
@@ -87,6 +92,14 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
                 gridLayout = v.findViewById(R.id.lyt_contenitore_propedeu);
                 btnAccetta = v.findViewById(R.id.btn_accetta);
                 btnRifiuta = v. findViewById(R.id.btn_rifiuta);
+                break;
+            case LISTA_RICEVIMENTI_STUDENTI:
+                txtMittente = v.findViewById(R.id.txt_mittente);
+                txtTitoloTesi = v.findViewById(R.id.txt_oggetto);
+                txtData = v.findViewById(R.id.txt_data_richiesta);
+                txtDescrizione = v.findViewById(R.id.txt_descrizione);
+                btnEliminaRicevimento = v.findViewById(R.id.btn_archivia);
+                btnRispondi = v.findViewById(R.id.btn_rispondi);
 
         }
     }
@@ -105,13 +118,19 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
         });
     }
 
-    public void setView(Tesi tesi, Context context, CustomAdapterListDocente adapter, int indice){ //da completare la condivisione della tesi
+    public void setView(Tesi tesi, Context context, CustomAdapterListDocente adapter, int indice,FragmentManager fragmentManager){ //da completare la condivisione della tesi
 
         //metterre alla pressione del btnTesiProf un menu con condividi, elimina
         btnTesiProf.setOnClickListener(view -> {
             showPopup(btnTesiProf,context,tesi,adapter,indice);
         });
         elementoLista.setOnClickListener(view -> {
+            //apri i fragment di dettaglio
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_home_d, new FragmentHomeStudente(tesi), null)
+                    // .setReorderingAllowed(true)
+                    //  .addToBackStack(null)
+                    .commit();
             Toast.makeText(context,"Elemento selezionato",Toast.LENGTH_SHORT).show();
 
         });
@@ -124,8 +143,13 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder{ //da comp
         txtDescrizione.setText(tesi.descrizione);
     }
 
-    public void setView(Ricevimento tesi, Context context, CustomAdapterListDocente adapter, int indice) {
-
+    public void setView(Ricevimento ricevimento, Context context, CustomAdapterListDocente adapter, int indice) {
+        txtMittente.setText(ricevimento.tesi.studente);
+        txtTitoloTesi.setText(ricevimento.tesi.titolo);
+        txtData.setText(ricevimento.data);
+        txtDescrizione.setText(ricevimento.descrizione);
+//        btnEliminaRicevimento ;
+  //      btnRispondi ;
     }
 
     public void setView(RichiestaTesi richiestaTesi, Context context, CustomAdapterListDocente adapter, int indice) { //DA FINIRE COMPLETARE CON L'accetta e rifiuta e mostrare gli esami dati dallo studente

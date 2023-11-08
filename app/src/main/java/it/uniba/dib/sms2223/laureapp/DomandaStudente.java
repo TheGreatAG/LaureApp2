@@ -127,7 +127,7 @@ public class DomandaStudente extends AppCompatActivity implements ICostanti {
         String dataDomanda = formatoData.format(dataCorrente);
 
         Domanda domanda1 = new Domanda(dataDomanda,null,domanda,null
-                ,listaTask.get(spinner.getFirstVisiblePosition()).titolo,listaTask.get(spinner.getFirstVisiblePosition()).id,null);
+                ,listaTask.get(spinner.getFirstVisiblePosition()).titolo,listaTask.get(spinner.getFirstVisiblePosition()).id,null,tesi.id);
 
         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
         db1.collection(COLLECTION_PROF).document(tesi.relatore.email).collection(COLLECTION_TESI)

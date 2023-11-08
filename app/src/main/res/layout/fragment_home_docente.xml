@@ -12,11 +12,10 @@
         android:orientation="vertical">
 
 
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_home"
             android:layout_width="match_parent"
-            app:menu="@menu/pulsanti_toolbar_docente"
+            app:menu="@menu/bottoni_toolbar"
             android:layout_height="wrap_content">
 
             <TextView

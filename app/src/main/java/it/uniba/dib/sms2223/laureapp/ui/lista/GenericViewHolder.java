@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,7 +52,6 @@ import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.utils.QRCodeGenerator;
 
 
-//C'è QUALCOSA DA COMPLETARE----------------------------------------------------------
 
 public class GenericViewHolder extends RecyclerView.ViewHolder implements ICostanti {
 
@@ -60,12 +61,13 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
     private TextView txtTitoloTask,txtDescrizioneTask,txtUltimaModifica,txtTitoloTesi,txtNomeRelatore,txtEmailRelatore
             ,txtCoRelatore,txtEmailCoRelatore,txtDescrizioneTesi,txtDataDomanda,txtDataRisposta,txtDomanda,txtRisposta;
 
-    private Button btnRichiediTesi;
+    private Button btnRichiediTesi,btnInviaRisposta;
     private ImageButton btnPreferiti,btnCondividi;
     private final int tipoDilista;
     private RelativeLayout annuncio;
-    private LinearLayout lytRispostaDomanda;
+    private LinearLayout lytRispostaDomanda,lytRispostaDocente;
     //private ViewGroup layoutAnnuncio;
+    private TextInputLayout edtRisposta;
 
     public static final int LISTA_1 = 50;//lista dei risultati
     public static final int LISTA_2 = 51;//lista profilo personale
@@ -73,7 +75,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
     protected MaterialButton btnDaCompletare,btnInLavorazione,btnCompletato;
     public static final int LISTA_DOMANDE_RISPOSTE_LATO_STUD = 52;//lista profilo personale
     public static final int LISTA_TESI = 54;//lista tesi disponibili
-
+    public static final int LISTA_DOMANDE_RISPOSTE_LATO_RELATORE =60;
 
 
     public GenericViewHolder(@NonNull View view, int tipoDiLista) {
@@ -100,13 +102,17 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
             btnPreferiti = view.findViewById(R.id.btn_preferito);
             btnCondividi = view.findViewById(R.id.btn_condividi_info_tesi);
         }
-        if (tipoDiLista == LISTA_DOMANDE_RISPOSTE_LATO_STUD){
+        if (tipoDiLista == LISTA_DOMANDE_RISPOSTE_LATO_STUD || tipoDiLista == LISTA_DOMANDE_RISPOSTE_LATO_RELATORE){
             txtTitoloTask = view.findViewById(R.id.txt_num_task);
             txtDataDomanda = view.findViewById(R.id.txt_data_domanda);
             txtDataRisposta = view.findViewById(R.id.txt_data_risposta);
             txtDomanda = view.findViewById(R.id.txt_domanda);
             txtRisposta = view.findViewById(R.id.txt_risposta);
             lytRispostaDomanda = view.findViewById(R.id.lyt_risposta);
+
+            lytRispostaDocente= view.findViewById(R.id.lyt_contenitore_risposta);
+            btnInviaRisposta = view.findViewById(R.id.btn_rispondi);
+            edtRisposta = view.findViewById(R.id.edt_risposta);
 
 
         }
@@ -188,9 +194,17 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
 
         if (domanda.risposta != null) {
             lytRispostaDomanda.setVisibility(View.VISIBLE);
-            txtDataRisposta.setText(domanda.dataRisposta);
+            txtDataRisposta.setText(context.getString(R.string.risposto_il)+ " " +domanda.dataRisposta);
             txtRisposta.setText(domanda.risposta);
         }
+        if (domanda.risposta == null && tipoDilista == LISTA_DOMANDE_RISPOSTE_LATO_RELATORE) {
+            lytRispostaDocente.setVisibility(View.VISIBLE);
+        }
+
+        btnInviaRisposta.setOnClickListener(view -> {//vale solo per relatore
+            String risposta = String.valueOf(edtRisposta.getEditText().getText());
+            inviaRispostaAllaDomanda(risposta,lytRispostaDocente,domanda,lytRispostaDomanda,txtRisposta,txtDataRisposta);
+        });
 
     }
 
@@ -340,6 +354,42 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
                     @Override
                     public void onSuccess(Void aVoid) {
                         txtUltimaModifica.setText(context.getString(R.string.ultima_modifica) + " " +ultimaModifica);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Si è verificato un errore durante l'aggiornamento
+                    }
+                });
+    }
+
+    private void inviaRispostaAllaDomanda(String risposta, ViewGroup viewGroup,Domanda domanda
+            ,ViewGroup viewGroup2,TextView txtRisposta,TextView txtDataRisposta){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        DocumentReference documentReference = db.collection(ICostanti.COLLECTION_PROF)
+                .document(email).collection(ICostanti.COLLECTION_TESI)
+                .document(domanda.tesiId).collection(COLLECTION_DOMANDE_TASK).document(domanda.id);
+
+        Date dataCorrente = new Date();
+        SimpleDateFormat formatoData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String data = formatoData.format(dataCorrente);
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("dataRisposta",data );
+        updates.put("risposta", risposta);
+
+// Esegui l'aggiornamento sul documento
+        documentReference.update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        viewGroup.setVisibility(View.GONE);
+                        viewGroup2.setVisibility(View.VISIBLE);
+                        txtRisposta.setText(risposta);
+                        txtDataRisposta.setText(data);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

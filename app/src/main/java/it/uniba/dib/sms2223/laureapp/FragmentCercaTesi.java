@@ -1,7 +1,7 @@
 package it.uniba.dib.sms2223.laureapp;
 
+
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,12 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,12 +27,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
-import it.uniba.dib.sms2223.laureapp.model.Corelatore;
 import it.uniba.dib.sms2223.laureapp.model.ETipoTesi;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
@@ -65,6 +60,8 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -111,6 +108,11 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         }
     }
 
+    public void updateQRCodeResult(String result) {
+        //risultato scanner
+        //qrCodeResultTextView.setText(result);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -138,11 +140,10 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.scan_qr) {
-                    //***************************---------------???????????????????????????????????????????????????
-                    //SAMUELE METTI QUI LA FUNZIONE PER APRIRE LA FOTOCAMERA PER SCANNERIZZARE CODICI QR
-                    //*************************************************************************************************
-                    Toast.makeText(context, "premuto QR scanner", Toast.LENGTH_SHORT).show();
-                }
+
+                    String result = "Dato letto dal QR code"; // Sostituiscilo con il dato letto
+
+                   }
                 return false;
             }
         });
