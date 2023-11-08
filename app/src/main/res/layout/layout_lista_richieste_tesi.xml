@@ -109,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
-                    android:text="Richiesta da: Nom Cognome "/>
+                    android:text="@string/richiesta_da"/>
 
                 <TextView
                     android:id="@+id/txt_email_studente"

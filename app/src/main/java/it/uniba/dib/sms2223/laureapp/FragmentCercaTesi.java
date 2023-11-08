@@ -139,11 +139,11 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.scan_qr) {
+               // if (item.getItemId() == R.id.scan_qr) {
 
-                    String result = "Dato letto dal QR code"; // Sostituiscilo con il dato letto
+  //                  String result = "Dato letto dal QR code"; // Sostituiscilo con il dato letto
 
-                   }
+//                   }
                 return false;
             }
         });

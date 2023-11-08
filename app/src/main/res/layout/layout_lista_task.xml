@@ -7,15 +7,7 @@
     android:background="@drawable/background_elementi_lista"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/txt_titolo_task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="titolo task"
-        android:textColor="@color/black"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="@dimen/margine_bordi_laterali"
-        android:textSize="22sp"/>
+
 
     <TextView
         android:id="@+id/txt_data_ultima_modifica"
@@ -27,6 +19,16 @@
         android:layout_alignParentEnd="true"
         android:textSize="12sp"
         android:layout_marginTop="@dimen/margine_bordi_laterali" />
+
+    <TextView
+        android:id="@+id/txt_titolo_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="titolo task"
+        android:textColor="@color/black"
+        android:layout_marginStart="5dp"
+        android:layout_below="@id/txt_data_ultima_modifica"
+        android:textSize="22sp"/>
 
 
     <TextView

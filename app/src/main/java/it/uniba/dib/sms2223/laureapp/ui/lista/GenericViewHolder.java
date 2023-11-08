@@ -203,7 +203,8 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
 
         btnInviaRisposta.setOnClickListener(view -> {//vale solo per relatore
             String risposta = String.valueOf(edtRisposta.getEditText().getText());
-            inviaRispostaAllaDomanda(risposta,lytRispostaDocente,domanda,lytRispostaDomanda,txtRisposta,txtDataRisposta);
+            inviaRispostaAllaDomanda(risposta,lytRispostaDocente,domanda,lytRispostaDomanda
+                    ,txtRisposta,txtDataRisposta,context);
         });
 
     }
@@ -365,7 +366,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
     }
 
     private void inviaRispostaAllaDomanda(String risposta, ViewGroup viewGroup,Domanda domanda
-            ,ViewGroup viewGroup2,TextView txtRisposta,TextView txtDataRisposta){
+            ,ViewGroup viewGroup2,TextView txtRisposta,TextView txtDataRisposta,Context context){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         DocumentReference documentReference = db.collection(ICostanti.COLLECTION_PROF)
@@ -388,7 +389,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
                         viewGroup.setVisibility(View.GONE);
                         viewGroup2.setVisibility(View.VISIBLE);
                         txtRisposta.setText(risposta);
-                        txtDataRisposta.setText(data);
+                        txtDataRisposta.setText(context.getString(R.string.risposto_il)+ " " +data);
 
                     }
                 })

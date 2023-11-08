@@ -7,247 +7,252 @@
     tools:context=".FragmentDettaglioTesi">
 
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margine_bordi_laterali"
-        android:layout_marginEnd="@dimen/margine_bordi_laterali"
-        android:layout_marginTop="@dimen/margine_bordi_laterali"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margine_bordi_laterali"
+            android:layout_marginEnd="@dimen/margine_bordi_laterali"
+            android:layout_marginTop="@dimen/margine_bordi_laterali"
+            android:orientation="vertical">
 
-            <!-- ha una dimensione fissa nella larghezza cosi se il testo dovesse
-            essere troppo lungo non andreabbe a nascondere lo stato di consegna
-            che è accanto (provare per credere)-->
-            <TextView
-                android:id="@+id/txt_titolo_tesi"
-                android:layout_width="250dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Titolo tesi"
-                android:textSize="30sp"
-                android:textColor="#232F4E"/>
+                android:orientation="horizontal">
+
+                <!-- ha una dimensione fissa nella larghezza cosi se il testo dovesse
+                essere troppo lungo non andreabbe a nascondere lo stato di consegna
+                che è accanto (provare per credere)-->
+                <TextView
+                    android:id="@+id/txt_titolo_tesi"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="Titolo tesi"
+                    android:textSize="30sp"
+                    android:textColor="#232F4E"/>
 
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
 
-            <ImageView
-                android:id="@+id/img_stato_tesi"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:contentDescription="@string/immagine_di_stato_tesi"
-                android:background="@drawable/ic_negativo"
-                android:layout_gravity="center"/>
+                <ImageView
+                    android:id="@+id/img_stato_tesi"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/immagine_di_stato_tesi"
+                    android:background="@drawable/ic_negativo"
+                    android:layout_gravity="center"/>
 
-            <TextView
-                android:id="@+id/txt_stato_tesi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Non_consegnato"
-                android:textColor="@color/rosso"
-                android:textSize="12sp"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"/>
+                <TextView
+                    android:id="@+id/txt_stato_tesi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Non_consegnato"
+                    android:textColor="@color/rosso"
+                    android:textSize="12sp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"/>
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txt_tipo_tesi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TIPO TESI"
-            />
-
-        <RelativeLayout
-            android:id="@+id/lyt_txt_relatore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal">
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/t1"
+                android:id="@+id/txt_tipo_tesi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/relatore"/>
-
-            <TextView
-                android:id="@+id/txt_nome_relatore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nome Cognome"
-                android:layout_below="@id/t1"
-                android:textSize="20sp"/>
-
-            <!--                android:contentDescription="Richiedi ricevimento"
-            serve per gli screen reader usati dai non vedenti, descrive l'azione di un elemento-->
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_invio_email_ricevimento1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/richiedi_ricevimento"
-                app:icon="@drawable/ic_invio_email"
-                app:iconGravity="textStart"
-                android:text="@string/Ricevimento"
-                android:backgroundTint="@color/background"
-                app:strokeColor="@color/richiamo_azione"
-                app:rippleColor="@color/ripple_color"
-                app:strokeWidth="1dp"
-                android:textColor="@color/richiamo_azione"
-                app:iconTint="@color/richiamo_azione"
-                android:paddingHorizontal="15dp"
-                android:layout_alignParentEnd="true"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/lyt_txt_corelatore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/t2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/corelatore"/>
-
-            <TextView
-                android:id="@+id/txt_nome_corelatore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nome Cognome"
-                android:layout_below="@id/t2"
-                android:textSize="20sp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_invio_email_ricevimento2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/richiedi_ricevimento"
-                app:icon="@drawable/ic_invio_email"
-                app:iconGravity="textStart"
-                android:text="@string/Ricevimento"
-                android:backgroundTint="@color/background"
-                app:strokeColor="@color/richiamo_azione"
-                app:rippleColor="@color/ripple_color"
-                app:strokeWidth="1dp"
-                android:textColor="@color/richiamo_azione"
-                app:iconTint="@color/richiamo_azione"
-                android:paddingHorizontal="15dp"
-                android:layout_alignParentEnd="true"/>
-
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/descrizione"/>
-
-        <TextView
-            android:id="@+id/txt_descrizione_tesi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textSize="20sp"
-            android:text="Questa è una descrizione di prova"/>
-
-
-
-        <!--aggiungere una view che mostra il documento pdf caricato proprio qui-->
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
-
-            <ProgressBar
-                android:id="@+id/progress_carica_file"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:visibility="gone"
+                android:text="TIPO TESI"
                 />
 
+            <RelativeLayout
+                android:id="@+id/lyt_txt_relatore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/t1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/relatore"/>
+
+                <TextView
+                    android:id="@+id/txt_nome_relatore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nome Cognome"
+                    android:layout_below="@id/t1"
+                    android:textSize="20sp"/>
+
+                <!--                android:contentDescription="Richiedi ricevimento"
+                serve per gli screen reader usati dai non vedenti, descrive l'azione di un elemento-->
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_invio_email_ricevimento1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/richiedi_ricevimento"
+                    app:icon="@drawable/ic_invio_email"
+                    app:iconGravity="textStart"
+                    android:text="@string/Ricevimento"
+                    android:backgroundTint="@color/background"
+                    app:strokeColor="@color/richiamo_azione"
+                    app:rippleColor="@color/ripple_color"
+                    app:strokeWidth="1dp"
+                    android:textColor="@color/richiamo_azione"
+                    app:iconTint="@color/richiamo_azione"
+                    android:paddingHorizontal="15dp"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lyt_txt_corelatore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/t2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/corelatore"/>
+
+                <TextView
+                    android:id="@+id/txt_nome_corelatore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nome Cognome"
+                    android:layout_below="@id/t2"
+                    android:textSize="18sp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_invio_email_ricevimento2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/richiedi_ricevimento"
+                    app:icon="@drawable/ic_invio_email"
+                    app:iconGravity="textStart"
+                    android:text="@string/Ricevimento"
+                    android:backgroundTint="@color/background"
+                    app:strokeColor="@color/richiamo_azione"
+                    app:rippleColor="@color/ripple_color"
+                    app:strokeWidth="1dp"
+                    android:textColor="@color/richiamo_azione"
+                    app:iconTint="@color/richiamo_azione"
+                    android:paddingHorizontal="15dp"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
             <TextView
-                android:id="@+id/txt_nome_file"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="nessun file selezionato.\nCarica la tua tesi in .pdf"/>
+                android:layout_marginTop="50dp"
+                android:text="@string/descrizione"/>
 
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_carica_tesi"
+            <TextView
+                android:id="@+id/txt_descrizione_tesi"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:padding="10dp"
-                app:cornerRadius="60dp"
-                app:strokeWidth="1dp"
-                android:layout_marginStart="20dp"
-                android:text="Carica"
-                android:layout_marginEnd="30dp"
-                android:textColor="@color/richiamo_azione"
-                app:iconTint="@color/richiamo_azione"
-                app:icon="@drawable/ic_upload"
-                app:backgroundTint="@color/background"
-                app:strokeColor="@color/richiamo_azione"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                android:text="Questa è una descrizione di prova"/>
+
+
+
+            <!--aggiungere una view che mostra il documento pdf caricato proprio qui-->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <ProgressBar
+                    android:id="@+id/progress_carica_file"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_nome_file"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="nessun file selezionato.\nCarica la tua tesi in .pdf"/>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_carica_tesi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:padding="10dp"
+                    app:cornerRadius="60dp"
+                    app:strokeWidth="1dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Carica"
+                    android:layout_marginEnd="30dp"
+                    android:textColor="@color/richiamo_azione"
+                    app:iconTint="@color/richiamo_azione"
+                    app:icon="@drawable/ic_upload"
+                    app:backgroundTint="@color/background"
+                    app:strokeColor="@color/richiamo_azione"/>
+
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_invio_tesi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="@string/consegna_tesi"
+                android:textSize="18sp"
+                android:visibility="visible"
+                android:backgroundTint="@color/richiamo_azione"
+                />
+
+            <Button
+                android:id="@+id/btn_approva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="@string/approva"
+                android:textSize="18sp"
+                android:visibility="gone"
+                android:backgroundTint="@color/approva_tesi"
+                />
+
+            <Button
+                android:id="@+id/btn_rigetta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/respingi"
+                android:textSize="18sp"
+                android:visibility="gone"
+
+                android:backgroundTint="@color/respingi_tesi"
+                />
+
+
 
 
         </LinearLayout>
-
-
-        <Button
-            android:id="@+id/btn_invio_tesi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/consegna_tesi"
-            android:textSize="18sp"
-            android:visibility="visible"
-            android:backgroundTint="@color/richiamo_azione"
-            />
-
-        <Button
-            android:id="@+id/btn_approva"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/approva"
-            android:textSize="18sp"
-            android:visibility="gone"
-            android:backgroundTint="@color/approva_tesi"
-            />
-
-        <Button
-            android:id="@+id/btn_rigetta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/respingi"
-            android:textSize="18sp"
-            android:visibility="gone"
-
-            android:backgroundTint="@color/respingi_tesi"
-            />
-
-
-
-
-    </LinearLayout>
+    </ScrollView>
 
 
 </FrameLayout>

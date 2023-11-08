@@ -10,12 +10,6 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/scan_qr"
-        android:icon="@drawable/qr_code_scanner"
-        android:title="@string/scan_qr"
-        android:iconTint="@color/richiamo_azione"
-        app:showAsAction="always"/>
 
     <item
         android:id="@+id/filtra"
