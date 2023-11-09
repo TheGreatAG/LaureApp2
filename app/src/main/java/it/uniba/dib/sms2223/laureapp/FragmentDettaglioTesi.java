@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -218,7 +220,10 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         });
 
         btnCaricaTesi.setOnClickListener(view -> {
-            filePickerLauncher.launch("*/*"); //in questo caso il filePicker è generico e può
+            if (docente)
+                downloadTesi(tesi);
+            else
+                filePickerLauncher.launch("*/*"); //in questo caso il filePicker è generico e può
         });
 
         btnInvioConsegnaTesi.setOnClickListener(view -> {
@@ -282,13 +287,38 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
 
         btnInvioEmailRicevimento2.setText(getContext().getString(R.string.contatta));
 
+    }
 
+    private void downloadTesi(Tesi tesi) {
+        storageReference = FirebaseStorage.getInstance().getReference();
+        String fileName = "TESI_" + tesi.id + "_" + tesi.studente;
 
+        StorageReference fileRef = storageReference.child("files/" + fileName);
+        fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+            String localFilePath = downloadDir.getAbsolutePath() + "/laureapp/" + fileName;
+            File localFile = new File(localFilePath);
+            if (!localFile.getParentFile().exists()) {
+                localFile.getParentFile().mkdir();
+            }
+            fileRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                // il file è stato scaricato con successo nella posizione locale
+                Toast.makeText(getContext(), "File scaricato in: " + localFilePath, Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // si è verificato un errore durante lo scaricamento del file
+                    Toast.makeText(getContext(), "si è verificato un errore", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     private void uploadFileToFirestore(Uri fileUri,Tesi tesi,ProgressBar progressBar,TextView txtFileCaricato,String file) {
 
-        String fileName = "TESI_"+tesi.id+"_"+tesi.studente+"_" + System.currentTimeMillis(); // Genera un nome per il file, in questo caso
+        //*******************IL PROBLEMA è QUI, BISOGNA SPECIFICARE IL FORMATO DEL FILE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------
+        String fileName = "TESI_" + tesi.id + "_" + tesi.studente; // Genera un nome per il file, in questo caso
         // univoco con il timeStamp, ma si modifica a seconda della necessità, con l'id della tesi, del task o di quel che è
         StorageReference fileReference = storageReference.child("files/" + fileName); // qui al posto di files si inserisce il nome della raccolta
         // in cui andare a inserire il file
