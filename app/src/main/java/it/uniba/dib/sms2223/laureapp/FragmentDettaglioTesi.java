@@ -3,10 +3,23 @@ package it.uniba.dib.sms2223.laureapp;
 import static android.content.ContentValues.TAG;
 
 import android.app.Dialog;
-import android.content.Intent;
+import android.content.ContentResolver;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,48 +27,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import it.uniba.dib.sms2223.laureapp.business.Credenziali;
-import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.business.Utile;
 import it.uniba.dib.sms2223.laureapp.model.Ricevimento;
-import it.uniba.dib.sms2223.laureapp.model.Studente;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
 /**
@@ -75,12 +67,15 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
     private String mParam2;
 
     private Tesi tesi;
+    private boolean docente = false;
+    private String emailStudente;
+    private StorageReference storageReference;
 
     public FragmentDettaglioTesi() {
         // Required empty public constructor
     }
 
-    public FragmentDettaglioTesi(Tesi tesi){
+    public FragmentDettaglioTesi(Tesi tesi) {
         this.tesi = tesi;
     }
 
@@ -102,8 +97,6 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         return fragment;
     }
 
-    private boolean docente =false;
-    private String emailStudente;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,8 +105,8 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        if (Credenziali.validitaEmailProf(emailStudente)){
-            docente =true;
+        if (Credenziali.validitaEmailProf(emailStudente)) {
+            docente = true;
         }
     }
 
@@ -124,7 +117,6 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         return vi.inflate(R.layout.fragment_dettaglio_tesi, container, false);
     }
 
-    private StorageReference storageReference;
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
@@ -159,7 +151,7 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         txtDescrizioneTesi.setText(tesi.descrizione);
 
         //imposta lo stato della tesi nella UI---
-        if (tesi.stato.equals(STATO_TESI_CONSEGNATA)){
+        if (tesi.stato.equals(STATO_TESI_CONSEGNATA)) {
             imgStatoTesi.setVisibility(View.GONE);
             txtStatoTesi.setText(STATO_TESI_CONSEGNATA);
             txtStatoTesi.setTextColor(getContext().getColor(R.color.testo_task_completato));
@@ -175,7 +167,7 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
             imgStatoTesi.setBackground(getContext().getDrawable(R.drawable.ic_positivo));
             txtStatoTesi.setText(STATO_TESI_APPROVATA);
             txtStatoTesi.setTextColor(getContext().getColor(R.color.testo_task_completato));
-            if (!docente){
+            if (!docente) {
                 ColorStateList colorStateList = ColorStateList.valueOf(getContext().getResources().getColor(R.color.bottone_inattivo));
                 btnInvioConsegnaTesi.setBackgroundTintList(colorStateList);
             }
@@ -188,12 +180,12 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         }
         //-------------
 
-        if (!docente){
-            impostaLayoutPerStudente(txtNomeRelatore,txtNomeCorelatore,lytTxtCorelatore);
+        if (!docente) {
+            impostaLayoutPerStudente(txtNomeRelatore, txtNomeCorelatore, lytTxtCorelatore);
         } else {
-            impostaLayoutPerRelatore(etichettaRelatore,txtNomeRelatore,etichettaCorelatore,txtNomeCorelatore,
-                    null,lytTxtCorelatore,btnApprovaTesi,btnRifiutaTesi,btnInvioConsegnaTesi,btnCaricaTesi,
-                    btnInvioEmailRicevimento2,btnInvioEmailRicevimento1,tesi,txtNomeFile);
+            impostaLayoutPerRelatore(etichettaRelatore, txtNomeRelatore, etichettaCorelatore, txtNomeCorelatore,
+                    null, lytTxtCorelatore, btnApprovaTesi, btnRifiutaTesi, btnInvioConsegnaTesi, btnCaricaTesi,
+                    btnInvioEmailRicevimento2, btnInvioEmailRicevimento1, tesi, txtNomeFile);
         }
 
         ActivityResultLauncher<String> filePickerLauncher;
@@ -204,21 +196,21 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
             // Il risultato selezionato è restituito qui
             if (uri != null) {
                 // Passa l'uri del file selezionato a fireStore
-                uploadFileToFirestore(uri,tesi,progressBar,txtNomeFile,uri.toString());
+                uploadFileToFirestore(uri, tesi, progressBar, txtNomeFile, uri.toString());
             }
         });
 
         btnApprovaTesi.setOnClickListener(view -> {
-            if (tesi.stato.equals(STATO_TESI_CONSEGNATA) || tesi.stato.equals(STATO_TESI_RIGETTATA)|| tesi.stato.equals(STATO_TESI_APPROVATA)) {
+            if (tesi.stato.equals(STATO_TESI_CONSEGNATA) || tesi.stato.equals(STATO_TESI_RIGETTATA) || tesi.stato.equals(STATO_TESI_APPROVATA)) {
                 aggiornaStatoTesi(tesi, null, imgStatoTesi, txtStatoTesi, STATO_TESI_APPROVATA);
             }
         });
 
 
         btnRifiutaTesi.setOnClickListener(view -> {
-            if (tesi.stato.equals(STATO_TESI_CONSEGNATA) || tesi.stato.equals(STATO_TESI_RIGETTATA)|| tesi.stato.equals(STATO_TESI_APPROVATA)){
-                    aggiornaStatoTesi(tesi, null, imgStatoTesi, txtStatoTesi, STATO_TESI_RIGETTATA);
-                }
+            if (tesi.stato.equals(STATO_TESI_CONSEGNATA) || tesi.stato.equals(STATO_TESI_RIGETTATA) || tesi.stato.equals(STATO_TESI_APPROVATA)) {
+                aggiornaStatoTesi(tesi, null, imgStatoTesi, txtStatoTesi, STATO_TESI_RIGETTATA);
+            }
 
         });
 
@@ -233,16 +225,16 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
             if (tesi.stato.equals(STATO_TESI_DA_CONSEGNARE) || tesi.stato.equals(STATO_TESI_RIGETTATA)) {
                 aggiornaStatoTesi(tesi, btnInvioConsegnaTesi, imgStatoTesi, txtStatoTesi, STATO_TESI_CONSEGNATA);
             } else
-                Toast.makeText(getContext(),getString(R.string.attendi_la_revisione),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.attendi_la_revisione), Toast.LENGTH_SHORT).show();
         });
 
         btnInvioEmailRicevimento1.setOnClickListener(view -> {
-            inizializzaDialogRicevimento(tesi,"relatore").show();
+            inizializzaDialogRicevimento(tesi, "relatore").show();
         });
 
         btnInvioEmailRicevimento2.setOnClickListener(view -> {
             if (!docente)
-                inizializzaDialogRicevimento(tesi,"corelatore").show();
+                inizializzaDialogRicevimento(tesi, "corelatore").show();
             else {
                 String email = tesi.studente;
                 new Utile(getContext()).condividiInfo(email, getString(R.string.app_name) + ": " + tesi.titolo, ICostanti.INVIO_EMAIL, null);
@@ -250,21 +242,21 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         });
     }
 
-    private void impostaLayoutPerStudente(TextView txtNomeRelatore,TextView txtNomeCorelatore,
-                                          RelativeLayout lytTxtCorelatore){
+    private void impostaLayoutPerStudente(TextView txtNomeRelatore, TextView txtNomeCorelatore,
+                                          RelativeLayout lytTxtCorelatore) {
         txtNomeRelatore.setText(tesi.relatore.nome + " " + tesi.relatore.cognome);
 
         if (tesi.corelatore == null)
             lytTxtCorelatore.setVisibility(View.GONE);
         else
-            txtNomeCorelatore.setText(tesi.corelatore.nome + " "+ tesi.corelatore.cognome);
+            txtNomeCorelatore.setText(tesi.corelatore.nome + " " + tesi.corelatore.cognome);
 
     }
 
-    private void impostaLayoutPerRelatore(TextView etichettaRelatore,TextView txtNomeRelatore,TextView etichettaCorelatore,TextView txtNomeCorelatore,
-                                          RelativeLayout lytTxtRelatore,RelativeLayout lytTxtCorelatore , Button btnApprovaTesi,Button btnRifiutaTesi,
-                                          Button btnInvioConsegnaTesi,MaterialButton btnCaricaTesi,MaterialButton btnInvioEmailRicevimento2,
-                                          MaterialButton btnInvioEmailRicevimento1,Tesi tesi,TextView txtDownloadFile){
+    private void impostaLayoutPerRelatore(TextView etichettaRelatore, TextView txtNomeRelatore, TextView etichettaCorelatore, TextView txtNomeCorelatore,
+                                          RelativeLayout lytTxtRelatore, RelativeLayout lytTxtCorelatore, Button btnApprovaTesi, Button btnRifiutaTesi,
+                                          Button btnInvioConsegnaTesi, MaterialButton btnCaricaTesi, MaterialButton btnInvioEmailRicevimento2,
+                                          MaterialButton btnInvioEmailRicevimento1, Tesi tesi, TextView txtDownloadFile) {
 
         btnApprovaTesi.setVisibility(View.VISIBLE);
         btnRifiutaTesi.setVisibility(View.VISIBLE);
@@ -283,7 +275,7 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
             txtNomeRelatore.setText(tesi.corelatore.nome + " " + tesi.corelatore.cognome);
         }
         etichettaCorelatore.setText(getContext().getString(R.string.studente_assegnato));
-        if (tesi.studente == null){
+        if (tesi.studente == null) {
             txtNomeCorelatore.setText("-- --");
         } else {
             txtNomeCorelatore.setText(tesi.studente);
@@ -300,28 +292,36 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         String fileName = "TESI_" + tesi.id + "_" + tesi.studente;
 
         StorageReference fileRef = storageReference.child("files/" + fileName);
-        fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        fileRef.getMetadata().addOnSuccessListener(storageMetadata -> {
+            String format = storageMetadata.getCustomMetadata("extension");
+            Log.i("MTDT", "type/format = " + storageMetadata.getContentType() +
+                    ", format = " + storageMetadata.getCustomMetadata("extension"));
+            fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
-            String localFilePath = downloadDir.getAbsolutePath() + "/laureapp/" + fileName;
-            File localFile = new File(localFilePath);
-            if (!localFile.getParentFile().exists()) {
-                localFile.getParentFile().mkdir();
-            }
-            fileRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-                // il file è stato scaricato con successo nella posizione locale
-                Toast.makeText(getContext(), "File scaricato in: " + localFilePath, Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // si è verificato un errore durante lo scaricamento del file
-                    Toast.makeText(getContext(), "si è verificato un errore", Toast.LENGTH_SHORT).show();
+                String localFilePath = downloadDir.getAbsolutePath() + "/laureapp/" + fileName + "." + format;
+                File localFile = new File(localFilePath);
+                if (!localFile.getParentFile().exists()) {
+                    localFile.getParentFile().mkdir();
                 }
+                fileRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                    // il file è stato scaricato con successo nella posizione locale
+                    Toast.makeText(getContext(), "File scaricato in: " + localFilePath, Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // si è verificato un errore durante lo scaricamento del file
+                        Toast.makeText(getContext(), "si è verificato un errore", Toast.LENGTH_SHORT).show();
+                    }
+                });
             });
+        })
+                .addOnFailureListener(e -> {
+            Toast.makeText(getContext(), "La tesi non è ancora stata caricata!", Toast.LENGTH_LONG).show();
         });
     }
 
-    private void uploadFileToFirestore(Uri fileUri,Tesi tesi,ProgressBar progressBar,TextView txtFileCaricato,String file) {
+    private void uploadFileToFirestore(Uri fileUri, Tesi tesi, ProgressBar progressBar, TextView txtFileCaricato, String file) {
 
         //*******************IL PROBLEMA è QUI, BISOGNA SPECIFICARE IL FORMATO DEL FILE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------
         String fileName = "TESI_" + tesi.id + "_" + tesi.studente; // Genera un nome per il file, in questo caso
@@ -329,8 +329,20 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         StorageReference fileReference = storageReference.child("files/" + fileName); // qui al posto di files si inserisce il nome della raccolta
         // in cui andare a inserire il file
         progressBar.setVisibility(View.VISIBLE);
+
+        ContentResolver contentResolver = requireContext().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        String fileExtension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(fileUri));
+        if (fileExtension == null) {
+            fileExtension = "dat";
+        }
+        StorageMetadata metadata = new StorageMetadata.Builder().
+                setContentType(contentResolver.getType(fileUri)).
+                setCustomMetadata("extension", fileExtension) // Memorizza l'estensione nei metadata
+                .build();
+
         // Carica il file nel Firebase Cloud Storage col metodo putFile
-        fileReference.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
+        fileReference.putFile(fileUri, metadata).addOnSuccessListener(taskSnapshot -> {
             // Fare cose una volta caricato il file
             txtFileCaricato.setText(file.split("document/")[1]);
             progressBar.setVisibility(View.GONE);
@@ -341,12 +353,13 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
 
     /**
      * Aggiorna lo stato di una tesi
+     *
      * @param tesi
-     * @param btnConsegna può essere nullo se siamo nel lato docente
+     * @param btnConsegna  può essere nullo se siamo nel lato docente
      * @param imageView
      * @param txtStatoTesi
      */
-    private void aggiornaStatoTesi(Tesi tesi,Button btnConsegna,ImageView imageView,TextView txtStatoTesi,String statoTesi){
+    private void aggiornaStatoTesi(Tesi tesi, Button btnConsegna, ImageView imageView, TextView txtStatoTesi, String statoTesi) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         DocumentReference documentReference = db.collection(ICostanti.COLLECTION_PROF)
@@ -354,94 +367,94 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
                 .document(tesi.id);
 
 
-
 // Crea un oggetto Map con i campi da aggiornare
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("stato", statoTesi);
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("stato", statoTesi);
 
 // Esegui l'aggiornamento sul documento
-            documentReference.update(updates)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            if (!docente) {
-                                ColorStateList colorStateList = ColorStateList.valueOf(getContext().getResources().getColor(R.color.bottone_inattivo));
-                                btnConsegna.setBackgroundTintList(colorStateList);
-                                btnConsegna.setText(getContext().getString(R.string.attendi_la_revisione));
+        documentReference.update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (!docente) {
+                            ColorStateList colorStateList = ColorStateList.valueOf(getContext().getResources().getColor(R.color.bottone_inattivo));
+                            btnConsegna.setBackgroundTintList(colorStateList);
+                            btnConsegna.setText(getContext().getString(R.string.attendi_la_revisione));
 
-                                imageView.setVisibility(View.GONE);
-                                txtStatoTesi.setText(STATO_TESI_CONSEGNATA);
+                            imageView.setVisibility(View.GONE);
+                            txtStatoTesi.setText(STATO_TESI_CONSEGNATA);
+                            txtStatoTesi.setTextColor(getContext().getColor(R.color.testo_task_completato));
+                        } else {
+                            if (statoTesi.equals(STATO_TESI_APPROVATA)) {
+                                imageView.setVisibility(View.VISIBLE);
+                                imageView.setBackground(getContext().getDrawable(R.drawable.ic_positivo));
+                                txtStatoTesi.setText(STATO_TESI_APPROVATA);
                                 txtStatoTesi.setTextColor(getContext().getColor(R.color.testo_task_completato));
-                            } else {
-                                if (statoTesi.equals(STATO_TESI_APPROVATA)) {
-                                    imageView.setVisibility(View.VISIBLE);
-                                    imageView.setBackground(getContext().getDrawable(R.drawable.ic_positivo));
-                                    txtStatoTesi.setText(STATO_TESI_APPROVATA);
-                                    txtStatoTesi.setTextColor(getContext().getColor(R.color.testo_task_completato));
-                                }
-                                if (statoTesi.equals(STATO_TESI_RIGETTATA)) {
-                                    imageView.setVisibility(View.VISIBLE);
-                                    imageView.setBackground(getContext().getDrawable(R.drawable.ic_negativo));
-                                    txtStatoTesi.setText(STATO_TESI_RIGETTATA);
-                                    txtStatoTesi.setTextColor(getContext().getColor(R.color.rosso));
-                                }
                             }
+                            if (statoTesi.equals(STATO_TESI_RIGETTATA)) {
+                                imageView.setVisibility(View.VISIBLE);
+                                imageView.setBackground(getContext().getDrawable(R.drawable.ic_negativo));
+                                txtStatoTesi.setText(STATO_TESI_RIGETTATA);
+                                txtStatoTesi.setTextColor(getContext().getColor(R.color.rosso));
+                            }
+                        }
 
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Si è verificato un errore durante l'aggiornamento
-                        }
-                    });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Si è verificato un errore durante l'aggiornamento
+                    }
+                });
 
     }
 
-    private Dialog inizializzaDialogRicevimento(Tesi tesi,String docente){
+    private Dialog inizializzaDialogRicevimento(Tesi tesi, String docente) {
 
-            //RichiestaTesi richiestaTesi = new RichiestaTesi();
-            Dialog customDialog = new Dialog(getContext(),R.style.CustomAlertDialog);
-            customDialog.setContentView(R.layout.dialog_ricevimento);
-            EditText editText = customDialog.findViewById(R.id.edt_descrizione);
-            Button btnInvia = customDialog.findViewById(R.id.btn_richiedi_ricevimento);
+        //RichiestaTesi richiestaTesi = new RichiestaTesi();
+        Dialog customDialog = new Dialog(getContext(), R.style.CustomAlertDialog);
+        customDialog.setContentView(R.layout.dialog_ricevimento);
+        EditText editText = customDialog.findViewById(R.id.edt_descrizione);
+        Button btnInvia = customDialog.findViewById(R.id.btn_richiedi_ricevimento);
 
 
-            btnInvia.setOnClickListener(view -> {
-                String descrizione = editText.getText().toString();
+        btnInvia.setOnClickListener(view -> {
+            String descrizione = editText.getText().toString();
 
-                Date dataCorrente = new Date();
-                SimpleDateFormat formatoData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                String data = formatoData.format(dataCorrente);
-                Ricevimento ricevimento = new Ricevimento(tesi,descrizione,data,null);
+            Date dataCorrente = new Date();
+            SimpleDateFormat formatoData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            String data = formatoData.format(dataCorrente);
+            Ricevimento ricevimento = new Ricevimento(tesi, descrizione, data, null);
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                String email =null;
-                if (docente.equals("relatore")){
-                    email = tesi.relatore.email;
-                } if (docente.equals("corelatore")){
-                    email = tesi.corelatore.email;
-                }
+            String email = null;
+            if (docente.equals("relatore")) {
+                email = tesi.relatore.email;
+            }
+            if (docente.equals("corelatore")) {
+                email = tesi.corelatore.email;
+            }
 
-                Log.d("CTC",ricevimento.tesi.toString());
-                db.collection(COLLECTION_PROF).document(email).collection(COLLECTION_RICEVIMENTI).add(ricevimento) //se si vuole lasciare al sistema la creazione in automatico di un id per il documento usare collection().add()
-                        //asltrimenti collection().document(ID documento).set()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(getContext(), getString(R.string.richiesta_inviata), Toast.LENGTH_LONG).show();
-                               customDialog.dismiss();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error adding document", e);
-                            }
-                        });
-            });
-            return customDialog;
+            Log.d("CTC", ricevimento.tesi.toString());
+            db.collection(COLLECTION_PROF).document(email).collection(COLLECTION_RICEVIMENTI).add(ricevimento) //se si vuole lasciare al sistema la creazione in automatico di un id per il documento usare collection().add()
+                    //asltrimenti collection().document(ID documento).set()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(getContext(), getString(R.string.richiesta_inviata), Toast.LENGTH_LONG).show();
+                            customDialog.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                        }
+                    });
+        });
+        return customDialog;
 
     }
 }
