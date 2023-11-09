@@ -40,6 +40,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -143,6 +145,7 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         MaterialButton btnCaricaTesi = v.findViewById(R.id.btn_carica_tesi);
         Button btnInvioConsegnaTesi = v.findViewById(R.id.btn_invio_tesi);
 
+
         Button btnApprovaTesi = v.findViewById(R.id.btn_approva);
         Button btnRifiutaTesi = v.findViewById(R.id.btn_rigetta);
 
@@ -190,7 +193,7 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
         } else {
             impostaLayoutPerRelatore(etichettaRelatore,txtNomeRelatore,etichettaCorelatore,txtNomeCorelatore,
                     null,lytTxtCorelatore,btnApprovaTesi,btnRifiutaTesi,btnInvioConsegnaTesi,btnCaricaTesi,
-                    btnInvioEmailRicevimento2,btnInvioEmailRicevimento1,tesi);
+                    btnInvioEmailRicevimento2,btnInvioEmailRicevimento1,tesi,txtNomeFile);
         }
 
         ActivityResultLauncher<String> filePickerLauncher;
@@ -261,7 +264,7 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
     private void impostaLayoutPerRelatore(TextView etichettaRelatore,TextView txtNomeRelatore,TextView etichettaCorelatore,TextView txtNomeCorelatore,
                                           RelativeLayout lytTxtRelatore,RelativeLayout lytTxtCorelatore , Button btnApprovaTesi,Button btnRifiutaTesi,
                                           Button btnInvioConsegnaTesi,MaterialButton btnCaricaTesi,MaterialButton btnInvioEmailRicevimento2,
-                                          MaterialButton btnInvioEmailRicevimento1,Tesi tesi){
+                                          MaterialButton btnInvioEmailRicevimento1,Tesi tesi,TextView txtDownloadFile){
 
         btnApprovaTesi.setVisibility(View.VISIBLE);
         btnRifiutaTesi.setVisibility(View.VISIBLE);
@@ -269,6 +272,7 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
 
         btnCaricaTesi.setText(getContext().getString(R.string.scarica));
         btnCaricaTesi.setIconResource(R.drawable.ic_download);
+        txtDownloadFile.setText(getString(R.string.download_file));
 
         btnInvioEmailRicevimento1.setVisibility(View.GONE);
 
@@ -290,6 +294,8 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
     }
 
     private void downloadTesi(Tesi tesi) {
+
+        //METTERE UN MESSAGGIO DI TOAST PER DIRE CHE NON CI SONO TESI DA SCARICARE
         storageReference = FirebaseStorage.getInstance().getReference();
         String fileName = "TESI_" + tesi.id + "_" + tesi.studente;
 

@@ -136,6 +136,7 @@
     <string name="applica_filtri">Applica filtri</string>
     <string name="elimina_filtri">Elimina filtri</string>
     <string name="task_completato">Task completato</string>
+    <string name="download_file">Scarica tesi</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->
