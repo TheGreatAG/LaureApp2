@@ -130,6 +130,12 @@
     <string name="ricevimento">Ricevimento</string>
     <string name="errore">Errore. Riprova</string>
     <string name="richiesta_da">Richiesta da</string>
+    <string name="inserisci_email_valida">Inserisci un\'email valida</string>
+    <string name="istruzioni_filtraggio">Cerca le tesi che soddisfano le tue esigenze.\nImposta i valori che ti interessano</string>
+    <string name="ore_di_lavoro">Ore di lavoro massime</string>
+    <string name="applica_filtri">Applica filtri</string>
+    <string name="elimina_filtri">Elimina filtri</string>
+    <string name="task_completato">Task completato</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

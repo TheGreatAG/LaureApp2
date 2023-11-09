@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
+import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.model.ETipoTesi;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
@@ -47,6 +51,9 @@ public class FragmentTesiPreferite extends Fragment implements ICostanti {
     private String mParam2;
 
     private Context context;
+
+    private CustomAdapterList adapter;
+
 
     private ArrayList<Tesi> listaTesiPreferite = new ArrayList<>();
     @Override
@@ -92,7 +99,14 @@ public class FragmentTesiPreferite extends Fragment implements ICostanti {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_tesi_preferite, container, false);
+        return inflater.inflate(R.layout.fragment_tesi_preferite, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
 
         RecyclerView listaTesiPrefe = v.findViewById(R.id.lista_tesi_preferite);
         TextView txtNoTesiPreferite = v.findViewById(R.id.txt_no_tesi_preferite);
@@ -105,10 +119,18 @@ public class FragmentTesiPreferite extends Fragment implements ICostanti {
 
         recuperTesiPreferite(listaTesiPrefe,txtNoTesiPreferite);
 
-        return v;
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.filtra) {
+                    new GestioneTesi().impostaDialog(adapter,context,listaTesiPrefe).show();
+                }
+                return false;
+            }
+        });
     }
 
-    private void recuperTesiPreferite(RecyclerView recyclerView,TextView txtNoTesi){
+    private void recuperTesiPreferite(RecyclerView recyclerView, TextView txtNoTesi){
         String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("studenti").document(emailStudente).collection("Tesi_preferite")
@@ -151,7 +173,7 @@ public class FragmentTesiPreferite extends Fragment implements ICostanti {
                             if (listaTesi.size() == 0){
                                 txtNoTesi.setVisibility(View.VISIBLE);
                             } else {
-                                CustomAdapterList adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI_PREFERITE, null);////////modificato con ultimo parametro
+                                adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI_PREFERITE, null);////////modificato con ultimo parametro
                                 recyclerView.setAdapter(adapter);
                             }
                         }

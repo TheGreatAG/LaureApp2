@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.business.Credenziali;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.model.Task;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
@@ -91,15 +93,20 @@ public class FragmentTask extends Fragment implements ICostanti {
         return fragment;
     }
 
+    private boolean docente =false;
+    private String emailStudente;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        if (Credenziali.validitaEmailProf(emailStudente)){
+            docente =true;
+        }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -139,15 +146,27 @@ public class FragmentTask extends Fragment implements ICostanti {
                                 String stato=document.getString("stato");
                                 String titolo=document.getString("titolo");
                                 String ultimaModifica=document.getString("ultimaModifica");
+                                boolean confermaRelatore = document.getBoolean("confermaDefinitivaDelRelatore");
                                 Task task1 = new Task(id,titolo,descrizione,ultimaModifica,stato);
+                                task1.confermaDefinitivaDelRelatore = confermaRelatore;
                                 listaTask.add(task1);
                             }
                             Log.d("GYG 3",""+listaTask.size());
 
                             txtTaskDaCompletare.setText(context.getString(R.string.task_da_completare)+ " "+ listaTask.size());
-                            CustomAdapterList adapter = new CustomAdapterList(listaTask, context, R.layout.layout_lista_task
-                                    , GenericViewHolder.LISTA_2,null,tesi);
-                            recyclerView.setAdapter(adapter);
+                            CustomAdapterList adapter;
+                            if (docente){
+                                Log.d("JJI","adapter per task docente");
+                                adapter = new CustomAdapterList(listaTask, context, R.layout.layout_lista_task
+                                        ,GenericViewHolder.LISTA_TASK_LATO_RELATORE,null,tesi);
+                                recyclerView.setAdapter(adapter);
+
+                            } else {
+                                adapter = new CustomAdapterList(listaTask, context, R.layout.layout_lista_task
+                                        , GenericViewHolder.LISTA_2, null, tesi);
+                                recyclerView.setAdapter(adapter);
+
+                            }
 
                         }
                     }

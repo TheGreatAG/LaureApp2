@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,9 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
 
-public class ActivityPrimoAccessoLogin extends AppCompatActivity { //sistemare nel caso di primo accesso ---------------------------------------------
+public class ActivityPrimoAccessoLogin extends AppCompatActivity implements ICostanti { //sistemare nel caso di primo accesso ---------------------------------------------
 
     private String dipartimento,corso;
     @Override
@@ -39,7 +43,9 @@ public class ActivityPrimoAccessoLogin extends AppCompatActivity { //sistemare n
 
         Toolbar toolbr = findViewById(R.id.tlb_corso_stud);
 
-        if (getIntent().getBooleanExtra("key",false)) {//se provengo dalla schermata profilo aggiungo la freccia di navigazione nella toolbar
+        boolean b = getIntent().getBooleanExtra("key",false);
+
+        if (b) {//se provengo dalla schermata profilo aggiungo la freccia di navigazione nella toolbar
             setSupportActionBar(toolbr);
             ActionBar ab = getSupportActionBar();
             if (ab != null)
@@ -74,25 +80,29 @@ public class ActivityPrimoAccessoLogin extends AppCompatActivity { //sistemare n
         });
 
         btnConferma.setOnClickListener(view -> {
-            inserisciCorsoStudenteNelDb(new Universita(dipartimento,corso,null,"c_s"));
+            inserisciCorsoStudenteNelDb(new Universita(dipartimento,corso,null,"c_s"),b);
         });
     }
 
-    private void inserisciCorsoStudenteNelDb(Universita universita){
+    private void inserisciCorsoStudenteNelDb(Universita universita,boolean b){
         String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> uni = new HashMap<>();
         uni.put("Dipartimento", universita.dipartimento);
         uni.put("Corso", universita.corso);
 
-        db.collection("studenti").document(emailStudente).
+        db.collection(COLLECTION_STUDENTI).document(emailStudente).
                 collection("Corso").document(universita.id)
                 .set(uni)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        if (!b) {
+                            new Utente().impostaValoreDiAccesso(ICostanti.COLLECTION_STUDENTI, emailStudente);
+                            startActivity(new Intent(ActivityPrimoAccessoLogin.this, MainActivityStudente.class));
+                            finish();
+                        }
                         Toast.makeText(getApplicationContext(),"Corso di studi inserito nel tuo profilo",Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

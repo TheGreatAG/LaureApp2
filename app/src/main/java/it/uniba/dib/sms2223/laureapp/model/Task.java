@@ -4,6 +4,7 @@ public class Task {
 
 
     public String titolo,descrizione,ultimaModifica,stato,id;
+    public boolean confermaDefinitivaDelRelatore;
 
     public Task(String titolo, String descrizione, String ultimaModifica, String stato) {
         this.titolo = titolo;

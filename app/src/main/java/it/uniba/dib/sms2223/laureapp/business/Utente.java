@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,14 +19,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import it.uniba.dib.sms2223.laureapp.ActivityPrimoAccessoLogin;
 import it.uniba.dib.sms2223.laureapp.MainActivity;
 import it.uniba.dib.sms2223.laureapp.PrimoAccessoDocente;
+import it.uniba.dib.sms2223.laureapp.R;
 
 public class Utente implements ICostanti{
 
@@ -44,7 +50,7 @@ public class Utente implements ICostanti{
      * controlla che l'utente sia loggato o già loggato
      * @return true se l'utente è loggato, false se l'utente non è loggato
      */
-    public static boolean utenteLoggato(){// IL METODO è DA IMPLEMENTARE -----------------------------------------
+    public static boolean utenteLoggato(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {//utente già loggato
             return true;
@@ -123,6 +129,7 @@ public class Utente implements ICostanti{
         user.put("nome", nome);
         user.put("cognome", cognome);
         user.put("Tesi assegnata",false);
+        user.put("primo accesso",true);
         if (Credenziali.validitaEmailStudente(email)){//se l'email è dello studente
             db.collection("studenti").document(email).set(user).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -130,6 +137,8 @@ public class Utente implements ICostanti{
                         public void onSuccess(Void unused) {
                          //   salvaInFile(nome,cognome);
                             context.startActivity(new Intent(context, ActivityPrimoAccessoLogin.class));
+                            Activity activity = (Activity) context;
+                            activity.finish();
                             Log.d(TAG, email + " studente aggiunto con successo");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -159,6 +168,31 @@ public class Utente implements ICostanti{
 
     }
 
+    public void impostaValoreDiAccesso(String collection,String email){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection(collection)
+                .document(email);
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("primo accesso",false );
+
+// Esegui l'aggiornamento sul documento
+        documentReference.update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Si è verificato un errore durante l'aggiornamento
+                    }
+                });
+    }
+
     private void salvaInFile(String nome, String cognome){
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(NOME_COGNOME_STUD,Context.MODE_PRIVATE);
@@ -182,9 +216,5 @@ public class Utente implements ICostanti{
 
     }
 
-
-    public void eliminaAccount(){//implementare qui le funzioni lato DB per eliminare un utente dal sistema e con lui anche tutto quello che ha pubblicato
-
-    }
 
 }

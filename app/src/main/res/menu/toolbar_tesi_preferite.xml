@@ -4,7 +4,7 @@
 
 
     <item
-        android:id="@+id/btn_toolbar_profilo_personale"
+        android:id="@+id/filtra"
         android:icon="@drawable/ic_filtra"
         android:title="Preferiti"
         app:showAsAction="always"

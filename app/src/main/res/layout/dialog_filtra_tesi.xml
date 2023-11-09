@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filtra_tesi"
+        android:textSize="20sp"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/richiamo_azione"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/istruzioni_filtraggio"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_consigliata"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:textSize="17sp"/>
+
+        <NumberPicker
+            android:id="@+id/numberPicker"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/ore_di_lavoro"/>
+
+        <EditText
+            android:id="@+id/edt_ore_lavoro"
+            android:layout_width="70dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinnerAmbito"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:entries="@array/ambiti_informatica"
+        />
+
+    <Button
+        android:id="@+id/btn_applica_filtri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/applica_filtri"
+        android:textSize="17sp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_no_filtri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        app:icon="@drawable/ic_negativo"
+        app:iconSize="20dp"
+        android:backgroundTint="@color/background"
+        app:strokeWidth="1dp"
+        app:iconTint="@color/rosso"
+        app:strokeColor="@color/rosso"
+        android:text="@string/elimina_filtri"
+        app:rippleColor="@color/ripple_rosso"
+        android:textColor="@color/rosso"/>
+
+
+</LinearLayout>

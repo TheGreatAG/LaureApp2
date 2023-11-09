@@ -1,6 +1,7 @@
 package it.uniba.dib.sms2223.laureapp;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,10 +9,18 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -20,6 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,7 +41,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
+import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.model.Studente;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
@@ -113,8 +126,12 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_cerca_tesi, container, false);
+        return inflater.inflate(R.layout.fragment_cerca_tesi, container, false);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
         Toolbar toolbar = v.findViewById(R.id.toolbar_cerca_tesi);
         MenuItem searchItem = toolbar.getMenu().findItem(R.id.search_item);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -127,20 +144,22 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         layoutManager.scrollToPosition(0);//mostra a partire dall'elemento 0 in questo caso
         recyclerView.setLayoutManager(layoutManager);//una recycler view deve avere un layout manager
         recyclerView.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT - 80));
-        universita = new Universita();
-        recuperaCorsoStudente(universita);//definisco la variabile globale Universita con dipartimento e corso NON FUNZIONA BENE A VOLTE RESTITUISCE UN OGGETTO UNIVERSITA NULLO **************************************
 
-        recuperaTesi(recyclerView, imgNoTesi, txtNoTesi, listaTesi);
+       /* universita = new Universita();//in Java il passaggio di parametri è per valore, non avrebbe effetto l'impostazione della variabile università in questo modo
+        recuperaCorsoStudente(universita);//definisco la variabile globale Universita con dipartimento e corso NON FUNZIONA BENE A VOLTE RESTITUISCE UN OGGETTO UNIVERSITA NULLO **************************************
+        Log.d("WSD", ""+universita.corso);*/
+
+        recuperaCorsoETesi(recyclerView, imgNoTesi, txtNoTesi, listaTesi);
         // getTesi(new Universita("Informatica","Corso di informatica",null,null),"andrea@uniba.it",FirebaseFirestore.getInstance(),recyclerView);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-               // if (item.getItemId() == R.id.scan_qr) {
+                 if (item.getItemId() == R.id.filtra) {
 
-  //                  String result = "Dato letto dal QR code"; // Sostituiscilo con il dato letto
+                     new GestioneTesi().impostaDialog(adapter,context,recyclerView).show();
 
-//                   }
+                   }
                 return false;
             }
         });
@@ -199,10 +218,9 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
             });
         }
 
-        return v;
     }
 
-    private void recuperaTesi(RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi) {
+    private void recuperaTesi(RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi,Universita universita) {
 
         //------recupero i professori---------------------
 
@@ -232,7 +250,8 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
 
     }
 
-    private void getTesi(Universita universita, String emailProf, FirebaseFirestore db, RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi) {
+    private void getTesi(Universita universita, String emailProf, FirebaseFirestore db,
+                         RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi) {
         Log.d("siamo nel recupero", emailProf);
 
         db.collection("professori").document(emailProf).collection("Tesi")
@@ -301,7 +320,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         Log.i("TAG", "Alla fine di getTesi " + String.valueOf(listaTesi.size()));
     }
 
-    private void recuperaCorsoStudente(Universita universita) {
+    private void recuperaCorsoETesi(RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi) {
         String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("studenti").document(emailStudente).collection("Corso").document("c_s");
@@ -312,8 +331,11 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
 
-                        FragmentCercaTesi.this.universita = new Universita(document.getString("Dipartimento"), document.getString("Corso"), null, null);
-                        Log.d("ABC 1", "recupero il corso dello studente " + "Dip: " + FragmentCercaTesi.this.universita.dipartimento + " corso: " + FragmentCercaTesi.this.universita.corso);
+                        Universita universita = new Universita(document.getString("Dipartimento"), document.getString("Corso"), null, null);
+
+                        recuperaTesi(recyclerView,img,txt,listaTesi,universita);
+
+                      //  Log.d("ABC 1", "recupero il corso dello studente " + "Dip: " + FragmentCercaTesi.this.universita.dipartimento + " corso: " + FragmentCercaTesi.this.universita.corso);
 
                     } else {
                         //universita = null;
@@ -323,7 +345,11 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                 }
             }
         });
-
     }
+
+
+
+
+
 
 }

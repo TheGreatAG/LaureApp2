@@ -21,14 +21,20 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import it.uniba.dib.sms2223.laureapp.business.Credenziali;
+import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.ui.AspettoActivity;
 
 import android.content.ContentValues;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ICostanti {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -93,23 +99,73 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login(String email,String pw){
+
+    String collection = null;
+    if (Credenziali.validitaEmailProf(email)) {
+        collection = COLLECTION_PROF;
+    }
+    if (Credenziali.validitaEmailStudente(email)) {
+        collection = COLLECTION_STUDENTI;
+    }
+    if ( collection != null) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection(collection).document(email);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        boolean primoAccesso = document.getBoolean("primo accesso");
+
+                        login(primoAccesso,email,pw);
+
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+    } else {
+        Toast.makeText(MainActivity.this, getString(R.string.inserisci_email_valida),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    }
+
+    private void login(boolean primoAccesso,String email,String pw){
         Utente.mAuth.signInWithEmailAndPassword(email, pw)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {//se il login è andato a buon fine
-                           // if (mAuth.getCurrentUser().isEmailVerified()){//se è stata verificata l'email  //TEST togli il commento--------------------------
-                                if (Credenziali.validitaEmailStudente(email)) {//se l'email è di uno studente
+                            // if (mAuth.getCurrentUser().isEmailVerified()){//se è stata verificata l'email  //TEST togli il commento--------------------------
+                            if (Credenziali.validitaEmailStudente(email)) {//se l'email è di uno studente
+                                if (primoAccesso)
+                                    startActivity(new Intent(MainActivity.this, ActivityPrimoAccessoLogin.class));
+                                else
                                     startActivity(new Intent(MainActivity.this, MainActivityStudente.class));
-                                } else if (Credenziali.validitaEmailProf(email)) {//se l'email è di un prof
+
+                            } else if (Credenziali.validitaEmailProf(email)) {//se l'email è di un prof
+
+                                if (primoAccesso)
                                     startActivity(new Intent(MainActivity.this, PrimoAccessoDocente.class));
-                                } else
-                                    startActivity(new Intent(MainActivity.this, MainActivityDocente.class));//TEST--
+                                else
+                                    startActivity(new Intent(MainActivity.this, MainActivityDocente.class));
+
+                            } else
+                                startActivity(new Intent(MainActivity.this, MainActivityDocente.class));//TEST--
 
                             finish();
-                                    //Toast.makeText(getApplicationContext(),"Email non valida",Toast.LENGTH_SHORT).show();
-                           // } else //TEST togli il commento****************************************
-                               // Toast.makeText(MainActivity.this, "Per procedere verifica la tua email",Toast.LENGTH_SHORT).show(); //TEST  togli il commento****************************
+                            //Toast.makeText(getApplicationContext(),"Email non valida",Toast.LENGTH_SHORT).show();
+                            // } else //TEST togli il commento****************************************
+                            // Toast.makeText(MainActivity.this, "Per procedere verifica la tua email",Toast.LENGTH_SHORT).show(); //TEST  togli il commento****************************
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

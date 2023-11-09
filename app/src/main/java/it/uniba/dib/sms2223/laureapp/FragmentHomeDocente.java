@@ -179,7 +179,7 @@ public class FragmentHomeDocente extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                numTesi++;
+                                //numTesi++;
                                 String id = document.getId();
                                 String titolo = document.get("titolo").toString();
                                 String descrizione =  document.get("descrizione").toString();

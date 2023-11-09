@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -37,6 +38,7 @@ import java.util.Map;
 
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
@@ -53,7 +55,7 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
 
     private int numInsegnamenti; //salvare su file questo valore per le future modifiche dal profilo del prof?
 
-    private boolean activityVisitata = false;
+   // private boolean activityVisitata = false;
     @Override
     protected void onStart() {
         super.onStart();
@@ -66,22 +68,18 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primo_accesso_docente);
 
-        SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        activityVisitata = sharedPreferences.getBoolean(PRIMO_ACCESSO_DOCENTE,false);
 
         boolean b = getIntent().getBooleanExtra("chiamante",false);
+
         Toolbar toolbar = findViewById(R.id.toolbar_primo_accesso_docente);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        if (activityVisitata && !b) {//se non è la prima volta che vedo questa schermata si passa all'activity successiva, se invece accedo a questa schermata dall'activity home del docente mi fa rimanere
-            startActivity(new Intent(this, MainActivityDocente.class));
-            finish();
-        }else if (ab !=null){
+        if (b && ab!=null) {//se non è la prima volta che vedo questa schermata si passa all'activity successiva, se invece accedo a questa schermata dall'activity home del docente mi fa rimanere
             ab.setDisplayHomeAsUpEnabled(true);
-
         }
 
         Button btnAggiungi = findViewById(R.id.btn_aggiungi_insegnamento);
+        Button btnConferma = findViewById(R.id.btn_conferma);
 
         Spinner spnDipartimento = findViewById(R.id.spinner_dipartimento);
         Spinner spnCorso = findViewById(R.id.spinner_corso);
@@ -102,9 +100,7 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
 
         recuperaInsegnamenti();
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(PRIMO_ACCESSO_DOCENTE,true);
-        editor.apply();//non è un'azione importante quindi uso apply()
+
         spnDipartimento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -159,10 +155,20 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
         });
 
         btnAggiungi.setOnClickListener(view -> {
-            numInsegnamenti++;
-            Universita universita = new Universita(dipartimento,corso,insegnamento,"Insegnamento"+numInsegnamenti);
-            salvaInsegnamenti(universita);
+           // numInsegnamenti++;
+            Universita universita = new Universita(dipartimento,corso,insegnamento,null/*"Insegnamento"+numInsegnamenti*/);
+            salvaInsegnamenti(universita,b,adapter);
 
+        });
+
+        if (b)
+            btnConferma.setVisibility(View.GONE);
+
+        btnConferma.setOnClickListener(view -> {
+            if (!b) {
+                startActivity(new Intent(this, MainActivityDocente.class));
+                finish();
+            }
         });
     }
 
@@ -186,16 +192,39 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
      * Salva gli insegnamenti del professore nel db
      * @param universita l'istanza contenente le info sull'insegnamento da salvare
      */
-    private void salvaInsegnamenti(Universita universita){//da finire non funziona
+    private void salvaInsegnamenti(Universita universita,boolean b,CustomAdapterListDocente adapter) {//da finire non funziona
         String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> uni = new HashMap<>();
-        uni.put("ID", universita.id);
+        /*Map<String, Object> uni = new HashMap<>();
+       // uni.put("ID", universita.id);
         uni.put("Dipartimento", universita.dipartimento);
         uni.put("Corso", universita.corso);
-        uni.put("Insegnamento", universita.insegnamento);
+        uni.put("Insegnamento", universita.insegnamento);*/
 
-        db.collection("professori").document(emailDocente).
+
+        db.collection("professori").document(emailDocente).collection(COLLECTION_INSEGNAMENTI).add(universita) //se si vuole lasciare al sistema la creazione in automatico di un id per il documento usare collection().add()
+                //asltrimenti collection().document(ID documento).set()
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(getApplicationContext(), "Insegnamento inserito", Toast.LENGTH_SHORT).show();
+                        universita.id = documentReference.getId();
+                        adapter.listaElementi.add(universita);
+                        adapter.notifyDataSetChanged();
+                        Log.d("WWR", "" + adapter.listaElementi.size());
+
+                        if (!b) {
+                            new Utente().impostaValoreDiAccesso(ICostanti.COLLECTION_PROF, emailDocente);
+
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+        /*db.collection("professori").document(emailDocente).
                 collection("Insegnamento").document(universita.id)
                 .set(uni)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -204,6 +233,10 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
                         Toast.makeText(getApplicationContext(),"Insegnamento inserito",Toast.LENGTH_SHORT).show();
                         adapter.listaElementi.add(universita);
                         adapter.notifyDataSetChanged();
+                        if (!b) {
+                            new Utente().impostaValoreDiAccesso(ICostanti.COLLECTION_PROF, emailDocente);
+
+                        }
                         Log.d(TAG, "DocumentSnapshot successfully written!");
                     }
                 })
@@ -213,8 +246,9 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
                         Toast.makeText(getApplicationContext(),"ERRORE riprova",Toast.LENGTH_SHORT).show();
                         Log.w(TAG, "Error writing document", e);
                     }
-                });
+                });*/
     }
+
 
     private void recuperaInsegnamenti(){//da finire vedi nome utente
         String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -227,14 +261,15 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                numInsegnamenti++;
-                                Universita universita = new Universita(document.get("Dipartimento").toString()
-                                        ,document.get("Corso").toString()
-                                        ,document.get("Insegnamento").toString()
-                                        ,document.get("ID").toString());
+                             //   numInsegnamenti++;
+                                Universita universita = new Universita(document.getString("dipartimento")
+                                        ,document.getString("corso")
+                                        ,document.getString("insegnamento")
+                                        ,document.getId());
+
+                                Log.d("WWE",""+adapter.listaElementi.size());
                                 adapter.listaElementi.add(universita);
                                 adapter.notifyDataSetChanged();
-                                Log.d("contenuto", document.getId() + " => " + document.get("Dipartimento").toString());
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

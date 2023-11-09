@@ -20,6 +20,29 @@
         android:textSize="12sp"
         android:layout_marginTop="@dimen/margine_bordi_laterali" />
 
+    <LinearLayout
+        android:id="@+id/lyt_conferma_task"
+        android:layout_width="wrap_content"
+        android:layout_alignStart="@id/txt_titolo_task"
+        android:layout_alignTop="@+id/txt_data_ultima_modifica"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_positivo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/testo_task_completato"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/task_completato"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/txt_titolo_task"
         android:layout_width="wrap_content"
@@ -42,7 +65,67 @@
         android:textColor="@color/black"
         android:text="Testo di prova. ubub jn knnce jejebkn nnununub bub ubu bubu ububububub ububbbvtv ctv"/>
     
-    
+
+
+    <LinearLayout
+        android:id="@+id/lyt_contenitore_btn_gestione_relatore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/txt_descrizione_task"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btn_stato_attualeTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            app:cornerRadius="10dp"
+            android:backgroundTint="@color/testo_task_da_completare"
+            android:text="@string/da_completare"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_elimina_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/rosso"
+            android:padding="10dp"
+            app:cornerRadius="10dp"
+            app:strokeWidth="2dp"
+            app:icon="@drawable/ic_elimina"
+            app:iconTint="@color/rosso"
+            app:iconSize="17dp"
+            app:iconGravity="textStart"
+            android:backgroundTint="@color/white"
+            app:strokeColor="@color/rosso"
+            android:text="@string/elimina"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_conferma_completamento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            app:cornerRadius="10dp"
+            android:visibility="gone"
+            android:backgroundTint="@color/richiamo_azione"
+            android:text="@string/conferma"/>
+
+    </LinearLayout>
+
+
+
+
     <LinearLayout
         android:id="@+id/lyt_contenitore_btn_di_stato"
         android:layout_width="match_parent"
@@ -50,6 +133,7 @@
         android:orientation="horizontal"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
+        android:visibility="visible"
         android:layout_marginBottom="10dp"
         android:layout_below="@+id/txt_descrizione_task"
         android:layout_marginTop="20dp">

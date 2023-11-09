@@ -43,6 +43,7 @@ import it.uniba.dib.sms2223.laureapp.R;
 import it.uniba.dib.sms2223.laureapp.RichiestaTesiStudente;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
+import it.uniba.dib.sms2223.laureapp.business.GestioneTask;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.business.Utile;
 import it.uniba.dib.sms2223.laureapp.model.Corelatore;
@@ -61,18 +62,18 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
     private TextView txtTitoloTask,txtDescrizioneTask,txtUltimaModifica,txtTitoloTesi,txtNomeRelatore,txtEmailRelatore
             ,txtCoRelatore,txtEmailCoRelatore,txtDescrizioneTesi,txtDataDomanda,txtDataRisposta,txtDomanda,txtRisposta;
 
-    private Button btnRichiediTesi,btnInviaRisposta;
+    private Button btnRichiediTesi,btnInviaRisposta,btnStatoTask;
     private ImageButton btnPreferiti,btnCondividi;
     private final int tipoDilista;
     private RelativeLayout annuncio;
-    private LinearLayout lytRispostaDomanda,lytRispostaDocente;
+    private LinearLayout lytRispostaDomanda,lytRispostaDocente,lytTaskConfermato,lytContenitoreBottoniTaskRelatore,lytBottoniStudente;
     //private ViewGroup layoutAnnuncio;
     private TextInputLayout edtRisposta;
 
-    public static final int LISTA_1 = 50;//lista dei risultati
+    public static final int LISTA_TASK_LATO_RELATORE = 50;//lista dei risultati
     public static final int LISTA_2 = 51;//lista profilo personale
 
-    protected MaterialButton btnDaCompletare,btnInLavorazione,btnCompletato;
+    protected MaterialButton btnDaCompletare,btnInLavorazione,btnCompletato,btnEliminaTask,btnConfermaStatoTask;
     public static final int LISTA_DOMANDE_RISPOSTE_LATO_STUD = 52;//lista profilo personale
     public static final int LISTA_TESI = 54;//lista tesi disponibili
     public static final int LISTA_DOMANDE_RISPOSTE_LATO_RELATORE =60;
@@ -83,13 +84,19 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
         this.tipoDilista = tipoDiLista; //se la lista dei task del prof o dello studente
 
         //QUA METTERE GLI IF PER CONTROLLARE IL TIPO DI LISTA E IN BASE A QUESTO INIZIALIZZARE LE VIEW CORRISPONDENTI CON FINDVIEWBYID()
-        if (tipoDiLista == LISTA_2) {
+        if (tipoDiLista == LISTA_2 || tipoDiLista == LISTA_TASK_LATO_RELATORE) {
             txtTitoloTask = view.findViewById(R.id.txt_titolo_task);
             txtDescrizioneTask = view.findViewById(R.id.txt_descrizione_task);
             txtUltimaModifica = view.findViewById(R.id.txt_data_ultima_modifica);
             btnDaCompletare = view.findViewById(R.id.btn_da_completare);
             btnInLavorazione = view.findViewById(R.id.btn_in_lavorazione);
             btnCompletato = view.findViewById(R.id.btn_completato);
+            lytTaskConfermato = view.findViewById(R.id.lyt_conferma_task);
+            lytContenitoreBottoniTaskRelatore = view.findViewById(R.id.lyt_contenitore_btn_gestione_relatore);
+            lytBottoniStudente = view.findViewById(R.id.lyt_contenitore_btn_di_stato);
+            btnEliminaTask = view.findViewById(R.id.btn_elimina_task);
+            btnConfermaStatoTask = view.findViewById(R.id.btn_conferma_completamento);
+            btnStatoTask = view.findViewById(R.id.btn_stato_attualeTask);
         }
         if (tipoDiLista == LISTA_TESI || tipoDiLista == LISTA_TESI_PREFERITE){
             txtTitoloTesi = view.findViewById(R.id.txt_titolo_tesi);
@@ -134,54 +141,95 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
 
         txtTitoloTask.setText(task.titolo);
         txtDescrizioneTask.setText(task.descrizione);
-        txtUltimaModifica.setText(context.getString(R.string.ultima_modifica) + " " +task.ultimaModifica);
+        txtUltimaModifica.setText(context.getString(R.string.ultima_modifica) + "\n" +task.ultimaModifica);
 
-        if (task.stato.equals(TASK_DA_COMPLETARE)){
-            btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_da_completare)));
-            btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.white));
-        } else if (task.stato.equals(TASK_IN_LAVORAZIONE)){
-            btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione)));
-            btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.white));
-        } else if(task.stato.equals(TASK_COMPLETATO)){
-            btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_completato)));
-            btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.white));
-
+        if (task.confermaDefinitivaDelRelatore) {
+            lytTaskConfermato.setVisibility(View.VISIBLE);
         }
 
-        btnDaCompletare.setOnClickListener(view -> {
-            impostaStatoTask(task,TASK_DA_COMPLETARE,tesi,txtUltimaModifica,context);
-            btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_da_completare)));
-            btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.white));
+        if (tipoDilista == LISTA_TASK_LATO_RELATORE){
+            Log.d("RRD","nei task relatore");
+            lytBottoniStudente.setVisibility(View.GONE);
+            lytContenitoreBottoniTaskRelatore.setVisibility(View.VISIBLE);
 
-            btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
-            btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione));
-            btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
-            btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.testo_task_completato));
+            switch (task.stato){
+                case TASK_DA_COMPLETARE:
+                    btnStatoTask.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_da_completare)));
+                    break;
+                case TASK_IN_LAVORAZIONE:
+                    btnStatoTask.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione)));
+                    break;
+                case TASK_COMPLETATO:
+                    btnStatoTask.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_completato)));
+            }
+
+            if (task.stato.equals(TASK_COMPLETATO))
+                btnConfermaStatoTask.setVisibility(View.VISIBLE);
+
+            btnConfermaStatoTask.setOnClickListener(view -> {
+                new GestioneTask().contrassegnaTaskComeCompletato(lytTaskConfermato,tesi,task,context);
+            });
+
+            btnEliminaTask.setOnClickListener(view -> {
+
+            });
+
+
+        } else {
+            if (task.stato.equals(TASK_DA_COMPLETARE)){
+                btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_da_completare)));
+                btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.white));
+            } else if (task.stato.equals(TASK_IN_LAVORAZIONE)){
+                btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione)));
+                btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.white));
+            } else if(task.stato.equals(TASK_COMPLETATO)){
+                btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_completato)));
+                btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+            }
+        }
+
+
+        btnDaCompletare.setOnClickListener(view -> {
+            if (!task.confermaDefinitivaDelRelatore) {
+                impostaStatoTask(task, TASK_DA_COMPLETARE, tesi, txtUltimaModifica, context);
+                btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_da_completare)));
+                btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+                btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+                btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione));
+                btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+                btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.testo_task_completato));
+            }
 
         });
 
         btnInLavorazione.setOnClickListener(view -> {
-            impostaStatoTask(task,TASK_IN_LAVORAZIONE,tesi,txtUltimaModifica,context);
+            if (!task.confermaDefinitivaDelRelatore) {
+                impostaStatoTask(task, TASK_IN_LAVORAZIONE, tesi, txtUltimaModifica, context);
 
-            btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione)));
-            btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.white));
+                btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione)));
+                btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.white));
 
-            btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
-            btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.testo_task_da_completare));
-            btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
-            btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.testo_task_completato));
+                btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+                btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.testo_task_da_completare));
+                btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+                btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.testo_task_completato));
+            }
         });
 
         btnCompletato.setOnClickListener(view -> {
-            impostaStatoTask(task,TASK_COMPLETATO,tesi,txtUltimaModifica,context);
+            if (!task.confermaDefinitivaDelRelatore) {
+                impostaStatoTask(task, TASK_COMPLETATO, tesi, txtUltimaModifica, context);
 
-            btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_completato)));
-            btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.white));
+                btnCompletato.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_completato)));
+                btnCompletato.setTextColor(ContextCompat.getColor(context, R.color.white));
 
-            btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
-            btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione));
-            btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
-            btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.testo_task_da_completare));
+                btnInLavorazione.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+                btnInLavorazione.setTextColor(ContextCompat.getColor(context, R.color.testo_task_in_lavorazione));
+                btnDaCompletare.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
+                btnDaCompletare.setTextColor(ContextCompat.getColor(context, R.color.testo_task_da_completare));
+            }
         });
 
     }

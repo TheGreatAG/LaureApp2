@@ -19,6 +19,8 @@ public interface ICostanti {
     String COLLECTION_RICHIESTE = "richieste";
     String COLLECTION_RICEVIMENTI = "ricevimenti";
     String COLLECTION_TESI = "Tesi";
+    String COLLECTION_STUDENTI = "studenti";
+    String COLLECTION_INSEGNAMENTI= "Insegnamento";
 
     String NOME_COGNOME_STUD = "file dati stud";
     String INFO_STUD = "info";

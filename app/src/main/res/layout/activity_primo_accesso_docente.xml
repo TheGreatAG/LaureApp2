@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:visibility="visible"
                 tools:listitem="@layout/layout_lista_insegnamenti_docente"/>
 
             <TextView
@@ -93,12 +94,17 @@
                 app:strokeWidth="1dp"
                 app:rippleColor="#7487B8"
                 android:layout_marginBottom="30dp"
-
                 />
 
+            <Button
+                android:id="@+id/btn_conferma"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/conferma"
+                android:textSize="18sp"
+                android:textColor="@color/white"/>
+
         </LinearLayout>
-
-
 
     </androidx.core.widget.NestedScrollView>
 
