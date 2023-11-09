@@ -1,7 +1,6 @@
 package it.uniba.dib.sms2223.laureapp;
 
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,14 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,8 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,7 +33,6 @@ import java.util.ArrayList;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
-import it.uniba.dib.sms2223.laureapp.model.Studente;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
@@ -170,7 +159,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
             searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                 @Override
                 public boolean onClose() {
-                    adapter.listaAnnunci = listaTesiPrecedenti;
+                    adapter.listaElementi = listaTesiPrecedenti;
                     adapter.notifyDataSetChanged();
                     return false;
                 }
@@ -183,8 +172,8 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
 
 
                     ArrayList<Tesi> listaRisultatiRicercaTesi = new ArrayList<>();
-                    for (int i = 0; i < adapter.listaAnnunci.size(); i++) {
-                        Tesi tesi = (Tesi) adapter.listaAnnunci.get(i);
+                    for (int i = 0; i < adapter.listaElementi.size(); i++) {
+                        Tesi tesi = (Tesi) adapter.listaElementi.get(i);
                         Log.d("BHM 1", query + " -> " + tesi.titolo);
                         String[] titoloTesi = tesi.titolo.split(" ");
                         for (int j = 0; j < titoloTesi.length; j++) {
@@ -195,10 +184,10 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                         }
 
                     }
-                    adapter.listaAnnunci = listaRisultatiRicercaTesi;
+                    adapter.listaElementi = listaRisultatiRicercaTesi;
 
                     adapter.notifyDataSetChanged();
-                    //adapter.listaAnnunci = listaTesiPrecedenti;
+                    //adapter.listaElementi = listaTesiPrecedenti;
 
                     return false;
                 }
@@ -207,7 +196,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                 public boolean onQueryTextChange(String newText) {
                     Log.d("RICERCA", "cerca2 " + newText);
                     if (newText.equals("")) {
-                        adapter.listaAnnunci = listaTesiPrecedenti;
+                        adapter.listaElementi = listaTesiPrecedenti;
                         adapter.notifyDataSetChanged();
                     }
                     Log.d("FGF", " no ricerca");

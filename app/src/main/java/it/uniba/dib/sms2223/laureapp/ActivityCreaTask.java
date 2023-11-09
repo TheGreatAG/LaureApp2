@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,13 +23,16 @@ import it.uniba.dib.sms2223.laureapp.model.Task;
 public class ActivityCreaTask extends AppCompatActivity {
 
     public final String DA_COMPLETARE= "da completare";
-    public final String IN_LAVORAZIONE= "in lavorazione";
-    public final String COMPLETATO= "completato";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crea_task);
+
+        boolean provenienzaDaListaTAskStudente = getIntent().getBooleanExtra("taskDocente",false);
+
+
+
 
         TextInputLayout edtOggettoTask = findViewById(R.id.edt_oggetto_task);//associo il TextInputLayout alla omologa variabile Java
         TextInputLayout edtDescrizioneTask = findViewById(R.id.edt_desscrizione_task);
@@ -36,6 +40,9 @@ public class ActivityCreaTask extends AppCompatActivity {
         Button btnAggiungi = findViewById(R.id.btn_aggiungi_task);
         Button btnSalvatesi = findViewById(R.id.btn_salva_tesi);
         Toolbar toolbar = findViewById(R.id.toolbar_task);
+
+        if (provenienzaDaListaTAskStudente)
+            btnSalvatesi.setVisibility(View.GONE);
 
         btnSalvatesi.setOnClickListener(view -> {
             startActivity(new Intent(this,MainActivityDocente.class));

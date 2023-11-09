@@ -1,17 +1,12 @@
 package it.uniba.dib.sms2223.laureapp.business;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,8 +26,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import it.uniba.dib.sms2223.laureapp.ActivityCreaTask;
-import it.uniba.dib.sms2223.laureapp.CreaTesi;
 import it.uniba.dib.sms2223.laureapp.R;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterListDocente;
@@ -180,7 +173,7 @@ public class GestioneTesi {
      * @param nofiltri un intero che se impostato a zero applica i filtri e mostra una nuova lista con le tesi che soddisfano i vincoli, se diverso da zero restituisce la lista delle tesi di partenza togliendo i filtri
      */
     public void filtraTesi(CustomAdapterList adapter, int mediaVoti, int ore, String ambito, Context context, int nofiltri, RecyclerView recyclerView){
-        ArrayList <Tesi> listaTesiCompleta = adapter.listaAnnunci;
+        ArrayList <Tesi> listaTesiCompleta = adapter.listaElementi;
         ArrayList <Tesi> listaTesiFiltrate = new ArrayList<>();
 
         if (nofiltri ==0) {

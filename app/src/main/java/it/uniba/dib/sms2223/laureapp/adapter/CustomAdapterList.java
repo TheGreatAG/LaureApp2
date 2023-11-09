@@ -19,8 +19,8 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
 public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
 
-    //public ArrayList<Task> listaAnnunci;
-    public ArrayList listaAnnunci;
+    //public ArrayList<Task> listaElementi;
+    public ArrayList listaElementi;
 
     private Context context;
     private int layoutLista;
@@ -28,21 +28,21 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
     private FragmentAdapter fragmentAdapter;///
     private Tesi tesi;
 
-    public CustomAdapterList(final ArrayList listaAnnunci, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
+    public CustomAdapterList(final ArrayList listaElementi, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
         this.context = context;
         this.layoutLista = layoutLista;
-        this.listaAnnunci = listaAnnunci;
+        this.listaElementi = listaElementi;
         this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
         Log.d("tipo lista B",""+ tipoDiLista);
 
     }
 
-    public CustomAdapterList(final ArrayList listaAnnunci, Context context,
-                             int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter,Tesi tesi){//
+    public CustomAdapterList(final ArrayList listaElementi, Context context,
+                             int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter, Tesi tesi){//
         this.context = context;
         this.layoutLista = layoutLista;
-        this.listaAnnunci = listaAnnunci;
+        this.listaElementi = listaElementi;
         this.tipoDiLista = tipoDiLista;  //decommenta
         this.fragmentAdapter = fragmentAdapter;
         this.tesi = tesi;
@@ -61,14 +61,14 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull GenericViewHolder holder, int position) {
-        if (tipoDiLista == GenericViewHolder.LISTA_2)
-            holder.setView((Task) listaAnnunci.get(position),context,this,position,tesi);
+        if (tipoDiLista == GenericViewHolder.LISTA_2 || tipoDiLista == GenericViewHolder.LISTA_TASK_LATO_RELATORE)
+            holder.setView((Task) listaElementi.get(position),context,this,position,tesi);
         else if (tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD || tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_RELATORE) {
-            holder.setView((Domanda) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
+            holder.setView((Domanda) listaElementi.get(position),context, listaElementi,this,position,fragmentAdapter);
         } else if (tipoDiLista == ICostanti.LISTA_TESI_PREFERITE) {
-            holder.setView((Tesi) listaAnnunci.get(position),context,listaAnnunci,this,position,fragmentAdapter);
+            holder.setView((Tesi) listaElementi.get(position),context, listaElementi,this,position,fragmentAdapter);
         } else if (tipoDiLista == GenericViewHolder.LISTA_TESI){
-            holder.setView((Tesi) listaAnnunci.get(position), context, listaAnnunci, this, position, fragmentAdapter);
+            holder.setView((Tesi) listaElementi.get(position), context, listaElementi, this, position, fragmentAdapter);
 
         }
         Log.d("tipo lista C", "" + "" + tipoDiLista);
@@ -76,7 +76,7 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
 
     @Override
     public int getItemCount() {
-        return listaAnnunci.size();
+        return listaElementi.size();
     }
 
     public int getLayoutLista() {

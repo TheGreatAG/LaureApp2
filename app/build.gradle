@@ -38,6 +38,8 @@ dependencies {
    // implementation 'com.google.zxing:core:3.2.0'
     implementation "androidx.preference:preference-ktx:1.2.0"
 
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
     //Utilizzando Firebase Android BoM , la tua app utilizzerà sempre versioni compatibili delle librerie Firebase Android
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
     // importazione librerie per firebase analitycs

@@ -152,6 +152,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
             lytBottoniStudente.setVisibility(View.GONE);
             lytContenitoreBottoniTaskRelatore.setVisibility(View.VISIBLE);
 
+            btnStatoTask.setText(task.stato);
             switch (task.stato){
                 case TASK_DA_COMPLETARE:
                     btnStatoTask.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.testo_task_da_completare)));
@@ -171,7 +172,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
             });
 
             btnEliminaTask.setOnClickListener(view -> {
-
+                new GestioneTask().eliminaTask(adapter,task,tesi,posizione,context);
             });
 
 
@@ -402,7 +403,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        txtUltimaModifica.setText(context.getString(R.string.ultima_modifica) + " " +ultimaModifica);
+                        txtUltimaModifica.setText(context.getString(R.string.ultima_modifica) + "\n" +ultimaModifica);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

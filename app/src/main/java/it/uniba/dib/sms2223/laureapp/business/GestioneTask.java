@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -19,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import it.uniba.dib.sms2223.laureapp.R;
+import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.model.Task;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
@@ -52,5 +54,30 @@ public class GestioneTask implements ICostanti {
                         Toast.makeText(context,context.getString(R.string.errore),Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void eliminaTask(CustomAdapterList adapter,Task task,Tesi tesi,int indice,Context context){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        db.collection(COLLECTION_PROF).document(email).
+                collection(COLLECTION_TESI)
+                .document(tesi.id).collection(COLLECTION_TASK).document(task.id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        adapter.listaElementi.remove(indice);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context,"ERRORE, riprova",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
     }
 }
