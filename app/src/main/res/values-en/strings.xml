@@ -129,10 +129,14 @@
     <string name="task_completato">Completed task</string>
     <string name="download_file">Download Thesis</string>
     <string name="richiesta_permesso">Required access to camera</string>
-    <string name="testo_permesso_camera"><![CDATA[You'll be asked the access to your camera.\nf without camera permissions you won't be able to see the data of the related thesis, but you could still receive it via text from :\nShare->Share Thesis]]></string>
+    <string name="testo_permesso_camera">You\'ll be asked the access to your camera.\n without camera permissions you won\'t be able to see the data of the related thesis, but you could still receive it via text from :\nShare->Share Thesis</string>
     <string name="testo_permesso_camera_in_impostazioni">You you need to give grant camera access permissions to use this feature. You can do this from the device settings or by opening LaureeApp and giving camera permissions on prompt</string>
     <string name="annulla">Undo</string>
     <string name="grazie">Thank you</string>
     <string name="torna_indietro">Go back</string>
     <string name="loggati">You have to be signed in to use this function</string>
+
+    <string name="password_non_combaciano">Passwords do not match</string>
+    <string name="inserisci_cognome">Enter the last name</string>
+    <string name="inserisci_nome">Enter the name</string>
 </resources>
