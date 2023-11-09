@@ -4,10 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,19 +17,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
 
 import it.uniba.dib.sms2223.laureapp.business.Credenziali;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.ui.AspettoActivity;
 
-import android.content.ContentValues;
 
 public class MainActivity extends AppCompatActivity implements ICostanti {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -44,11 +38,9 @@ public class MainActivity extends AppCompatActivity implements ICostanti {
         if (Utente.utenteLoggato()){
             if (Credenziali.validitaEmailProf(Utente.mAuth.getCurrentUser().getEmail()))
                 startActivity(new Intent(MainActivity.this,MainActivityDocente.class));
-            //else if (Credenziali.validitaEmailStudente(Utente.mAuth.getCurrentUser().getEmail())) //momentaneo
-              //  startActivity(new Intent(MainActivity.this,MainActivityStudente.class)); //commento momentaneo
             else
-                startActivity(new Intent(MainActivity.this,MainActivityStudente.class));//riga di test
-                //Toast.makeText(this,"Errore in fase di riconoscimento email",Toast.LENGTH_SHORT).show(); //momentaneo
+                startActivity(new Intent(MainActivity.this,MainActivityStudente.class));
+
             finish();
         }
     }
@@ -117,14 +109,13 @@ public class MainActivity extends AppCompatActivity implements ICostanti {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         boolean primoAccesso = document.getBoolean("primo accesso");
 
                         login(primoAccesso,email,pw);
 
 
                     } else {
-                        Log.d(TAG, "No such document");
+                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
@@ -145,14 +136,13 @@ public class MainActivity extends AppCompatActivity implements ICostanti {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {//se il login è andato a buon fine
-                            // if (mAuth.getCurrentUser().isEmailVerified()){//se è stata verificata l'email  //TEST togli il commento--------------------------
                             if (Credenziali.validitaEmailStudente(email)) {//se l'email è di uno studente
                                 if (primoAccesso)
                                     startActivity(new Intent(MainActivity.this, ActivityPrimoAccessoLogin.class));
                                 else
                                     startActivity(new Intent(MainActivity.this, MainActivityStudente.class));
 
-                            } else if (Credenziali.validitaEmailProf(email)) {//se l'email è di un prof
+                            } else if (Credenziali.validitaEmailProf(email)) {//se l'email è di un Docente
 
                                 if (primoAccesso)
                                     startActivity(new Intent(MainActivity.this, PrimoAccessoDocente.class));
@@ -160,15 +150,12 @@ public class MainActivity extends AppCompatActivity implements ICostanti {
                                     startActivity(new Intent(MainActivity.this, MainActivityDocente.class));
 
                             } else
-                                startActivity(new Intent(MainActivity.this, MainActivityDocente.class));//TEST--
+                                Toast.makeText(MainActivity.this, "Error",
+                                        Toast.LENGTH_SHORT).show();
 
                             finish();
-                            //Toast.makeText(getApplicationContext(),"Email non valida",Toast.LENGTH_SHORT).show();
-                            // } else //TEST togli il commento****************************************
-                            // Toast.makeText(MainActivity.this, "Per procedere verifica la tua email",Toast.LENGTH_SHORT).show(); //TEST  togli il commento****************************
+
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }

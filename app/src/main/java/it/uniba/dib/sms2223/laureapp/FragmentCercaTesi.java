@@ -178,11 +178,9 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                      new GestioneTesi().impostaDialog(adapter,context,recyclerView).show();
                    }
                  if (item.getItemId() == R.id.qr_scanner){
-
                      if (Utente.utenteLoggato()) {
                          if (checkCameraPermission()) {
                              startActivity(new Intent(context, ActivityScanQR.class));
-
                          } else if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.CAMERA)) {
                              // Spiega all'utente perché ha bisogno di questa autorizzazione
                              // Richiedi il permesso
@@ -202,17 +200,13 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                              dialogInterface.dismiss();
                                          }
                                      });
-
                              AlertDialog dialog = builder.create();
                              dialog.show();
-
                          } else {
                              permessoCamera.launch(Manifest.permission.CAMERA);
-
                          }
                      } else
                          Toast.makeText(context,getString(R.string.loggati),Toast.LENGTH_SHORT).show();
-
                  }
                 return false;
             }

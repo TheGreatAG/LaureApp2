@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,10 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import it.uniba.dib.sms2223.laureapp.ActivityPrimoAccessoLogin;
@@ -35,9 +30,8 @@ import it.uniba.dib.sms2223.laureapp.R;
 
 public class Utente implements ICostanti{
 
-    public static FirebaseAuth mAuth = FirebaseAuth.getInstance();// Initialize Firebase Auth
+    public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    //PER IL TESTER, VERIFICA COSA SUCCEDE A RIGA 82, VEDI IL COMMENTO ************************************
 
     public Utente(){}
 
@@ -55,7 +49,7 @@ public class Utente implements ICostanti{
         if(currentUser != null) {//utente già loggato
             return true;
         }else
-            return false;// valore di default usato solo per test
+            return false;// valore di default
     }
 
     /**
@@ -77,27 +71,12 @@ public class Utente implements ICostanti{
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
-                                            // l'utente è registrato nel db
-                                            //FirebaseUser user = mAuth.getCurrentUser(); //per recuperare l'utente attuale
+
                                             Toast.makeText(context, "utente registrato", Toast.LENGTH_SHORT).show();
 
                                             inserisciDatiUtente(nome,cognome,email);
 
-
-                                          /*  mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {// l'utente ha verificato la sua email
-                                                        Toast.makeText(context, "utente registrato, verifica la tua email", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
-                                                        //context.startActivity(new Intent(context, MainActivity.class));
-                                                        inserisciDatiUtente(nome,cognome,email);
-                                                    } else //Per il tester VERIFICARE COSA SUCCEDE A QUESTO PUNTO DELLA REGISTRAZIONE NEI VARI CASI - SE SI VERIFICA l'email e se non si verifica
-                                                        Toast.makeText(context, "Email non confermata", Toast.LENGTH_SHORT).show();// mostra il messagio di Toast
-                                                }
-                                            });*/
                                         } else {
-                                            // If sign in fails, display a message to the user.
-                                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
                                             Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -106,14 +85,14 @@ public class Utente implements ICostanti{
                     } else
                         Toast.makeText(context, "La password deve contenere almeno 6 caratteri", Toast.LENGTH_SHORT).show();
                 } else {
-                    //le password non combaciano
+                    Toast.makeText(context, context.getString(R.string.password_non_combaciano), Toast.LENGTH_SHORT).show();
                 }
             } else {
-                //inserisci un cognome
+                Toast.makeText(context, context.getString(R.string.inserisci_cognome), Toast.LENGTH_SHORT).show();
             }
 
         }else {
-                //messaggio inserisci un nome
+            Toast.makeText(context, context.getString(R.string.inserisci_nome), Toast.LENGTH_SHORT).show();
         }
     }
 

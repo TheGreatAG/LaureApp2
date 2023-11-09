@@ -144,6 +144,9 @@
     <string name="grazie">Grazie</string>
     <string name="torna_indietro">Torna indietro</string>
     <string name="loggati">Devi registrarti nel sistema per usare questa funzione</string>
+    <string name="password_non_combaciano">Le password non combaciano</string>
+    <string name="inserisci_cognome">Inserisci il cognome</string>
+    <string name="inserisci_nome">Inserisci un nome</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

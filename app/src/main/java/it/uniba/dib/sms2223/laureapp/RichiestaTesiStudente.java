@@ -43,9 +43,7 @@ import it.uniba.dib.sms2223.laureapp.model.Studente;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.utils.QRCodeGenerator;
 
-public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema che se la tesi viene salvata nei preferiti si crea una copia di quella tesi al momento di quando era disponibile e non si
-    //aggiorna le il prof la assegna, risultando cosi sempre disponibile e lo studente che l'aveva nei preferiti può farne richiesta
-    //anche se la tesi è stata già assegnata*********************************************--------------------------
+public class RichiestaTesiStudente extends AppCompatActivity {
 
     TextView txtTitoloTesi,txtCorsoDiLaurea, txtTipologiaTesi, txtRelatore
             ,txtCorelatore, txtDescrizione, txtVotazioneConsigliata,txtTempoRichiesto;

@@ -78,7 +78,6 @@ public class ActivityScanQR extends AppCompatActivity {
                 int mediaRichiesta = json.getInt("mediaRichiesta");
                 int durata = json.getInt("durata");
                 String dataPubblicazione = json.getString("dataPubblicazione");
-                //String stato = json.getString("stato");
 
                 // Estrai la lista di esamiRichiesti
                 JSONArray esamiRichiestiArray = json.getJSONArray("esamiRichiesti");
@@ -104,15 +103,3 @@ public class ActivityScanQR extends AppCompatActivity {
 
 
 }
-/* {"titolo":"App Android",
-            "descrizione":"La tesi non si fa da sola"
-            ,"dataPubblicazione":"03-11-2023"
-            ,"ambito":"Analisi dei dati"
-            ,"tipo":"Compilativa"
-            ,"corsoDiLaurea":"Corso di informatica"
-            ,"sRelatore":"Ruggeto Ceglie ceglie@uniba.it"
-            ,"mediaRichiesta":19
-            ,"durata":66
-            ,"id":"Jt60ZjIrYA5wSeRqkIPT"
-            ,"esamiRichiesti":["Calcolabilità e complessità","Calcolo numerico","Ingegneria del software","Laboratorio di informatica","Matematica discreta"]}
-*/

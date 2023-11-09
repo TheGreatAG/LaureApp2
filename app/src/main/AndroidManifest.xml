@@ -27,51 +27,64 @@
         <activity
             android:name=".ActivityScanQR"
             android:exported="false"
-            android:parentActivityName=".MainActivityStudente"/>
+            android:parentActivityName=".MainActivityStudente"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RichiestaTesiStudente"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivityStudente" />
         <activity
             android:name=".CambioPassword"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ProfiloUtente" />
         <activity
             android:name=".ActivityCreaTask"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".CreaTesi" />
         <activity
             android:name=".PrimoAccessoDocente"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ProfiloUtente" />
         <activity
             android:name=".CreaTesi"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivityDocente" />
         <activity
             android:name=".DomandaStudente"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivityStudente" />
         <activity
             android:name=".ProfiloUtente"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivityStudente" />
         <activity
             android:name=".ActivityRegistrazione"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ActivityPrimoAccessoLogin"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ProfiloUtente" />
         <activity
             android:name=".MainActivityDocente"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".MainActivityStudente"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
