@@ -45,17 +45,13 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
 
 public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti {
 
-    //METTERE il pulsante back nella toolbar solo se si accede dalla home
 
 
-    //prima di mandare l'app in produzione sistemare la faccenda del recupero email per ottenere gli insegnamenti
     private String dipartimento,corso,insegnamento;
     private ArrayList<Universita> listaInsegnamenti = new ArrayList<>();
     private CustomAdapterListDocente adapter;
 
-    private int numInsegnamenti; //salvare su file questo valore per le future modifiche dal profilo del prof?
 
-   // private boolean activityVisitata = false;
     @Override
     protected void onStart() {
         super.onStart();
@@ -74,7 +70,7 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
         Toolbar toolbar = findViewById(R.id.toolbar_primo_accesso_docente);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        if (b && ab!=null) {//se non è la prima volta che vedo questa schermata si passa all'activity successiva, se invece accedo a questa schermata dall'activity home del docente mi fa rimanere
+        if (b && ab!=null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -192,18 +188,12 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
      * Salva gli insegnamenti del professore nel db
      * @param universita l'istanza contenente le info sull'insegnamento da salvare
      */
-    private void salvaInsegnamenti(Universita universita,boolean b,CustomAdapterListDocente adapter) {//da finire non funziona
+    private void salvaInsegnamenti(Universita universita,boolean b,CustomAdapterListDocente adapter) {
         String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        /*Map<String, Object> uni = new HashMap<>();
-       // uni.put("ID", universita.id);
-        uni.put("Dipartimento", universita.dipartimento);
-        uni.put("Corso", universita.corso);
-        uni.put("Insegnamento", universita.insegnamento);*/
 
 
         db.collection("professori").document(emailDocente).collection(COLLECTION_INSEGNAMENTI).add(universita) //se si vuole lasciare al sistema la creazione in automatico di un id per il documento usare collection().add()
-                //asltrimenti collection().document(ID documento).set()
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -224,33 +214,11 @@ public class PrimoAccessoDocente extends AppCompatActivity implements ICostanti 
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
-        /*db.collection("professori").document(emailDocente).
-                collection("Insegnamento").document(universita.id)
-                .set(uni)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Insegnamento inserito",Toast.LENGTH_SHORT).show();
-                        adapter.listaElementi.add(universita);
-                        adapter.notifyDataSetChanged();
-                        if (!b) {
-                            new Utente().impostaValoreDiAccesso(ICostanti.COLLECTION_PROF, emailDocente);
 
-                        }
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"ERRORE riprova",Toast.LENGTH_SHORT).show();
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });*/
     }
 
 
-    private void recuperaInsegnamenti(){//da finire vedi nome utente
+    private void recuperaInsegnamenti(){
         String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

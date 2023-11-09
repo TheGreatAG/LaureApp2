@@ -50,11 +50,7 @@ import it.uniba.dib.sms2223.laureapp.business.Utile;
 import it.uniba.dib.sms2223.laureapp.model.Ricevimento;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentDettaglioTesi#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FragmentDettaglioTesi extends Fragment implements ICostanti {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -218,7 +214,7 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
             if (docente)
                 downloadTesi(tesi);
             else
-                filePickerLauncher.launch("*/*"); //in questo caso il filePicker è generico e può
+                filePickerLauncher.launch("*/*"); //in questo caso il filePicker è generico
         });
 
         btnInvioConsegnaTesi.setOnClickListener(view -> {
@@ -287,7 +283,6 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
 
     private void downloadTesi(Tesi tesi) {
 
-        //METTERE UN MESSAGGIO DI TOAST PER DIRE CHE NON CI SONO TESI DA SCARICARE
         storageReference = FirebaseStorage.getInstance().getReference();
         String fileName = "TESI_" + tesi.id + "_" + tesi.studente;
 
@@ -323,10 +318,8 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
 
     private void uploadFileToFirestore(Uri fileUri, Tesi tesi, ProgressBar progressBar, TextView txtFileCaricato, String file) {
 
-        //*******************IL PROBLEMA è QUI, BISOGNA SPECIFICARE IL FORMATO DEL FILE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------
-        String fileName = "TESI_" + tesi.id + "_" + tesi.studente; // Genera un nome per il file, in questo caso
-        // univoco con il timeStamp, ma si modifica a seconda della necessità, con l'id della tesi, del task o di quel che è
-        StorageReference fileReference = storageReference.child("files/" + fileName); // qui al posto di files si inserisce il nome della raccolta
+        String fileName = "TESI_" + tesi.id + "_" + tesi.studente; // Genera un nome per il file
+        StorageReference fileReference = storageReference.child("files/" + fileName);
         // in cui andare a inserire il file
         progressBar.setVisibility(View.VISIBLE);
 
@@ -405,7 +398,6 @@ public class FragmentDettaglioTesi extends Fragment implements ICostanti {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Si è verificato un errore durante l'aggiornamento
                     }
                 });
 

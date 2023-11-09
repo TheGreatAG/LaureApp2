@@ -19,13 +19,12 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
 public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
 
-    //public ArrayList<Task> listaElementi;
     public ArrayList listaElementi;
 
     private Context context;
     private int layoutLista;
     private int tipoDiLista;  //flag per capire se la lista è lato prof o studente
-    private FragmentAdapter fragmentAdapter;///
+    private FragmentAdapter fragmentAdapter;
     private Tesi tesi;
 
     public CustomAdapterList(final ArrayList listaElementi, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
@@ -39,11 +38,11 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
     }
 
     public CustomAdapterList(final ArrayList listaElementi, Context context,
-                             int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter, Tesi tesi){//
+                             int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter, Tesi tesi){
         this.context = context;
         this.layoutLista = layoutLista;
         this.listaElementi = listaElementi;
-        this.tipoDiLista = tipoDiLista;  //decommenta
+        this.tipoDiLista = tipoDiLista;
         this.fragmentAdapter = fragmentAdapter;
         this.tesi = tesi;
         Log.d("tipo lista B",""+ tipoDiLista);
@@ -52,9 +51,8 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
 
     @NonNull
     @Override
-    public GenericViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {//non viene invocato sempre come nel caso della listView.getView() ma solo se c'è bisogno di una nuova istanza
-        //il primo parametro di inflate indica il tipo di layout da usare
-        //il secondo,indica in quale viewGroup deve essere inserita la view dopo l'inflate
+    public GenericViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         final View layout = LayoutInflater.from(parent.getContext()).inflate(layoutLista,parent,false);
         return new GenericViewHolder(layout,tipoDiLista);//
     }
@@ -71,7 +69,6 @@ public class CustomAdapterList extends RecyclerView.Adapter<GenericViewHolder> {
             holder.setView((Tesi) listaElementi.get(position), context, listaElementi, this, position, fragmentAdapter);
 
         }
-        Log.d("tipo lista C", "" + "" + tipoDiLista);
     }
 
     @Override

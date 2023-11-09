@@ -36,11 +36,7 @@ import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentTesiPreferite#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FragmentTesiPreferite extends Fragment implements ICostanti {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -68,15 +64,6 @@ public class FragmentTesiPreferite extends Fragment implements ICostanti {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentTesiPreferite.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FragmentTesiPreferite newInstance(String param1, String param2) {
         FragmentTesiPreferite fragment = new FragmentTesiPreferite();
         Bundle args = new Bundle();

@@ -151,7 +151,7 @@ public class RichiestaTesiStudente extends AppCompatActivity {
         EditText edtVoto = customDialog.findViewById(R.id.edt_media_voti);
         EditText edtNumEsami = customDialog.findViewById(R.id.edt_num_esami_mancanti);
         Button btnRichiedi = customDialog.findViewById(R.id.btn_invia_info);
-        TextInputLayout edtNote = customDialog.findViewById(R.id.edt_note); //diventa bianco quando si clicca per scrivere SISTEMARE
+        TextInputLayout edtNote = customDialog.findViewById(R.id.edt_note);
 
         ArrayList<String> esamiSostenuti = new ArrayList<>();
 
@@ -191,13 +191,10 @@ public class RichiestaTesiStudente extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        // CheckBox selezionato
                         esamiSostenuti.add(buttonView.getTag().toString());
                         Log.d("GVG", buttonView.getTag().toString());
-                        // Puoi fare qualcosa con l'esame selezionato
                     } else {
                         esamiSostenuti.remove(buttonView.getTag().toString());
-                        // CheckBox deselezionato
                     }
                 }
             });

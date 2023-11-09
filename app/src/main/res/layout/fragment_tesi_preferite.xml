@@ -36,7 +36,6 @@
         />
 
 
-    <!--DA FINIRE, MANCANO LE CLASSI CHE GESTISCONO LA RECICLER VIEW PROBABILE NE RICICLO QUALCUNA-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lista_tesi_preferite"

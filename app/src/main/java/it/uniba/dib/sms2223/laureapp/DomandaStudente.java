@@ -131,9 +131,8 @@ public class DomandaStudente extends AppCompatActivity implements ICostanti {
 
         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
         db1.collection(COLLECTION_PROF).document(tesi.relatore.email).collection(COLLECTION_TESI)
-                .document(tesi.id).collection(COLLECTION_DOMANDE_TASK)//.document(listaTask.get(spinner.getFirstVisiblePosition()).id).collection(COLLECTION_DOMANDE_TASK)
-                .add(domanda1) //se si vuole lasciare al sistema la creazione in automatico di un id per il documento usare collection().add()
-                //asltrimenti collection().document(ID documento).set()
+                .document(tesi.id).collection(COLLECTION_DOMANDE_TASK)
+                .add(domanda1)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {

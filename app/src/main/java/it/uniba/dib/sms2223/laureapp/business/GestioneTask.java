@@ -40,7 +40,7 @@ public class GestioneTask implements ICostanti {
         updates.put("confermaDefinitivaDelRelatore", true);
         updates.put("ultimaModifica", ultimaModifica);
 
-// Esegui l'aggiornamento sul documento
+// Esegue l'aggiornamento sul documento
         documentReference.update(updates)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

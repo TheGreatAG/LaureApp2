@@ -25,14 +25,14 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
     private Context context;
     private int layoutLista;
     private int tipoDiLista;  //flag per capire se la lista è lato prof o studente
-    private FragmentAdapter fragmentAdapter;///
+    private FragmentAdapter fragmentAdapter;
     private FragmentManager fragmentManager;
 
     public CustomAdapterListDocente(final ArrayList listaElementi, Context context, int layoutLista, int tipoDiLista, FragmentAdapter fragmentAdapter){//
         this.context = context;
         this.layoutLista = layoutLista;
         this.listaElementi = listaElementi;
-        this.tipoDiLista = tipoDiLista;  //decommenta
+        this.tipoDiLista = tipoDiLista;
         this.fragmentAdapter = fragmentAdapter;
         Log.d("HJH",""+this.listaElementi.size());
     }
@@ -48,9 +48,7 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
 
     @NonNull
     @Override
-    public GenericViewHolderDocente onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {//non viene invocato sempre come nel caso della listView.getView() ma solo se c'è bisogno di una nuova istanza
-        //il primo parametro di inflate indica il tipo di layout da usare
-        //il secondo,indica in quale viewGroup deve essere inserita la view dopo l'inflate
+    public GenericViewHolderDocente onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View layout = LayoutInflater.from(parent.getContext()).inflate(layoutLista,parent,false);
         return new GenericViewHolderDocente(layout,tipoDiLista);//
     }
@@ -66,17 +64,6 @@ public class CustomAdapterListDocente extends RecyclerView.Adapter<GenericViewHo
         if (tipoDiLista == GenericViewHolderDocente.LISTA_RICHIESTE_TESI)
             holder.setView((RichiestaTesi) listaElementi.get(position),context,this,position);
 
-
-
-
-       /* if (tipoDiLista == GenericViewHolder.LISTA_2)
-            holder.setView((Task) listaElementi.get(position),context,listaElementi,this,position,fragmentAdapter);
-        else if (tipoDiLista == GenericViewHolder.LISTA_DOMANDE_RISPOSTE_LATO_STUD) {
-            holder.setView((Domanda) listaElementi.get(position),context,listaElementi,this,position,fragmentAdapter);
-        } else if (tipoDiLista == ICostanti.LISTA_TESI_PREFERITE) {
-            holder.setView((Tesi) listaElementi.get(position),context,listaElementi,this,position,fragmentAdapter);
-
-        }*/
     }
 
     @Override

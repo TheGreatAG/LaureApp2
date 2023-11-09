@@ -109,7 +109,6 @@ public class FragmentTask extends Fragment implements ICostanti {
 
         RecyclerView lista = v.findViewById(R.id.lista);
         FloatingActionButton fab = v.findViewById(R.id.fab);
-        // TextView txtTaskDaCompletare = v.findViewById(R.id.txt_num_task);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getParentFragment().getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -158,7 +157,6 @@ public class FragmentTask extends Fragment implements ICostanti {
                                 task1.confermaDefinitivaDelRelatore = confermaRelatore;
                                 listaTask.add(task1);
                             }
-                          //  txtTaskDaCompletare.setText(context.getString(R.string.task_da_completare)+ " "+ listaTask.size());
                             CustomAdapterList adapter;
                             if (docente){
                                 Log.d("JJI","adapter per task docente");

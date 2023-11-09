@@ -89,8 +89,6 @@
                     android:layout_below="@id/t1"
                     android:textSize="20sp"/>
 
-                <!--                android:contentDescription="Richiedi ricevimento"
-                serve per gli screen reader usati dai non vedenti, descrive l'azione di un elemento-->
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_invio_email_ricevimento1"

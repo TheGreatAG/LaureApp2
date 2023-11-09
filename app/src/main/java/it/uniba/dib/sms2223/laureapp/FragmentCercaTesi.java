@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +54,6 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 public class FragmentCercaTesi extends Fragment implements ICostanti {
 
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public ArrayList<Tesi> listaTesi = new ArrayList<>();
@@ -73,15 +71,6 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentCercaTesi.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FragmentCercaTesi newInstance(String param1, String param2) {
         FragmentCercaTesi fragment = new FragmentCercaTesi();
         Bundle args = new Bundle();
@@ -131,11 +120,6 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         }
     }
 
-    public void updateQRCodeResult(String result) {
-        //risultato scanner
-        //qrCodeResultTextView.setText(result);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -146,11 +130,6 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
     private boolean checkCameraPermission() {
         // Controlla se il permesso è già stato concesso
         return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestCameraPermission() {
-        // Richiedi il permesso all'utente
-        ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.CAMERA}, 23);
     }
 
     @Override
@@ -226,7 +205,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
 
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
-                public boolean onQueryTextSubmit(String query) {//query è il testo inserito che per noi corrisponderà al titolo della tesi
+                public boolean onQueryTextSubmit(String query) {
 
 
                     ArrayList<Tesi> listaRisultatiRicercaTesi = new ArrayList<>();

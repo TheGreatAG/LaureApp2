@@ -57,8 +57,6 @@ import it.uniba.dib.sms2223.laureapp.utils.QRCodeGenerator;
 
 public class GenericViewHolder extends RecyclerView.ViewHolder implements ICostanti {
 
-    //TOLTI I PULSANTI MODIFICA ED ELIMINA DAGLI ANNUNCI PERSONALE, METTERE TALI FUNZIONI AL CLICK SULL'ANNUNCIO E ACCORCIARE LA DATA
-    //DI CREAZIONE CHE APPARE SULL'ANNUNCIO DEL PROFILO PERSONALE
 
     private TextView txtTitoloTask,txtDescrizioneTask,txtUltimaModifica,txtTitoloTesi,txtNomeRelatore,txtEmailRelatore
             ,txtCoRelatore,txtEmailCoRelatore,txtDescrizioneTesi,txtDataDomanda,txtDataRisposta,txtDomanda,txtRisposta;
@@ -66,25 +64,22 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
     private Button btnRichiediTesi,btnInviaRisposta,btnStatoTask;
     private ImageButton btnPreferiti,btnCondividi;
     private final int tipoDilista;
-    private RelativeLayout annuncio;
     private LinearLayout lytRispostaDomanda,lytRispostaDocente,lytTaskConfermato,lytContenitoreBottoniTaskRelatore,lytBottoniStudente;
-    //private ViewGroup layoutAnnuncio;
     private TextInputLayout edtRisposta;
 
-    public static final int LISTA_TASK_LATO_RELATORE = 50;//lista dei risultati
-    public static final int LISTA_2 = 51;//lista profilo personale
+    public static final int LISTA_TASK_LATO_RELATORE = 50;
+    public static final int LISTA_2 = 51;
 
     protected MaterialButton btnDaCompletare,btnInLavorazione,btnCompletato,btnEliminaTask,btnConfermaStatoTask;
-    public static final int LISTA_DOMANDE_RISPOSTE_LATO_STUD = 52;//lista profilo personale
-    public static final int LISTA_TESI = 54;//lista tesi disponibili
+    public static final int LISTA_DOMANDE_RISPOSTE_LATO_STUD = 52;
+    public static final int LISTA_TESI = 54;
     public static final int LISTA_DOMANDE_RISPOSTE_LATO_RELATORE =60;
 
 
     public GenericViewHolder(@NonNull View view, int tipoDiLista) {
         super(view);
-        this.tipoDilista = tipoDiLista; //se la lista dei task del prof o dello studente
+        this.tipoDilista = tipoDiLista;
 
-        //QUA METTERE GLI IF PER CONTROLLARE IL TIPO DI LISTA E IN BASE A QUESTO INIZIALIZZARE LE VIEW CORRISPONDENTI CON FINDVIEWBYID()
         if (tipoDiLista == LISTA_2 || tipoDiLista == LISTA_TASK_LATO_RELATORE) {
             txtTitoloTask = view.findViewById(R.id.txt_titolo_task);
             txtDescrizioneTask = view.findViewById(R.id.txt_descrizione_task);
@@ -314,8 +309,7 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
 
         db1.collection("studenti").document(emailStudente).collection("Tesi_preferite").document(tesi.id)
-                .set(tesi)//se si vuole lasciare al sistema la creazione in automatico di un id per il documento usare collection().add()
-                //asltrimenti collection().document(ID documento).set()
+                .set(tesi)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -352,8 +346,6 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(context,"ERRORE, riprova",Toast.LENGTH_SHORT).show();
-
-                        // Log.w(TAG, "Error deleting document", e);
                     }
                 });
     }
@@ -388,7 +380,6 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
 
     public void impostaStatoTask(Task task,String stato,Tesi tesi,TextView txtUltimaModifica,Context context){
 
-        Log.d("ASD", COLLECTION_PROF + " "+ tesi.relatore.email+" "+COLLECTION_TESI+" "+tesi.id+ " " +COLLECTION_TASK+ " "+ task.id);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection(ICostanti.COLLECTION_PROF)
                 .document(tesi.relatore.email).collection(ICostanti.COLLECTION_TESI)

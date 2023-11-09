@@ -187,8 +187,6 @@ public class Utente implements ICostanti{
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //L'uso di Intent.FLAG_ACTIVITY_CLEAR_TASK e Intent.FLAG_ACTIVITY_NEW_TASK dovrebbe chiudere tutte le Activity precedenti e creare un nuovo stack con solo DaEliminareActivity.
-//
-//Tuttavia, tieni presente che questa soluzione è più drastica e rimuoverà tutte le Activity dallo stack
         context.startActivity(intent);
         Activity c = (Activity) context;
         c.finish();

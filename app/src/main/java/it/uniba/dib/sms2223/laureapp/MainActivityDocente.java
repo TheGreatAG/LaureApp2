@@ -28,19 +28,15 @@ public class MainActivityDocente extends AppCompatActivity {
 
 
         bottomNavigationView = findViewById(R.id.navigation_bar_docente);
-        //con api 19+
-        bottomNavigationView.getMenu().getItem(1).setChecked(true);//imposto di default l'icona della home selezionata, perchè la prima pagina in cui ci troviamo è la home
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction().replace(R.id.fragment_container_home_d, FragmentHomeDocente.class, null)//R.id.fragment_container è colui che contiene il fragment - IlMioFrag.class è il fragment che voglio nel contenitore
+        fragmentManager.beginTransaction().replace(R.id.fragment_container_home_d, FragmentHomeDocente.class, null)
                 .setReorderingAllowed(true)
-                .addToBackStack("home")//questo metodo permette di inserire il fragment in una pila in modo che se si preme indietrto si torna indietro con la navigazione dei fragment. Quando non ci sono più fragment si torna al ciclo di vita dell'activity
-                //senza addToBackStack() il fragment viene ditrutto e quindi impossibile tornare indietro a recuperarlo quando è sostituito
-                //è la pila in caso si preme il pulsante back mi fa gestire la cosa "nome" può essere null
+                .addToBackStack("home")
                 .commit();
 
-       // cambiaFragment(fragmentManager, new FragmentHomeDocente(), "home");
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
@@ -58,22 +54,6 @@ public class MainActivityDocente extends AppCompatActivity {
                 cambiaFragment(fragmentManager, new FragmentNotifiche(), null);
             }
 
-           /* if (item.getItemId() != R.id.btn_nvg_home ) {
-                Toast.makeText(this, "sei nella Home", Toast.LENGTH_SHORT).show();
-
-                cambiaFragment(fragmentManager, new FragmentHomeDocente(), null);
-
-            } else if (item.getItemId() == R.id.btn_nvg_richieste) {
-
-                cambiaFragment(fragmentManager, new FragmentRicevimentiDocente(), null);//test il fragment non è valido
-
-                Toast.makeText(this, "hai premuto richieste", Toast.LENGTH_SHORT).show();
-            } else if (item.getItemId() == R.id.btn_nvg_ricevimenti) {
-
-                cambiaFragment(fragmentManager, new FragmentRicevimentiDocente(), null);
-
-                Toast.makeText(this, "hai premuto ricevimenti", Toast.LENGTH_SHORT).show();
-            }*/
             return true;
         });
 
@@ -86,14 +66,11 @@ public class MainActivityDocente extends AppCompatActivity {
         });
     }
 
-    private void cambiaFragment(FragmentManager fragmentManager, Fragment fragment, String tag) {//*******aggiungere come secondo parametro il fragment con cui sostituire UNA PARTE DEL PROBLEMA RISOLTO PERò NON SALVARE NELLO STACK I FRAGMENT QUANDO NELLO STACK CI SONO PIù DI 3 ELEMENTI
-        Fragment f = fragmentManager.findFragmentByTag(tag);
-        int count = fragmentManager.getBackStackEntryCount();
+    private void cambiaFragment(FragmentManager fragmentManager, Fragment fragment, String tag) {
 
         if (tag != null){
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container_home_d, fragment, tag)
-                    // .setReorderingAllowed(false)
                      .addToBackStack(null)
                     .commit();
         } else {

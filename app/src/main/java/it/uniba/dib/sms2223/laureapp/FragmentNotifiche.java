@@ -36,15 +36,9 @@ import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentNotifiche#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FragmentNotifiche extends Fragment implements ICostanti {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -63,15 +57,6 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentNotifiche.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FragmentNotifiche newInstance(String param1, String param2) {
         FragmentNotifiche fragment = new FragmentNotifiche();
         Bundle args = new Bundle();
@@ -93,7 +78,6 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_notifiche, container, false);
 
         RecyclerView recyclerView = v.findViewById(R.id.lista_richieste_tesi);
@@ -105,9 +89,7 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
         recyclerView.setLayoutManager(layoutManager);//una recycler view deve avere per forza un layout manager
         recyclerView.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT-150));
 
-        ArrayList listaTesi = new ArrayList();
-        ///listaTesi.add(new RichiestaTesi(null,null,null,null,0,null));
-       /// listaTesi.add(new RichiestaTesi(null,null,null,null,0,null));
+
         recuperaRichieste(recyclerView,txtNoRichieste);
 
         return v;
@@ -142,11 +124,7 @@ public class FragmentNotifiche extends Fragment implements ICostanti {
                                     sCorelatore = mapTesi.get("sCorelatore").toString();
                                 }
 
-
                                 ArrayList<String> esamiPropedeutici =(ArrayList) mapTesi.get("esamiRichiesti");
-                                Log.d("HJH 1",""+esamiPropedeutici.size());
-
-
 
                                 int mediaRichiesta = Integer.parseInt(mapTesi.get("mediaRichiesta").toString());
 

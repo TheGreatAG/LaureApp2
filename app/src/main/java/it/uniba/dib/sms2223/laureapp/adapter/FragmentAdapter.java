@@ -21,26 +21,16 @@ public class FragmentAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         this.position = position;
-        //inserire qua la collezione di fragment ovvero i layout con gli annunci visibili non visibili e tutti
-        //vedere da blank adapter come creare il fragment con la lista di tutti gli annunci
-        //Fragment frag = new FragmentAnnunci();
-        //ES.
         Fragment frag = arrayListFragment.get(position);
 
 
-
-        //  Bundle args = new Bundle();
-        //  args.putString("key","/*ciao dal FragmantState " + position);
-        //  frag.setArguments(args);
         return frag;
     }
-    //DA MODIFICARE E FAR TORNARE IL NUMERO DI ELEMENTI DELL' ARRYLIST
     @Override
     public int getItemCount() {
         return arrayListFragment.size();
     }
 
-    //chiamare questo metodo da HomeFragment (?)
     public void aggiungiFragment(Fragment fragment){
         arrayListFragment.add(fragment);
     }

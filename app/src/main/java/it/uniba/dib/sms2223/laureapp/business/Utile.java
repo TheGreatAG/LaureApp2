@@ -6,12 +6,8 @@ import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import it.uniba.dib.sms2223.laureapp.R;
 
@@ -67,7 +63,6 @@ public class Utile implements ICostanti{
             intent.putExtra(Intent.EXTRA_EMAIL, emailDest);
             intent.putExtra(Intent.EXTRA_SUBJECT, oggetto);
             intent.setType("text/html");
-            //intent.setPackage("com.google.android.gm");//se elimino questa riga mi fa scegliere con quale app inviare il messaggio
         } else {
             // Impostare il tipo di dati come testo
             intent.setType("text/plain");

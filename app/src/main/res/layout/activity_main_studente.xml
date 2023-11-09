@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivityStudente">
 
-    <!--Main activity studente-->
-
-    <!-- <com.google.android.material.bottomnavigation.BottomNavigationView
-         android:id="@+id/navigation_bar"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_alignParentBottom="true"
-         android:background="@color/navigation_bottom_bar"
-         app:itemIconTint="@drawable/selezione_tasti_navigationbar"
-         app:itemTextColor="@color/colore_testo_nav_bar"
-         app:menu="@menu/bottoni_navigation_view"/> -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar_studente"

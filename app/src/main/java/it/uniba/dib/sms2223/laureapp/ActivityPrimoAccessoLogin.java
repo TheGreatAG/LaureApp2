@@ -28,8 +28,7 @@ import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
 
-public class ActivityPrimoAccessoLogin extends AppCompatActivity implements ICostanti { //sistemare nel caso di primo accesso ---------------------------------------------
-
+public class ActivityPrimoAccessoLogin extends AppCompatActivity implements ICostanti {
     private String dipartimento,corso;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,9 +136,7 @@ public class ActivityPrimoAccessoLogin extends AppCompatActivity implements ICos
                 arrayResource,
                 android.R.layout.simple_spinner_item
         );
-// Specify the layout to use when the list of choices appears.
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner.
         spinner.setAdapter(adapter);
     }
 }

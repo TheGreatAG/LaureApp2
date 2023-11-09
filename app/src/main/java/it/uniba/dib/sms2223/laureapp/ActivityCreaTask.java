@@ -1,6 +1,5 @@
 package it.uniba.dib.sms2223.laureapp;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -32,9 +31,7 @@ public class ActivityCreaTask extends AppCompatActivity {
         boolean provenienzaDaListaTAskStudente = getIntent().getBooleanExtra("taskDocente",false);
 
 
-
-
-        TextInputLayout edtOggettoTask = findViewById(R.id.edt_oggetto_task);//associo il TextInputLayout alla omologa variabile Java
+        TextInputLayout edtOggettoTask = findViewById(R.id.edt_oggetto_task);
         TextInputLayout edtDescrizioneTask = findViewById(R.id.edt_desscrizione_task);
 
         Button btnAggiungi = findViewById(R.id.btn_aggiungi_task);
@@ -56,7 +53,6 @@ public class ActivityCreaTask extends AppCompatActivity {
 
             Date dataCorrente = new Date();
             SimpleDateFormat formatoData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-            //numTesi++;
             String dataPubblicazione = formatoData.format(dataCorrente);
 
             Task task = new Task(oggetto,descrizione,dataPubblicazione,DA_COMPLETARE);
@@ -64,7 +60,7 @@ public class ActivityCreaTask extends AppCompatActivity {
         });
     }
 
-    private void salvatask(Task task){//scrivere a sandro sergi di trovare la soluzione all'errore rosso id tesi
+    private void salvatask(Task task){
         String emailProfessore = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String idTesi = getIntent().getStringExtra("idtesi");
         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
@@ -72,7 +68,6 @@ public class ActivityCreaTask extends AppCompatActivity {
                 .document(emailProfessore).collection("Tesi").document(idTesi).collection("TASK").
                 add(task).addOnSuccessListener(unused -> {
                     Toast.makeText(getApplicationContext(), "TASK inserito" + " con successo!", Toast.LENGTH_LONG).show();
-                   // startActivity(new Intent(this,ActivityCreaTask.class));
                 }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Ops, qualcosa è " + "andato storto!", Toast.LENGTH_LONG).show());
 
 

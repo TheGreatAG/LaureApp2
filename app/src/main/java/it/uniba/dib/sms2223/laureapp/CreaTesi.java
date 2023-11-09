@@ -45,9 +45,7 @@ import it.uniba.dib.sms2223.laureapp.business.ICostanti;
 import it.uniba.dib.sms2223.laureapp.model.Professore;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 
-public class CreaTesi extends AppCompatActivity implements ICostanti { //da sistemare la parte xml con i giusti spazi tra gli elementi
-    // -------------------------------------------- NELLA CREAZIONE TESI INSERIRE NOME E COGNOME DEL PROF, EMAIL E LO STESSO PER CORELATORE, SERVE per creare l'istanza Tesi da passare al GenericViewHolder e impostare le TextView correttamente
-    String emailProfessore;
+public class CreaTesi extends AppCompatActivity implements ICostanti {    String emailProfessore;
     CheckBox[] checkBoxes;
     String nomeProf, cognomeProf;
 
@@ -55,7 +53,6 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
     @Override
     protected void onStart() {
         super.onStart();
-        //emailProf = FirebaseAuth.getInstance().getCurrentUser().getEmail();//serve qua? non basta nell'onCreate?
     }
 
     @Override
@@ -63,7 +60,6 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crea_tesi);
 
-        //  numTesi = getIntent().getIntExtra("num tesi",0);
 
         Toolbar toolbar = findViewById(R.id.toolbar_crea_tesi);
         setSupportActionBar(toolbar);
@@ -75,7 +71,6 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // final Context context = this;
         final GridLayout gridView = findViewById(R.id.grid_view_insegnamenti);
         Spinner spinnerCorsi = findViewById(R.id.spinnerCorsoDiLaurea);
 
@@ -94,13 +89,11 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
         ArrayList<String> corsiDiLaureaList = new ArrayList<>();
         db.collection("professori").document(emailProfessore).collection("Insegnamento").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.i("CRS", "Task successful");
                 for (QueryDocumentSnapshot insegnamentoDocument : task.getResult()) {
                     String corsoDiLaurea = insegnamentoDocument.getString("corso");
                     Log.i("CRS", "Corso prelevato "+corsoDiLaurea);
                     if (corsoDiLaurea != null && !corsiDiLaureaList.contains(corsoDiLaurea)) {
                         corsiDiLaureaList.add(corsoDiLaurea);
-                        Log.i("CRS", "Corso aggiunto "+ corsoDiLaurea);
 
                     }
                 }
@@ -153,7 +146,6 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
                         checkBoxes[i] = new CheckBox(getApplicationContext());
                         checkBoxes[i].setText(checkBoxValues[i]);
                         gridView.addView(checkBoxes[i]);
-                        Log.i(TAG, "Prova log: " + checkBoxes[i].getText());
                     }
                 }
             }
@@ -176,7 +168,7 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
             String titolo = String.valueOf(edtTitolo.getEditText().getText());
             String descrizione = String.valueOf(edtDescrizione.getEditText().getText());
             if (descrizione.isEmpty()) {
-                descrizione = "Nessuna descrizione";//meglio nessuna descrizione perchè dopo da problemi nella lista, descrizione deve essere un campo obbligatorio quindi in ogni caso non deve creare problemi
+                descrizione = "Nessuna descrizione";
             }
             String corelatore = spinnerCorelatori.getSelectedItem().toString();
             Log.d("Dati corelator", corelatore);
@@ -226,15 +218,6 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
                             }
                         });
 
-
-                /*FirebaseFirestore db1 = FirebaseFirestore.getInstance();
-                db1.collection("professori")
-                        .document(emailProfessore).collection("Tesi").document()//.document("Tesi"+ tesi.id)
-                        .set(tesi).addOnSuccessListener(unused -> {
-                            Toast.makeText(getApplicationContext(), "Tesi registrata" + " con successo!", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(this,ActivityCreaTask.class));
-                }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Ops, qualcosa è " + "andato storto!", Toast.LENGTH_LONG).show());
-            */
             } else {
                 Toast.makeText(getApplicationContext(), "Non dimenticarti di compilare" + " tutti i campi!", Toast.LENGTH_LONG).show();
             }
@@ -270,9 +253,7 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
     private void setAdapterSpinner(Spinner spinner, ArrayList arrayResource) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayResource);
 
-// Specify the layout to use when the list of choices appears.
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner.
         spinner.setAdapter(adapter);
     }
 }

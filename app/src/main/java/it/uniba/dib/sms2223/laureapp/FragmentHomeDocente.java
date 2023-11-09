@@ -49,11 +49,6 @@ import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentHomeDocente#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FragmentHomeDocente extends Fragment {
 
     private int numTesi;
@@ -78,14 +73,6 @@ public class FragmentHomeDocente extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentHomeDocente.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FragmentHomeDocente newInstance(String param1, String param2) {
         FragmentHomeDocente fragment = new FragmentHomeDocente();
         Bundle args = new Bundle();
@@ -135,13 +122,12 @@ public class FragmentHomeDocente extends Fragment {
                 inizializzaListatesiProf(listaTesi,listaTesiProf,progressBar,view,txtNoConnesione);
 
             });
-        }//la soluzione dell'if then else sopra non è molto funzionale, se si preme su ricarica e non c'è ancora la connessione non verrà mostrato più nessun pulsante per ricaricare
+        }
         FloatingActionButton fab = view.findViewById(R.id.fab);
 
 
         Toolbar mToolbar = view.findViewById(R.id.toolbar_home);
 
-        //mToolbar.setTitle("La tua tesi");
         mToolbar.setTitleTextColor(getResources().getColor(R.color.coloreTestoPrimario));
 
         fab.setOnClickListener(view1 -> {
@@ -171,7 +157,7 @@ public class FragmentHomeDocente extends Fragment {
 
         String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("professori").document(emailDocente).collection("Tesi")//mi recuper tutti gli insegnamenti di un dato prof
+        db.collection("professori").document(emailDocente).collection("Tesi")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     Map<String,Object> valori = new HashMap<>();
@@ -209,8 +195,7 @@ public class FragmentHomeDocente extends Fragment {
                                 tesi.stato = stato;
                                 tesi.studente = studente;
                                 listaTesi.add(tesi);
-                               // adapter.listaElementi.add(tesi);
-                               // adapter.notifyDataSetChanged();
+
                             }
 
                             if (listaTesi.size() ==0){
@@ -233,14 +218,5 @@ public class FragmentHomeDocente extends Fragment {
                     }
                 });
 
-
-
-        //-------------------------------------------------------------
-
-      //  adapter = new CustomAdapterListDocente(listaTesi, context, R.layout.layout_lista_tesi_prof, ,null);//anche queste righe sono da sistemare
-        //recyclerView.setAdapter(adapter);
-
-        //  adapter.listaElementi.add(universita);
-        // adapter.notifyDataSetChanged();
     }
 }

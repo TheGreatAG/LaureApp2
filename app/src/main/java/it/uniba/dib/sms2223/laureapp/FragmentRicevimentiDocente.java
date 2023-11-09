@@ -36,11 +36,7 @@ import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolderDocente;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentRicevimentiDocente#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FragmentRicevimentiDocente extends Fragment implements ICostanti {
 
     private Context context;
@@ -50,8 +46,7 @@ public class FragmentRicevimentiDocente extends Fragment implements ICostanti {
         this.context = context;
     }
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -63,15 +58,6 @@ public class FragmentRicevimentiDocente extends Fragment implements ICostanti {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentRicevimentiDocente.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FragmentRicevimentiDocente newInstance(String param1, String param2) {
         FragmentRicevimentiDocente fragment = new FragmentRicevimentiDocente();
         Bundle args = new Bundle();
@@ -111,8 +97,7 @@ public class FragmentRicevimentiDocente extends Fragment implements ICostanti {
     private void recuperaRicevimenti(RecyclerView recyclerView){
         String emailDocente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-//--------------------------------------da finire, voglio recuperare le tesi create del prof ---------------------------
-        db.collection(COLLECTION_PROF).document(emailDocente).collection(COLLECTION_RICEVIMENTI)//mi recuper tutti gli insegnamenti di un dato prof
+        db.collection(COLLECTION_PROF).document(emailDocente).collection(COLLECTION_RICEVIMENTI)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     Map<String,Object> valori = new HashMap<>();
@@ -126,7 +111,7 @@ public class FragmentRicevimentiDocente extends Fragment implements ICostanti {
                                 String descrizione = document.getString("descrizione");
                                 Map<String,Object> mapTesi= (Map<String,Object>)document.get("tesi");
                                 Tesi tesi = new Tesi();
-                                tesi.studente = mapTesi.get("studente").toString(); //non funziona
+                                tesi.studente = mapTesi.get("studente").toString();
                                 tesi.id = mapTesi.get("id").toString();
                                 tesi.titolo = mapTesi.get("titolo").toString();
 

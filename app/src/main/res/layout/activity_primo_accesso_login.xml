@@ -69,8 +69,6 @@
             android:background="@drawable/rettangolo_spinner"
             android:spinnerMode="dialog"/>
 
-        <!--Se il primo accesso è fatto dallo studente la textview e lo spinner sotto non servono e quindi impostare per ciascuno
-                    android:visibility="gone" da codice java (elementi provvisori)-->
         <TextView
             android:id="@+id/txt_insegnamento"
             android:layout_width="wrap_content"
@@ -90,9 +88,6 @@
             android:spinnerMode="dialog"/>
 
 
-
-
-        <!--da aggiungere gli spinner per selezionare il dipartimento e il corso-->
 
     </LinearLayout>
 

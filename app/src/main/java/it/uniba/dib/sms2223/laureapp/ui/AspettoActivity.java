@@ -34,20 +34,13 @@ public class AspettoActivity {
     public void impostaColoreStatusBar(int colore,boolean iconeScure){
         window.setStatusBarColor(ContextCompat.getColor(context, colore));//colore è il colore della status bar
         View decor = window.getDecorView();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // per ragioni di compatibilià
-            if (iconeScure){ //iconeScure = true -> icone scure
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (iconeScure){
                 decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//imposta le icone della status bar a in colore scuro
-            } else{ //iconeScure = true -> icone bianche
+            } else{
                 decor.setSystemUiVisibility(0);//imposta il colore delle icone della status bar di bianco
             }
         }
-
-        //---- NOTE
-        // clear FLAG_TRANSLUCENT_STATUS flag:
-        //  window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        //  window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
     }
 

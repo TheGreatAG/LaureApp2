@@ -48,7 +48,6 @@ public class GestioneTesi {
             Toast.makeText(context, context.getString(R.string.campi_richiesta_mancanti), Toast.LENGTH_LONG).show();
         } else {
             RichiestaTesi richiestaTesi = new RichiestaTesi(studente, tesi, note, dataRichiesta, mediaVoti, esamiMancanti, listaEsamiRichiesti);
-            //Log.d("FGF",richiestaTesi.toString());
 
             //invio i dati al db-----------
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -68,14 +67,9 @@ public class GestioneTesi {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(context, context.getString(R.string.errore), Toast.LENGTH_LONG).show();
-
-                            //Log.w(TAG, "Error adding document", e);
                         }
                     });
         }
-    }
-
-    public void aggiungiTesi() {
     }
 
     public void eliminaTesi(Tesi tesi, Context context, CustomAdapterListDocente adapter, int indice) {
@@ -87,7 +81,6 @@ public class GestioneTesi {
                 adapter.listaElementi.remove(indice);
                 adapter.notifyDataSetChanged();
 
-                //Log.d(TAG, "DocumentSnapshot successfully deleted!");
                 Toast.makeText(context, "Insegnamento eliminato", Toast.LENGTH_SHORT).show();
 
             }
@@ -102,7 +95,6 @@ public class GestioneTesi {
     }
 
     public void assegnaTesi(Relatore relatore, Studente studente, RichiestaTesi richiestaTesi, CustomAdapterListDocente adpter, Context context, int indice) {
-        // Ottieni un riferimento al documento da aggiornare
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection(ICostanti.COLLECTION_PROF).document(relatore.email).collection(ICostanti.COLLECTION_TESI).document(richiestaTesi.tesi.id);
@@ -123,8 +115,6 @@ public class GestioneTesi {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(context, context.getString(R.string.errore), Toast.LENGTH_LONG).show();
-
-                // Si è verificato un errore durante l'aggiornamento
             }
         });
 
@@ -209,12 +199,10 @@ public class GestioneTesi {
         } else recyclerView.setAdapter(adapter);
         if (listaTesiFiltrate.size() == 0)
             Toast.makeText(context, "Non ci sono tesi", Toast.LENGTH_SHORT).show();
-        // adapter.notifyDataSetChanged();
 
     }
 
     public Dialog impostaDialog(CustomAdapterList adapter, Context context, RecyclerView recyclerView) {
-        //RichiestaTesi richiestaTesi = new RichiestaTesi();
         Dialog customDialog = new Dialog(context, R.style.CustomAlertDialog);
         customDialog.setContentView(R.layout.dialog_filtra_tesi);
 
@@ -253,9 +241,4 @@ public class GestioneTesi {
         return customDialog;
     }
 
-    public void modificaTesi() {
-    }
-
-    public void consegnaTesi() {
-    }
 }

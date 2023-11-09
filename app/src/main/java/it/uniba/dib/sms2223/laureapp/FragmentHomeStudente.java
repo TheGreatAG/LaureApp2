@@ -51,8 +51,6 @@ public class FragmentHomeStudente extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -69,15 +67,6 @@ public class FragmentHomeStudente extends Fragment {
     }
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentHomeStudente.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FragmentHomeStudente newInstance(String param1, String param2) {
         FragmentHomeStudente fragment = new FragmentHomeStudente();
         Bundle args = new Bundle();
@@ -141,7 +130,7 @@ public class FragmentHomeStudente extends Fragment {
 
 
         if (!docente) //se non si è nel lato studente ma lato docente
-            recuperaTesi(lytContenitoreDettaglioTesi,lytNoTesiAssegnata,progressBar,viewPager2,tabLayout);//c'ra solo questa riga
+            recuperaTesi(lytContenitoreDettaglioTesi,lytNoTesiAssegnata,progressBar,viewPager2,tabLayout);
         else{
             impostaFragmentLatoDocente(progressBar);
         }
@@ -151,9 +140,7 @@ public class FragmentHomeStudente extends Fragment {
     }
 
     private void recuperaTesi(ViewGroup lytContenitoreDettaglioTesi, ViewGroup lytContenitoreNoTesi
-            , ProgressBar progressBar, ViewPager2 viewPager2, TabLayout tabLayout){//da rivedere non mi convince come rrecupera la tesi
-
-        //------recupero i professori---------------------
+            , ProgressBar progressBar, ViewPager2 viewPager2, TabLayout tabLayout){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("professori")
@@ -186,8 +173,7 @@ public class FragmentHomeStudente extends Fragment {
                     @Override
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {//recupero le tesi NON SO PERCHè NON MI RECUPERA LE TESI DEL PRIMO PROF PRESENTE NELLA LISTA DEI PROF**********************
-                                Log.d("ABC 3", "recupero le tesi");
+                            for (QueryDocumentSnapshot document : task.getResult()) {
 
                                     if (document.get("studente") != null && document.getString("studente").split(" ")[0].equals(emailStudente)) {
                                         String id = document.getId();
@@ -200,7 +186,7 @@ public class FragmentHomeStudente extends Fragment {
                                         String corsoDiLaurea = document.getString("corsoDiLaurea");
                                         String dataPubblicazione = document.getString("dataPubblicazione");
                                         String descrizione = document.getString("descrizione");
-                                        int durata = Integer.parseInt(String.valueOf(document.get("durata"))); //intero
+                                        int durata = Integer.parseInt(String.valueOf(document.get("durata")));
                                         ArrayList<String> li = new ArrayList<>();
                                         li = (ArrayList) document.get("esamiRichiesti");
                                         int mediaRichiesta = Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
@@ -225,7 +211,6 @@ public class FragmentHomeStudente extends Fragment {
 
                                         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), getLifecycle());
                                         fragmentAdapter.aggiungiFragment(new FragmentQA(tesi));
-                                        //ArrayList<Domanda> listaDomande = new ArrayList<>();
 
                                         fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi(tesi));
 
@@ -233,13 +218,12 @@ public class FragmentHomeStudente extends Fragment {
 
                                         viewPager2.setAdapter(fragmentAdapter); //DECOMMENTARE *********************
 
-                                        new TabLayoutMediator(tabLayout, viewPager2, (tab1, position1) -> {//DA SISTEMARE deve aggiotnare il numero di annunci quando se ne elimina uno
-                                            //in set setx bisongna passare un array di stringhe per tutti,visibili e non visibili
+                                        new TabLayoutMediator(tabLayout, viewPager2, (tab1, position1) -> {
                                             String str[] = {getString(R.string.faq), getString(R.string.dettagli), getString(R.string.task)};
-                                            tab1.setText(str[position1]);//tab è il titolo che si da ai tab sopra, deve essere sostituito rispettivamente da tutti, visibili e non visibili
+                                            tab1.setText(str[position1]);
 
                                         }).attach();
-                                        break;//esco dal ciclo perchè lo studente può avere solo una tesi assegnata, inutile ciclare ancora dopo aver trovato la tesi
+                                        break;
                                     }
                             }
                             if (tesi == null) {
@@ -257,22 +241,20 @@ public class FragmentHomeStudente extends Fragment {
                 });
     }
 
-    private void impostaFragmentLatoDocente(ProgressBar progressBar){//riga nuova
+    private void impostaFragmentLatoDocente(ProgressBar progressBar){
         progressBar.setVisibility(View.GONE);
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), getLifecycle());
         fragmentAdapter.aggiungiFragment(new FragmentQA(tesi));
-        //ArrayList<Domanda> listaDomande = new ArrayList<>();
 
         fragmentAdapter.aggiungiFragment(new FragmentDettaglioTesi(tesi));
 
         fragmentAdapter.aggiungiFragment(new FragmentTask(tesi, fragmentAdapter));
 
-        viewPager2.setAdapter(fragmentAdapter); //DECOMMENTARE *********************
+        viewPager2.setAdapter(fragmentAdapter);
 
-        new TabLayoutMediator(tabLayout, viewPager2, (tab1, position1) -> {//DA SISTEMARE deve aggiotnare il numero di annunci quando se ne elimina uno
-            //in set setx bisongna passare un array di stringhe per tutti,visibili e non visibili
+        new TabLayoutMediator(tabLayout, viewPager2, (tab1, position1) -> {
             String str[] = {getString(R.string.faq), getString(R.string.dettagli), getString(R.string.task)};
-            tab1.setText(str[position1]);//tab è il titolo che si da ai tab sopra, deve essere sostituito rispettivamente da tutti, visibili e non visibili
+            tab1.setText(str[position1]);
 
         }).attach();
     }

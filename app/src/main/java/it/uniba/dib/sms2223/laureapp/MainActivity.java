@@ -50,9 +50,8 @@ public class MainActivity extends AppCompatActivity implements ICostanti {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);//toglie la forzatura di impostare un layout di tutta l'app con tema scuro
-
-        TextInputLayout edtEmail = findViewById(R.id.edt_email);//associo il TextInputLayout alla omologa variabile Java
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        TextInputLayout edtEmail = findViewById(R.id.edt_email);
         TextInputLayout edtPassword = findViewById(R.id.edt_password);
 
         TextView txtRegistrati = findViewById(R.id.txt_registrati);
@@ -61,31 +60,24 @@ public class MainActivity extends AppCompatActivity implements ICostanti {
         Button btnAccedi = findViewById(R.id.btn_accedi);
 
         AspettoActivity aspettoActivity = new AspettoActivity(this);
-        aspettoActivity.impostaColoreStatusBar(R.color.background, true);//imposto il colore della status bar
+        aspettoActivity.impostaColoreStatusBar(R.color.background, true);
 
 
-        btnAccedi.setOnClickListener(view -> { //invece di setOnClickListener si possono usare le espressioni lambda introdotte in Java 8 che sono più veloci da scrivere
+        btnAccedi.setOnClickListener(view -> {
             String email = String.valueOf(edtEmail.getEditText().getText());
             String pw = String.valueOf(edtPassword.getEditText().getText());
 
-           // Intent intent = new Intent(this, MainActivityStudente.class); //test
-           // startActivity(intent);///test
             login(email,pw);
         });
 
 
         txtOspite.setOnClickListener(view -> {
 
-
-            /*------------Righe di test per passare direttamente alla schermata che mi serve-----------------*/
             Intent intent = new Intent(this, MainActivityStudente.class);
             startActivity(intent);
-            /*------------------------------------------------------------------------------------------------*/
-            Toast.makeText(this, "Premuto accedi come ospite", Toast.LENGTH_SHORT).show();
         });
 
         txtRegistrati.setOnClickListener(view -> {
-            Toast.makeText(this, "Premuto registrati", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, ActivityRegistrazione.class);
             startActivity(intent);
         });

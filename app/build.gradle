@@ -35,18 +35,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-   // implementation 'com.google.zxing:core:3.2.0'
     implementation "androidx.preference:preference-ktx:1.2.0"
 
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-
-    //Utilizzando Firebase Android BoM , la tua app utilizzerà sempre versioni compatibili delle librerie Firebase Android
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
-    // importazione librerie per firebase analitycs
-    //implementation ("com.google.firebase:firebase-analytics")
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    // importazione librerie per firebase Auth (servizio di autenticazione)
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
@@ -56,7 +48,5 @@ dependencies {
 
     implementation 'com.google.zxing:core:3.4.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
-
-    // implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
 }

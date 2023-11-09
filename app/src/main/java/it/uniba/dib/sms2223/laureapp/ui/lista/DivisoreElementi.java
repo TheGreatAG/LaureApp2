@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class DivisoreElementi extends  RecyclerView.ItemDecoration{
 
     private final int spazioTraElementi;
-    //non la uso in questa classe ma quando chiamo i metodi di questa classe
-    public static final int SPAZIO_DI_DEFAULT = 220;//lo metto qua e non in getItemOffSet per non avere una cosa fissa ma variare valore all'occorrenza
+    public static final int SPAZIO_DI_DEFAULT = 220;
 
     public DivisoreElementi(int spazioTraElementi){
         this.spazioTraElementi = spazioTraElementi;
@@ -19,7 +18,7 @@ public class DivisoreElementi extends  RecyclerView.ItemDecoration{
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-        outRect.bottom = spazioTraElementi;//dovrebbe andare in pixel non ne sono sicuro
+        outRect.bottom = spazioTraElementi;
     }
 }
 

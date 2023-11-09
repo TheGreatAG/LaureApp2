@@ -27,7 +27,6 @@ public class Impostazioni extends PreferenceFragmentCompat {
         findPreference("cambia_corso").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(@NonNull Preference preference) {
-                Toast.makeText(getContext(),"vvyvyv",Toast.LENGTH_SHORT).show();
                 if (Credenziali.validitaEmailStudente(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
                     getContext().startActivity(new Intent(getContext(), ActivityPrimoAccessoLogin.class).putExtra("key", true));
                 } else {

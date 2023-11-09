@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class Tesi implements Parcelable {
 
-    //AGGIUNGERE I TASK NEL COSTRUTTORE
 
     public String titolo, descrizione, dataPubblicazione, ambito, tipo, corsoDiLaurea, sRelatore,
             sCorelatore, studente;
@@ -29,10 +28,6 @@ public class Tesi implements Parcelable {
     public Tesi() {
     }
 
-    /*  public Tesi(ETipoTesi tipoTesi) {
-          this.tipoTesi = tipoTesi;
-      }
-  */
 
     public Tesi(String id,String titolo, String tipo, String descrizione, String ambito, String corsoDiLaurea, String dataPubblicazione,
                 int mediaRichiesta, int durata, String relatore,
@@ -72,7 +67,6 @@ public class Tesi implements Parcelable {
         this.corelatore = corelatore;
     }
 
-    // Costruttore aggiunto
     public Tesi(String s, String s1, String s2, int i, int i1, Object o, Object o1, Object o2, Object o3, ETipoTesi compilativa) {
     }
 
@@ -148,12 +142,6 @@ public class Tesi implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        /*return "TITOLO TESI\n"+ titolo + "\nDESCRIZIONE\n"+ descrizione+
-        "\nDATA DI PUBBLICAZIONE\n"+ dataPubblicazione+ "\nAMBITO\n "+ambito +
-        "\nTIPO\n"+tipo + "\nCORSO DI LAUREA\n " +corsoDiLaurea +
-        "\nINFO RELATORE\n"+ sRelatore +"\nINFO CORELATORE\n"+sCorelatore+
-                "\nMEDIA VOTI RICHIESTA\n"+ mediaRichiesta +"\nTEMPO STIMATO DI LAVORO\n"+durata+
-                "\nESAMI RICHIESTI:\n"+ esamiRichiesti.toString();*/
         return toJSON();
     }
 

@@ -8,16 +8,6 @@
     android:orientation="vertical">
 
 
-    <!--
-    <TextView
-        android:id="@+id/txt_num_task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Task da completare 15"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="@dimen/margine_bordi_laterali"
-        android:textSize="20sp"/>-->
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
