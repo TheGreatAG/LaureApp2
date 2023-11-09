@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.model.ETipoTesi;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
@@ -123,7 +125,10 @@ public class FragmentTesiPreferite extends Fragment implements ICostanti {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.filtra) {
-                    new GestioneTesi().impostaDialog(adapter,context,listaTesiPrefe).show();
+                    if (Utente.utenteLoggato())
+                        new GestioneTesi().impostaDialog(adapter,context,listaTesiPrefe).show();
+                    else
+                        Toast.makeText(context,getString(R.string.loggati),Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
@@ -131,54 +136,56 @@ public class FragmentTesiPreferite extends Fragment implements ICostanti {
     }
 
     private void recuperTesiPreferite(RecyclerView recyclerView, TextView txtNoTesi){
-        String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("studenti").document(emailStudente).collection("Tesi_preferite")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("ABC 2.1","recupero i professori " + task.getResult());
-                            ArrayList<Tesi>  listaTesi = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {//recupero i professori
+        if (Utente.utenteLoggato()) {
+            String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("studenti").document(emailStudente).collection("Tesi_preferite")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("ABC 2.1", "recupero i professori " + task.getResult());
+                                ArrayList<Tesi> listaTesi = new ArrayList<>();
+                                for (QueryDocumentSnapshot document : task.getResult()) {//recupero i professori
 
 
-                                String id = document.getId();
-                                String corelatore = null;
-                                if (document.getString("sCorelatore") !=null) {
-                                    corelatore = document.getString("sCorelatore");
+                                    String id = document.getId();
+                                    String corelatore = null;
+                                    if (document.getString("sCorelatore") != null) {
+                                        corelatore = document.getString("sCorelatore");
+                                    }
+                                    // String corelatore = document.getString("corelatore");
+                                    String corsoDiLaurea = document.getString("corsoDiLaurea");
+                                    String dataPubblicazione = document.getString("dataPubblicazione");
+                                    String descrizione = document.getString("descrizione");
+                                    int durata = Integer.parseInt(String.valueOf(document.get("durata"))); //intero
+                                    ArrayList<String> li = new ArrayList<>();
+                                    li = (ArrayList) document.get("esamiRichiesti");
+                                    int mediaRichiesta = Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
+                                    String relatore = document.getString("sRelatore");
+                                    String studente = document.getString("studente");
+                                    String tipo = document.getString("tipo");
+                                    String titolo = document.getString("titolo");
+                                    String ambito = document.getString("ambito");
+                                    // if (studente != null) {
+                                    Log.d("GBV", relatore);
+                                    Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
+                                    Log.d("GTG 2", "" + studente);
+
+                                    listaTesi.add(tesi);
+
                                 }
-                                // String corelatore = document.getString("corelatore");
-                                String corsoDiLaurea= document.getString("corsoDiLaurea");
-                                String dataPubblicazione= document.getString("dataPubblicazione");
-                                String descrizione= document.getString("descrizione");
-                                int durata= Integer.parseInt(String.valueOf(document.get("durata"))); //intero
-                                ArrayList<String> li = new ArrayList<>();
-                                li = (ArrayList) document.get("esamiRichiesti");
-                                int mediaRichiesta= Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
-                                String relatore= document.getString("sRelatore");
-                                String studente= document.getString("studente");
-                                String tipo= document.getString("tipo");
-                                String titolo= document.getString("titolo");
-                                String ambito = document.getString("ambito");
-                                // if (studente != null) {
-                                Log.d("GBV",relatore);
-                                Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
-                                Log.d("GTG 2",""+studente);
-
-                                listaTesi.add(tesi);
-
-                            }
-                            if (listaTesi.size() == 0){
-                                txtNoTesi.setVisibility(View.VISIBLE);
-                            } else {
-                                adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI_PREFERITE, null);////////modificato con ultimo parametro
-                                recyclerView.setAdapter(adapter);
+                                if (listaTesi.size() == 0) {
+                                    txtNoTesi.setVisibility(View.VISIBLE);
+                                } else {
+                                    adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI_PREFERITE, null);////////modificato con ultimo parametro
+                                    recyclerView.setAdapter(adapter);
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
 
     }
 }

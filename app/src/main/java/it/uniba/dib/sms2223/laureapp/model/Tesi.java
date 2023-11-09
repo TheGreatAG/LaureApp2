@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Tesi implements Parcelable {
@@ -144,12 +148,13 @@ public class Tesi implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "TITOLO TESI\n"+ titolo + "\nDESCRIZIONE\n"+ descrizione+
+        /*return "TITOLO TESI\n"+ titolo + "\nDESCRIZIONE\n"+ descrizione+
         "\nDATA DI PUBBLICAZIONE\n"+ dataPubblicazione+ "\nAMBITO\n "+ambito +
         "\nTIPO\n"+tipo + "\nCORSO DI LAUREA\n " +corsoDiLaurea +
         "\nINFO RELATORE\n"+ sRelatore +"\nINFO CORELATORE\n"+sCorelatore+
                 "\nMEDIA VOTI RICHIESTA\n"+ mediaRichiesta +"\nTEMPO STIMATO DI LAVORO\n"+durata+
-                "\nESAMI RICHIESTI:\n"+ esamiRichiesti.toString();
+                "\nESAMI RICHIESTI:\n"+ esamiRichiesti.toString();*/
+        return toJSON();
     }
 
     @Override
@@ -173,5 +178,33 @@ public class Tesi implements Parcelable {
         parcel.writeString(id);
         parcel.writeStringList(esamiRichiesti);
         parcel.writeString(stato);
+    }
+
+    public String toJSON() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("titolo", titolo);
+            json.put("descrizione", descrizione);
+            json.put("dataPubblicazione", dataPubblicazione);
+            json.put("ambito", ambito);
+            json.put("tipo", tipo);
+            json.put("corsoDiLaurea", corsoDiLaurea);
+            json.put("sRelatore", sRelatore);
+            json.put("sCorelatore", sCorelatore);
+            json.put("studente", studente);
+            json.put("mediaRichiesta", mediaRichiesta);
+            json.put("durata", durata);
+            json.put("id", id);
+
+            // Converte l'ArrayList di esamiRichiesti in un JSONArray
+            JSONArray esamiArray = new JSONArray(esamiRichiesti);
+            json.put("esamiRichiesti", esamiArray);
+
+            json.put("stato", stato);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return json.toString();
     }
 }

@@ -45,6 +45,7 @@ import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
 import it.uniba.dib.sms2223.laureapp.business.GestioneTask;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.business.Utile;
 import it.uniba.dib.sms2223.laureapp.model.Corelatore;
 import it.uniba.dib.sms2223.laureapp.model.Domanda;
@@ -284,7 +285,8 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
         });
 
         btnRichiediTesi.setOnClickListener(view -> {
-            context.startActivity(new Intent(context, RichiestaTesiStudente.class).putExtra("Tesi",tesi));
+                context.startActivity(new Intent(context, RichiestaTesiStudente.class).putExtra("Tesi", tesi));
+
         });
 
         if (tipoDilista == LISTA_TESI_PREFERITE){
@@ -295,11 +297,13 @@ public class GenericViewHolder extends RecyclerView.ViewHolder implements ICosta
         }
 
         if (tipoDilista == LISTA_TESI){
-            Log.d("corelatore", " "+ tesi.corelatore);
             btnPreferiti.setBackground(context.getDrawable(R.drawable.ic_preferito));
 
             btnPreferiti.setOnClickListener(view -> {
-                aggiungiTesiAiPreferiti(btnPreferiti,tesi,context);
+                if (Utente.utenteLoggato()) {
+                    aggiungiTesiAiPreferiti(btnPreferiti, tesi, context);
+                } else
+                    Toast.makeText(context,context.getString(R.string.loggati),Toast.LENGTH_SHORT).show();
             });
         }
     }

@@ -1,7 +1,11 @@
 package it.uniba.dib.sms2223.laureapp;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.Manifest;
+import android.widget.Toast;
 
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,16 +47,11 @@ import java.util.ArrayList;
 import it.uniba.dib.sms2223.laureapp.adapter.CustomAdapterList;
 import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
 import it.uniba.dib.sms2223.laureapp.model.Universita;
 import it.uniba.dib.sms2223.laureapp.ui.lista.DivisoreElementi;
 import it.uniba.dib.sms2223.laureapp.ui.lista.GenericViewHolder;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentCercaTesi#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FragmentCercaTesi extends Fragment implements ICostanti {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +59,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public ArrayList<Tesi> listaTesi = new ArrayList<>();
+    ArrayList<Tesi> listaTesiUtenteNonLoggato = new ArrayList<>();
     ArrayList<Tesi> listaTesiPrecedenti;
     private Context context;
     private Universita universita;
@@ -87,18 +97,33 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         this.context = context;
     }
 
+    ActivityResultLauncher<String> permessoCamera;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-/*
+       permessoCamera =registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+            @Override
+            public void onActivityResult(Boolean result) {
+                if (result){
+                    //permesso dato
+                    startActivity(new Intent(context, ActivityScanQR.class));
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                             builder.setTitle(context.getString(R.string.richiesta_permesso))
+                                     .setMessage(context.getString(R.string.testo_permesso_camera_in_impostazioni))
+                                     .setPositiveButton("Ho capito", new DialogInterface.OnClickListener() {
+                                         public void onClick(DialogInterface dialog, int id) {
+                                             // Azioni da eseguire quando l'utente fa clic su "Ho capito"
+                                             dialog.dismiss(); // Chiude il dialog
+                                         }
+                                     });
 
-        listaTesi.add(new Tesi("", "", "", 0, 0, null, null, null, null, ETipoTesi.Compilativa));
-        listaTesi.add(new Tesi("", "", "", 0, 0, null, null, null, null, ETipoTesi.Compilativa));
-        listaTesi.add(new Tesi("", "", "", 0, 0, null, null, null, null, ETipoTesi.Compilativa));
-        listaTesi.add(new Tesi("", "", "", 0, 0, null, null, null, null, ETipoTesi.Compilativa));
-*/
-
+                             AlertDialog dialog = builder.create();
+                             dialog.show();
+                }
+            }
+        });
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -118,6 +143,16 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         return inflater.inflate(R.layout.fragment_cerca_tesi, container, false);
     }
 
+    private boolean checkCameraPermission() {
+        // Controlla se il permesso è già stato concesso
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestCameraPermission() {
+        // Richiedi il permesso all'utente
+        ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.CAMERA}, 23);
+    }
+
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
@@ -134,21 +169,51 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
         recyclerView.setLayoutManager(layoutManager);//una recycler view deve avere un layout manager
         recyclerView.addItemDecoration(new DivisoreElementi(DivisoreElementi.SPAZIO_DI_DEFAULT - 80));
 
-       /* universita = new Universita();//in Java il passaggio di parametri è per valore, non avrebbe effetto l'impostazione della variabile università in questo modo
-        recuperaCorsoStudente(universita);//definisco la variabile globale Universita con dipartimento e corso NON FUNZIONA BENE A VOLTE RESTITUISCE UN OGGETTO UNIVERSITA NULLO **************************************
-        Log.d("WSD", ""+universita.corso);*/
-
-        recuperaCorsoETesi(recyclerView, imgNoTesi, txtNoTesi, listaTesi);
-        // getTesi(new Universita("Informatica","Corso di informatica",null,null),"andrea@uniba.it",FirebaseFirestore.getInstance(),recyclerView);
+        recuperaCorsoETesi(recyclerView, imgNoTesi, txtNoTesi, listaTesi,listaTesiUtenteNonLoggato);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                  if (item.getItemId() == R.id.filtra) {
-
                      new GestioneTesi().impostaDialog(adapter,context,recyclerView).show();
-
                    }
+                 if (item.getItemId() == R.id.qr_scanner){
+
+                     if (Utente.utenteLoggato()) {
+                         if (checkCameraPermission()) {
+                             startActivity(new Intent(context, ActivityScanQR.class));
+
+                         } else if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.CAMERA)) {
+                             // Spiega all'utente perché ha bisogno di questa autorizzazione
+                             // Richiedi il permesso
+                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                             builder.setTitle(context.getString(R.string.richiesta_permesso))
+                                     .setMessage(context.getString(R.string.testo_permesso_camera))
+                                     .setPositiveButton(getString(R.string.grazie), new DialogInterface.OnClickListener() {
+                                         public void onClick(DialogInterface dialog, int id) {
+                                             // Azioni da eseguire quando l'utente fa clic su "Grazie"
+                                             permessoCamera.launch(Manifest.permission.CAMERA);
+                                             dialog.dismiss(); // Chiude il dialog
+                                         }
+                                     })
+                                     .setNegativeButton(getString(R.string.annulla), new DialogInterface.OnClickListener() {
+                                         @Override
+                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                             dialogInterface.dismiss();
+                                         }
+                                     });
+
+                             AlertDialog dialog = builder.create();
+                             dialog.show();
+
+                         } else {
+                             permessoCamera.launch(Manifest.permission.CAMERA);
+
+                         }
+                     } else
+                         Toast.makeText(context,getString(R.string.loggati),Toast.LENGTH_SHORT).show();
+
+                 }
                 return false;
             }
         });
@@ -168,26 +233,21 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {//query è il testo inserito che per noi corrisponderà al titolo della tesi
-                    Log.d("RICERCA", "cerca1 " + query); //quando si preme sul tasto "cerca" dopo aver inserito il testo
 
 
                     ArrayList<Tesi> listaRisultatiRicercaTesi = new ArrayList<>();
                     for (int i = 0; i < adapter.listaElementi.size(); i++) {
                         Tesi tesi = (Tesi) adapter.listaElementi.get(i);
-                        Log.d("BHM 1", query + " -> " + tesi.titolo);
                         String[] titoloTesi = tesi.titolo.split(" ");
                         for (int j = 0; j < titoloTesi.length; j++) {
                             if (query.equals(titoloTesi[j])) {
                                 listaRisultatiRicercaTesi.add(tesi);
-                                Log.d("BHM 2", query + " -> " + tesi.titolo);
                             }
                         }
 
                     }
                     adapter.listaElementi = listaRisultatiRicercaTesi;
-
                     adapter.notifyDataSetChanged();
-                    //adapter.listaElementi = listaTesiPrecedenti;
 
                     return false;
                 }
@@ -199,9 +259,6 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                         adapter.listaElementi = listaTesiPrecedenti;
                         adapter.notifyDataSetChanged();
                     }
-                    Log.d("FGF", " no ricerca");
-
-
                     return false;
                 }
             });
@@ -209,7 +266,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
 
     }
 
-    private void recuperaTesi(RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi,Universita universita) {
+    private void recuperaTesi(RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi,Universita universita,ArrayList<Tesi> listaTesiUtenteNonLoggato) {
 
         //------recupero i professori---------------------
 
@@ -225,7 +282,7 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                             for (QueryDocumentSnapshot document : task.getResult()) {//recupero i professori
                                 Log.d("ABC 2", "recupero i professori " + document.getId());
 
-                                getTesi(universita, document.getId(), db, recyclerView, img, txt, listaTesi);//recupero le tesi dei prof del corso specificato
+                                getTesi(universita, document.getId(), db, recyclerView, img, txt, listaTesi,listaTesiUtenteNonLoggato);//recupero le tesi dei prof del corso specificato
 
 
                             }
@@ -234,13 +291,10 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                     }
                 });
 
-        //recuperare il corso dello studente
-        //recuperare le tesi di quel corso
-
     }
 
     private void getTesi(Universita universita, String emailProf, FirebaseFirestore db,
-                         RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi) {
+                         RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi,ArrayList<Tesi> listaTesiUtenteNonLoggato) {
         Log.d("siamo nel recupero", emailProf);
 
         db.collection("professori").document(emailProf).collection("Tesi")
@@ -249,18 +303,95 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                           // ArrayList<Tesi> listaTesiUtenteNonLoggato = new ArrayList<>();
+
 
                             for (QueryDocumentSnapshot document : task.getResult()) {//recupero le tesi
-                                Log.d("ABC 3", "recupero le tesi");
 
-                                if (document.getString("corsoDiLaurea").equals(universita.corso)) {//universita è nullo non funziona
+                                String id = document.getId();
+                                String corelatore = null;
+                                if (!document.getString("sCorelatore").equals("-- -- --")) {
+                                    corelatore = document.getString("sCorelatore");
+                                }
+                                String corsoDiLaurea = document.getString("corsoDiLaurea");
+                                String dataPubblicazione = document.getString("dataPubblicazione");
+                                String descrizione = document.getString("descrizione");
+                                int durata = Integer.parseInt(String.valueOf(document.get("durata"))); //intero
+                                ArrayList<String> li = new ArrayList<>();
+                                li = (ArrayList) document.get("esamiRichiesti");
+                                int mediaRichiesta = Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
+                                String relatore = document.getString("sRelatore");
+                                String stato = document.getString("stato");
+                                String studente = document.getString("studente");
+
+                                String tipo = document.getString("tipo");
+                                String titolo = document.getString("titolo");
+                                String ambito = document.getString("ambito");
+                                if (studente == null && universita != null) {
+                                    if (document.getString("corsoDiLaurea").equals(universita.corso)) {
+                                        Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
+                                        tesi.stato = stato;
+                                        listaTesi.add(tesi);
+                                    }
+                                }
+                                if (studente == null && universita == null) {
+                                    Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
+                                    tesi.stato = stato;
+                                    listaTesiUtenteNonLoggato.add(tesi);
+                                    Log.d("FGFG","tesi aggiunta");
+
+                                }
+                            }
+
+                                if (universita == null) {
+
+                                    if (listaTesiUtenteNonLoggato.size() == 0) {
+                                        Log.d("FGFG","la lista è vuota");
+
+                                        img.setVisibility(View.VISIBLE);
+                                        txt.setVisibility(View.VISIBLE);
+                                        recyclerView.setVisibility(View.GONE);
+                                    } else {
+                                        Log.d("FGFG","la lista NON è vuota");
+
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        img.setVisibility(View.GONE);
+                                        txt.setVisibility(View.GONE);
+                                        Log.d("tipo lista A", "" + GenericViewHolder.LISTA_TESI);
+                                        listaTesiPrecedenti = listaTesiUtenteNonLoggato;
+
+                                        adapter = new CustomAdapterList(listaTesiUtenteNonLoggato, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI, null);////////modificato con ultimo parametro
+                                        Log.d("TGT", "num " + adapter.getItemCount());
+                                        recyclerView.setAdapter(adapter);
+                                    }
+
+                                } else {
+                                    if (listaTesi.size() == 0) {
+                                        img.setVisibility(View.VISIBLE);
+                                        txt.setVisibility(View.VISIBLE);
+                                        recyclerView.setVisibility(View.GONE);
+                                    } else {
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        img.setVisibility(View.GONE);
+                                        txt.setVisibility(View.GONE);
+                                        Log.d("tipo lista A", "" + GenericViewHolder.LISTA_TESI);
+                                        listaTesiPrecedenti = listaTesi;
+
+                                        adapter = new CustomAdapterList(listaTesi, context, R.layout.layout_lista_tesi_preferite, GenericViewHolder.LISTA_TESI, null);////////modificato con ultimo parametro
+                                        Log.d("TGT", "num " + adapter.getItemCount());
+                                        recyclerView.setAdapter(adapter);
+                                        //Log.d(TAG, document.getId() + " => " + document.getData());
+                                    }
+
+                                }
+
+                  /*              if (document.getString("corsoDiLaurea").equals(universita.corso)) {//universita è nullo non funziona
 
                                     String id = document.getId();
                                     String corelatore = null;
                                     if (!document.getString("sCorelatore").equals("-- -- --")) {
                                         corelatore = document.getString("sCorelatore");
                                     }
-                                    // String corelatore = document.getString("corelatore");
                                     String corsoDiLaurea = document.getString("corsoDiLaurea");
                                     String dataPubblicazione = document.getString("dataPubblicazione");
                                     String descrizione = document.getString("descrizione");
@@ -270,18 +401,15 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                     int mediaRichiesta = Integer.parseInt(String.valueOf(document.get("mediaRichiesta")));
                                     String relatore = document.getString("sRelatore");
                                     String stato = document.getString("stato");
-                                    String studente = document.getString("studente");//fare il controllo su studente
-                                    // perchè se è null allora si mostra la tesi altrimenti vuol dire che è già stata assegnata e quindi non viene resa visibile
+                                    String studente = document.getString("studente");
 
                                     String tipo = document.getString("tipo");
                                     String titolo = document.getString("titolo");
                                     String ambito = document.getString("ambito");
                                     if (studente == null) {
-                                        Log.d("GBV", relatore);
                                         Tesi tesi = new Tesi(id, titolo, tipo, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, li);
                                         tesi.stato = stato;
                                         listaTesi.add(tesi);
-                                        Log.i("TAG", String.valueOf(listaTesi.size()));
                                     }
 
                                     if (listaTesi.size() == 0) {
@@ -300,40 +428,43 @@ public class FragmentCercaTesi extends Fragment implements ICostanti {
                                         recyclerView.setAdapter(adapter);
                                         //Log.d(TAG, document.getId() + " => " + document.getData());
                                     }
-                                }
+                                }*/
 
-                            }
+                            //}
                         }
                     }
                 });
-        Log.i("TAG", "Alla fine di getTesi " + String.valueOf(listaTesi.size()));
     }
 
-    private void recuperaCorsoETesi(RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi) {
-        String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("studenti").document(emailStudente).collection("Corso").document("c_s");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
+    private void recuperaCorsoETesi(RecyclerView recyclerView, ImageView img, TextView txt, ArrayList<Tesi> listaTesi,ArrayList<Tesi> listaTesiUtenteNonLoggato) {
+        if (Utente.utenteLoggato()) {
+            String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("studenti").document(emailStudente).collection("Corso").document("c_s");
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
 
-                        Universita universita = new Universita(document.getString("Dipartimento"), document.getString("Corso"), null, null);
+                            Universita universita = new Universita(document.getString("Dipartimento"), document.getString("Corso"), null, null);
 
-                        recuperaTesi(recyclerView,img,txt,listaTesi,universita);
+                            recuperaTesi(recyclerView, img, txt, listaTesi, universita,listaTesiUtenteNonLoggato);
 
-                      //  Log.d("ABC 1", "recupero il corso dello studente " + "Dip: " + FragmentCercaTesi.this.universita.dipartimento + " corso: " + FragmentCercaTesi.this.universita.corso);
+                            //  Log.d("ABC 1", "recupero il corso dello studente " + "Dip: " + FragmentCercaTesi.this.universita.dipartimento + " corso: " + FragmentCercaTesi.this.universita.corso);
 
+                        } else {
+                            //universita = null;
+                        }
                     } else {
-                        //universita = null;
+                        //Log.d(TAG, "get failed with ", task.getException());
                     }
-                } else {
-                    //Log.d(TAG, "get failed with ", task.getException());
                 }
-            }
-        });
+            });
+        } else {
+            recuperaTesi(recyclerView,img,txt,listaTesi,null,listaTesiUtenteNonLoggato);
+        }
     }
 
 

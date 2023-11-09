@@ -36,6 +36,7 @@ import java.util.Locale;
 import it.uniba.dib.sms2223.laureapp.business.Credenziali;
 import it.uniba.dib.sms2223.laureapp.business.GestioneTesi;
 import it.uniba.dib.sms2223.laureapp.business.ICostanti;
+import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.business.Utile;
 import it.uniba.dib.sms2223.laureapp.model.RichiestaTesi;
 import it.uniba.dib.sms2223.laureapp.model.Studente;
@@ -59,7 +60,6 @@ public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema
 
         Button btnRichiedi = findViewById(R.id.btn_richiedi_tesi);
 
-        String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         Toolbar toolbar = findViewById(R.id.tlb_dettaglio_tesi);
         setSupportActionBar(toolbar);
@@ -78,15 +78,18 @@ public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema
 
         GridLayout gridLayout = findViewById(R.id.grid_view_insegnamenti);
 
-
-
-
         Button btnContattaRelatore = findViewById(R.id.btn_contatta_relatore);
         Button btnContattaCorelatore = findViewById(R.id.btn_contatta_co_relatore);
 
         btnContattaRelatore.setOnClickListener(view -> {
            String emailrelatore = tesi.sRelatore.split(" ")[2];
             new Utile(this).condividiInfo(emailrelatore,getString(R.string.app_name) +": "+ tesi.titolo, ICostanti.INVIO_EMAIL,null);
+        });
+
+        btnContattaCorelatore.setOnClickListener(view -> {
+            String emailCorelatore = tesi.sCorelatore.split(" ")[2];
+            new Utile(this).condividiInfo(emailCorelatore,getString(R.string.app_name) +": "+ tesi.titolo, ICostanti.INVIO_EMAIL,null);
+
         });
 
         Log.d("GTG",""+tesi.studente);
@@ -96,10 +99,15 @@ public class RichiestaTesiStudente extends AppCompatActivity {//c'è il problema
         }
 
         btnRichiedi.setOnClickListener(view -> {
-            if (tesi.studente== null)
-                inizializzaDialog(tesi,emailStudente).show();
-            else
-                Toast.makeText(this,getString(R.string.tesi_assegnata),Toast.LENGTH_SHORT).show();
+            if (Utente.utenteLoggato()) {
+                if (tesi.studente == null) {
+                        String emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                        inizializzaDialog(tesi, emailStudente).show();
+
+                } else
+                    Toast.makeText(this, getString(R.string.tesi_assegnata), Toast.LENGTH_SHORT).show();
+            } else
+                Toast.makeText(getApplicationContext(),getString(R.string.loggati),Toast.LENGTH_SHORT).show();
         });
 
 

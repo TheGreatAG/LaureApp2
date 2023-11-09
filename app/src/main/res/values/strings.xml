@@ -137,6 +137,13 @@
     <string name="elimina_filtri">Elimina filtri</string>
     <string name="task_completato">Task completato</string>
     <string name="download_file">Scarica tesi</string>
+    <string name="richiesta_permesso">Richiesto il permesso all\'accesso alla fotocamera</string>
+    <string name="testo_permesso_camera"><![CDATA[Di seguito ti verra richiesto l\'accesso alla fotocamera per poter scannerrizare il codice QR.\nSe non concedi questo permesso non è possibile vedere i dati della relativa tesi, ma potresti comunque ricevere le informazioni della tesi facendoti condividere le informazioni in modo testuale, andando in:\nCondivisione->Condividi tesi]]></string>
+    <string name="testo_permesso_camera_in_impostazioni">Per utilizzare questa funzionalità devi concedere i permessi per l\'accesso alla fotocamera. Puoi fare questo andando nelle impostazioni del dispositivo, apri LaureeApp e concedi i permessi per la fotocamera</string>
+    <string name="annulla">Annulla</string>
+    <string name="grazie">Grazie</string>
+    <string name="torna_indietro">Torna indietro</string>
+    <string name="loggati">Devi registrarti nel sistema per usare questa funzione</string>
 
 
     <string-array name="numbers"> <!--è solo un array di prova inutile,serve per dimostrare il funzionamento dello spinner-->

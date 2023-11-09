@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import it.uniba.dib.sms2223.laureapp.adapter.FragmentAdapter;
 import it.uniba.dib.sms2223.laureapp.business.Credenziali;
+import it.uniba.dib.sms2223.laureapp.business.Utente;
 import it.uniba.dib.sms2223.laureapp.model.Corelatore;
 import it.uniba.dib.sms2223.laureapp.model.Relatore;
 import it.uniba.dib.sms2223.laureapp.model.Tesi;
@@ -90,13 +91,12 @@ public class FragmentHomeStudente extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        if (Credenziali.validitaEmailProf(emailStudente)){
-            docente =true;
+        if (Utente.utenteLoggato()) {
+            emailStudente = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+            if (Credenziali.validitaEmailProf(emailStudente)) {
+                docente = true;
+            }
         }
     }
 
@@ -123,9 +123,11 @@ public class FragmentHomeStudente extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.btn_toolbar_profilo_personale) {
-                    Toast.makeText(context, "bybhnj", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(context, ProfiloUtente.class));
-                    //non si può mettere finish qua perche se si preme indietro dalla toolbar della prox activity succede un errore
+                    if (Utente.utenteLoggato()) {
+                        startActivity(new Intent(context, ProfiloUtente.class));
+                    } else
+                        Toast.makeText(context,getString(R.string.loggati),Toast.LENGTH_SHORT).show();
+
 
 
                 }

@@ -48,7 +48,7 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder implements
 
     private TextView txtDip,txtCorso,txtMateria;
     private int tipoLista;
-    private Button btnRimuoviInsegnamento,btnTesiProf,btnAccetta,btnRifiuta;
+    private Button btnRimuoviInsegnamento,btnTesiProf,btnAccetta,btnRifiuta,btnContattaStudente;
 
     private TextView txtData,txtTitoloTesi,txtCorsoDiLaurea,txtCorelatore,txtTipoTesi
             ,txtDescrizione,txtMediaVoti,txtTempoRichiesto,txtStudenteAssegnato,txtTaskDaSvolgere,
@@ -93,6 +93,7 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder implements
                 gridLayout = v.findViewById(R.id.lyt_contenitore_propedeu);
                 btnAccetta = v.findViewById(R.id.btn_accetta);
                 btnRifiuta = v. findViewById(R.id.btn_rifiuta);
+                btnContattaStudente = v.findViewById(R.id.btn_contatta_studente);
                 break;
             case LISTA_RICEVIMENTI_STUDENTI:
                 txtMittente = v.findViewById(R.id.txt_mittente);
@@ -154,7 +155,7 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder implements
             eliminaRicevimento(ricevimento,adapter,indice,context);
         }); ;
         btnRispondi.setOnClickListener(view -> {
-            new Utile(context).condividiInfo(ricevimento.tesi.studente,context.getString(R.string.ricevimento)+":"+ricevimento.tesi.titolo,8,null);
+            new Utile(context).condividiInfo(ricevimento.tesi.studente,context.getString(R.string.ricevimento)+":"+ricevimento.tesi.titolo,ICostanti.INVIO_EMAIL,null);
         }); ;
     }
 
@@ -195,6 +196,9 @@ public class GenericViewHolderDocente extends RecyclerView.ViewHolder implements
             gridLayout.addView(testSignIn);
         }
 
+        btnContattaStudente.setOnClickListener(view -> {
+            new Utile(context).condividiInfo(richiestaTesi.studente.email,"Richiesta tesi"+ richiestaTesi.tesi.titolo,ICostanti.INVIO_EMAIL,null);
+        });
         btnAccetta.setOnClickListener(view -> {
 
             new GestioneTesi().assegnaTesi(richiestaTesi.tesi.relatore,richiestaTesi.studente,richiestaTesi,adapter,context,indice);

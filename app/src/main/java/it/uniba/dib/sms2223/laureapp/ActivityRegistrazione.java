@@ -71,23 +71,6 @@ public class ActivityRegistrazione extends AppCompatActivity { //da finire, deve
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference persona1Ref = db.collection("collectionProva").document("prova@mail.it");
 
-     /*   persona1Ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    String emailUtente = documentSnapshot.getId();
-                    String nomeUtente=documentSnapshot.getString("nome");
-                    registrati.setText("Prova riuscita!\n"+ emailUtente+" "+nomeUtente);
-                } else {
-                    // Il documento non esiste
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // Gestisci errori durante il recupero dei dati
-            }
-        });*/
 
         btnAvanti.setOnClickListener(view -> { //invece di setOnClickListener si possono usare le espressioni lambda introdotte in Java 8 che sono più veloci da scrivere
             String email = String.valueOf(edtEmail.getEditText().getText());

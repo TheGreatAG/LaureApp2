@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements ICostanti {
 
 
             /*------------Righe di test per passare direttamente alla schermata che mi serve-----------------*/
-            Intent intent = new Intent(this, PrimoAccessoDocente.class);
+            Intent intent = new Intent(this, MainActivityStudente.class);
             startActivity(intent);
             /*------------------------------------------------------------------------------------------------*/
             Toast.makeText(this, "Premuto accedi come ospite", Toast.LENGTH_SHORT).show();
