@@ -191,7 +191,7 @@ public class GestioneTesi {
                     Log.d("DRD", "media tesi [" + listaTesiCompleta.get(i).mediaRichiesta + "]" + " media inserita: " + mediaVoti +
                             " ambito tesi [" + listaTesiCompleta.get(i).ambito + "]" + "ambito inserito " + ambito);
 
-                    if (listaTesiCompleta.get(i).mediaRichiesta == mediaVoti && listaTesiCompleta.get(i).ambito.equals(ambito))
+                    if (listaTesiCompleta.get(i).mediaRichiesta <= mediaVoti && listaTesiCompleta.get(i).ambito.equals(ambito))
                         listaTesiFiltrate.add(listaTesiCompleta.get(i));
                 }
             }
@@ -199,7 +199,7 @@ public class GestioneTesi {
                 Log.d("DRD", "nel terzo filtro");
 
                 for (int i = 0; i < listaTesiCompleta.size(); i++) {
-                    if (listaTesiCompleta.get(i).mediaRichiesta == mediaVoti && listaTesiCompleta.get(i).durata <= ore &&
+                    if (listaTesiCompleta.get(i).mediaRichiesta <= mediaVoti && listaTesiCompleta.get(i).durata <= ore &&
                             listaTesiCompleta.get(i).ambito.equals(ambito))
                         listaTesiFiltrate.add(listaTesiCompleta.get(i));
                 }

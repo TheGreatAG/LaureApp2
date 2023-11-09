@@ -33,7 +33,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -95,11 +94,14 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
         ArrayList<String> corsiDiLaureaList = new ArrayList<>();
         db.collection("professori").document(emailProfessore).collection("Insegnamento").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                Log.i("CRS", "Task successful");
                 for (QueryDocumentSnapshot insegnamentoDocument : task.getResult()) {
-                    String corsoDiLaurea = insegnamentoDocument.getString("Corso");
-
+                    String corsoDiLaurea = insegnamentoDocument.getString("corso");
+                    Log.i("CRS", "Corso prelevato "+corsoDiLaurea);
                     if (corsoDiLaurea != null && !corsiDiLaureaList.contains(corsoDiLaurea)) {
                         corsiDiLaureaList.add(corsoDiLaurea);
+                        Log.i("CRS", "Corso aggiunto "+ corsoDiLaurea);
+
                     }
                 }
                 setAdapterSpinner(spinnerCorsi, corsiDiLaureaList);
@@ -201,7 +203,7 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
                 SimpleDateFormat formatoData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 //numTesi++;
                 String dataPubblicazione = formatoData.format(dataCorrente);
-                String relatore = nomeProf +" "+cognomeProf + " " + emailProfessore;
+                String relatore = nomeProf + " " + cognomeProf + " " + emailProfessore;
                 Tesi tesi = new Tesi(null, titolo, tipoTesi, descrizione, ambito, corsoDiLaurea, dataPubblicazione, mediaRichiesta, durata, relatore, corelatore, esamiRichiesti);
                 tesi.stato = STATO_TESI_DA_CONSEGNARE;
                 Log.d("ASD 1", tesi.sCorelatore);
@@ -239,7 +241,7 @@ public class CreaTesi extends AppCompatActivity implements ICostanti { //da sist
         });
     }
 
-    private void recuperaNomeCognomeProf(){
+    private void recuperaNomeCognomeProf() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d("email prof", emailProfessore);
 
